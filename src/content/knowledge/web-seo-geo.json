@@ -1,0 +1,7 @@
+{
+  "title": "Diseño Web a Medida, SEO y GEO",
+  "category": "Web y SEO/GEO",
+  "content": "Creamos páginas web a medida en HTML estático ultrarrápido (Astro) sin plantillas lentas: objetivo 99-100/100 en Core Web Vitals y carga inferior a 0,8s, seguridad blindada con SSL y panel autogestionable Keystatic en español para editar textos, proyectos y preguntas frecuentes sin tocar código. Incluimos SEO técnico local y GEO (Generative Engine Optimization) mediante datos estructurados JSON-LD para que Google, ChatGPT, Gemini y Perplexity recomienden el negocio del cliente.",
+  "enabled": true,
+  "order": 2
+}

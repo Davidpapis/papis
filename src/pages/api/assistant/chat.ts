@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenAI } from '@google/genai';
-import { DEFAULT_KNOWLEDGE_BASE } from '../../../lib/knowledgeBase';
 
 export const prerender = false;
 
@@ -9,9 +8,31 @@ interface ChatMessageInput {
   text: string;
 }
 
+interface KnowledgeDoc {
+  title: string;
+  category: string;
+  content: string;
+  enabled?: boolean;
+  order?: number;
+}
+
+// Carga directa desde los archivos JSON editables en Keystatic (src/content/knowledge/)
+const knowledgeModules = import.meta.glob<{ default: KnowledgeDoc }>(
+  '../../../content/knowledge/*.json',
+  { eager: true }
+);
+
 function buildSystemInstruction(): string {
-  const kbBlock = DEFAULT_KNOWLEDGE_BASE.filter((e) => e.enabled)
-    .map((entry, idx) => `[${idx + 1}] (${entry.category}) ${entry.title}:\n${entry.content}`)
+  const activeEntries = Object.values(knowledgeModules)
+    .map((mod) => mod.default)
+    .filter((entry) => entry && entry.enabled !== false && entry.content?.trim().length > 0)
+    .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+
+  const kbBlock = activeEntries
+    .map(
+      (entry, idx) =>
+        `[${idx + 1}] (${entry.category}) ${entry.title}:\n${entry.content.trim()}`
+    )
     .join('\n\n');
 
   return `Eres el asistente virtual oficial de papis.app (agencia tecnológica y servicio técnico en Marbella, España).

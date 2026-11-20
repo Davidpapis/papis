@@ -24,7 +24,7 @@ export default config({
         'pillarTechSupport',
         'contactPage',
       ],
-      'Colecciones Editables': ['projects', 'faqs'],
+      'Colecciones Editables': ['projects', 'faqs', 'knowledge'],
     },
   },
   singletons: {
@@ -569,6 +569,51 @@ export default config({
         }),
         order: fields.integer({
           label: 'Orden de aparición',
+          defaultValue: 1,
+        }),
+      },
+    }),
+
+    knowledge: collection({
+      label: 'Base de Conocimiento (Asistente IA)',
+      slugField: 'title',
+      path: 'src/content/knowledge/*',
+      format: { data: 'json' },
+      schema: {
+        title: fields.slug({
+          name: {
+            label: 'Tema o título de la ficha',
+            description: 'Ej: Precios y plazos orientativos, Servicio Técnico a Domicilio',
+            validation: { length: { min: 4, max: 100 } },
+          },
+          slug: {
+            label: 'Identificador de archivo (slug)',
+            description: 'En minúsculas y con guiones (ej: precios-y-plazos)',
+          },
+        }),
+        category: fields.select({
+          label: 'Categoría del conocimiento',
+          options: [
+            { label: 'General', value: 'General' },
+            { label: 'Web y SEO/GEO', value: 'Web y SEO/GEO' },
+            { label: 'Software Empresas', value: 'Software Empresas' },
+            { label: 'Servicio Técnico', value: 'Servicio Técnico' },
+            { label: 'Precios y Plazos', value: 'Precios y Plazos' },
+          ],
+          defaultValue: 'General',
+        }),
+        content: fields.text({
+          label: 'Información real que usará el Asistente IA',
+          description: 'Escribe datos claros y reales. El asistente responderá basándose solo en estas fichas.',
+          multiline: true,
+          validation: { length: { min: 20, max: 2500 } },
+        }),
+        enabled: fields.checkbox({
+          label: 'Ficha activa para el Asistente IA',
+          defaultValue: true,
+        }),
+        order: fields.integer({
+          label: 'Orden de prioridad',
           defaultValue: 1,
         }),
       },

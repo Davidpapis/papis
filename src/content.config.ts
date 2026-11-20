@@ -52,4 +52,21 @@ const faqs = defineCollection({
   }),
 });
 
-export const collections = { projects, faqs };
+const knowledge = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/knowledge' }),
+  schema: z.object({
+    title: z.string().min(4).max(100),
+    category: z.enum([
+      'General',
+      'Web y SEO/GEO',
+      'Software Empresas',
+      'Servicio Técnico',
+      'Precios y Plazos',
+    ]),
+    content: z.string().min(20).max(2500),
+    enabled: z.boolean().default(true),
+    order: z.number().int().default(1),
+  }),
+});
+
+export const collections = { projects, faqs, knowledge };
