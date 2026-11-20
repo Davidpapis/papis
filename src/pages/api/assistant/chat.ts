@@ -48,9 +48,15 @@ ${kbBlock}`;
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  const apiKey = import.meta.env.GEMINI_API_KEY?.trim() || process.env.GEMINI_API_KEY?.trim();
+  const apiKey =
+    process.env.GEMINI_API_KEY?.trim() ||
+    process.env.papisapp?.trim() ||
+    import.meta.env.GEMINI_API_KEY?.trim() ||
+    import.meta.env.papisapp?.trim();
   const model =
-    import.meta.env.GEMINI_MODEL?.trim() || process.env.GEMINI_MODEL?.trim() || 'gemini-2.5-flash';
+    process.env.GEMINI_MODEL?.trim() ||
+    import.meta.env.GEMINI_MODEL?.trim() ||
+    'gemini-2.5-flash';
 
   if (!apiKey) {
     return new Response(
