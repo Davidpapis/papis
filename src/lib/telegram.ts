@@ -1,6 +1,6 @@
 /**
  * Helper ligero para enviar notificaciones a Telegram desde los endpoints de Vercel.
- * Usa un timeout corto (2.5s) para nunca bloquear al visitante si Telegram tarda.
+ * Registra el motivo exacto en los logs de Vercel si Telegram devuelve error (400/401/403).
  */
 export async function sendTelegramMessage(text: string): Promise<boolean> {
   const token =
@@ -11,11 +11,12 @@ export async function sendTelegramMessage(text: string): Promise<boolean> {
     import.meta.env.TELEGRAM_CHAT_ID?.trim();
 
   if (!token || !chatId) {
+    console.warn('Telegram omitido: faltan TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID');
     return false;
   }
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 2500);
+  const timer = setTimeout(() => controller.abort(), 4000);
 
   try {
     const resp = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -28,7 +29,12 @@ export async function sendTelegramMessage(text: string): Promise<boolean> {
       }),
       signal: controller.signal,
     });
-    return resp.ok;
+    if (!resp.ok) {
+      const errBody = await resp.text().catch(() => '');
+      console.error(`Telegram API respondió ${resp.status}:`, errBody);
+      return false;
+    }
+    return true;
   } catch (err) {
     console.error('Error enviando notificación a Telegram:', err);
     return false;

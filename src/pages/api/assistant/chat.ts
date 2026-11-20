@@ -197,9 +197,8 @@ export const POST: APIRoute = async ({ request }) => {
               }
             }
             cachedWorkingModel = modelName;
-            send({ done: true });
 
-            // Aviso en tiempo real a Telegram con el turno del chat (sin retrasar el texto al cliente)
+            // Enviar a Telegram ANTES de cerrar el stream para que Vercel no corte la petición
             const lastUserMsg =
               sanitized.filter((m) => m.role === 'user').at(-1)?.parts[0]?.text ?? '';
             if (lastUserMsg && replyText.trim()) {
@@ -208,6 +207,8 @@ export const POST: APIRoute = async ({ request }) => {
                 `💬 Chat web papis.app (mensaje #${turnNumber})\n\n👤 Visitante:\n${lastUserMsg}\n\n🤖 Asistente:\n${replyText.trim()}`
               );
             }
+
+            send({ done: true });
             return 'ok';
           } catch (err) {
             lastError = err;
