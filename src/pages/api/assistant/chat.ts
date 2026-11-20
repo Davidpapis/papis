@@ -59,9 +59,43 @@ function classifyGeminiError(err: unknown): string {
     return 'Se ha alcanzado el límite temporal de consultas de la API de Gemini. Inténtalo en un minuto o escríbenos por WhatsApp.';
   }
   if (raw.includes('NOT_FOUND') || raw.includes('404')) {
-    return 'El modelo de Gemini configurado no está disponible para esta clave API.';
+    return 'Ningún modelo compatible de Gemini respondió para esta clave API. Verifica en Google AI Studio qué modelos tiene habilitados tu proyecto.';
   }
   return 'No hemos podido conectar con el asistente ahora mismo. Escríbenos por WhatsApp y te atendemos al instante.';
+}
+
+async function discoverAvailableModels(ai: GoogleGenAI): Promise<string[]> {
+  try {
+    const pager = await ai.models.list();
+    const names: string[] = [];
+    for await (const m of pager) {
+      const name = typeof m.name === 'string' ? m.name.replace(/^models\//, '') : '';
+      const actions = Array.isArray(m.supportedActions) ? m.supportedActions : [];
+      const supportsGenerate =
+        actions.length === 0 || actions.includes('generateContent');
+      if (
+        name &&
+        supportsGenerate &&
+        name.startsWith('gemini-') &&
+        !name.includes('embedding') &&
+        !name.includes('imagen') &&
+        !name.includes('veo') &&
+        !name.includes('tts') &&
+        !name.includes('audio')
+      ) {
+        names.push(name);
+      }
+    }
+    // Priorizar modelos flash rápidos y recientes
+    return names.sort((a, b) => {
+      const score = (n: string) =>
+        (n.includes('flash') ? 0 : 10) + (n.includes('lite') ? 2 : 0) + (n.includes('exp') ? 5 : 0);
+      return score(a) - score(b);
+    });
+  } catch (err) {
+    console.error('Error listando modelos Gemini:', err);
+    return [];
+  }
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -74,13 +108,13 @@ export const POST: APIRoute = async ({ request }) => {
   const preferredModel =
     process.env.GEMINI_MODEL?.trim() ||
     import.meta.env.GEMINI_MODEL?.trim() ||
-    'gemini-2.5-flash';
+    'gemini-flash-latest';
 
   if (!apiKey) {
     return new Response(
       JSON.stringify({
         error:
-          'El asistente IA necesita configurar GEMINI_API_KEY (o papisapp) en el servidor. Mientras tanto, escríbenos por WhatsApp.',
+          'El asistente IA necesita configurar GEMINI_API_KEY en el servidor. Mientras tanto, escríbenos por WhatsApp.',
       }),
       { status: 503, headers: { 'Content-Type': 'application/json' } }
     );
@@ -106,8 +140,14 @@ export const POST: APIRoute = async ({ request }) => {
 
   const ai = new GoogleGenAI({ apiKey });
   const encoder = new TextEncoder();
-  const candidateModels = Array.from(
-    new Set([preferredModel, 'gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'])
+  const staticCandidates = Array.from(
+    new Set([
+      preferredModel,
+      'gemini-flash-latest',
+      'gemini-2.5-flash',
+      'gemini-2.5-flash-lite',
+      'gemini-3-flash-preview',
+    ])
   );
 
   const stream = new ReadableStream({
@@ -119,7 +159,7 @@ export const POST: APIRoute = async ({ request }) => {
       const systemInstruction = buildSystemInstruction();
       let lastError: unknown = null;
 
-      for (const modelName of candidateModels) {
+      const tryModel = async (modelName: string): Promise<'ok' | 'fatal' | 'retry'> => {
         try {
           const result = await ai.models.generateContentStream({
             model: modelName,
@@ -133,13 +173,11 @@ export const POST: APIRoute = async ({ request }) => {
             if (chunk.text) send({ text: chunk.text });
           }
           send({ done: true });
-          controller.close();
-          return;
+          return 'ok';
         } catch (err) {
           lastError = err;
           const msg = err instanceof Error ? err.message : String(err);
           console.error(`Error Gemini con modelo ${modelName}:`, msg);
-          // Si la clave es inválida o sin permisos, no tiene sentido probar otros modelos
           if (
             msg.includes('API_KEY_INVALID') ||
             msg.includes('API key not valid') ||
@@ -147,9 +185,36 @@ export const POST: APIRoute = async ({ request }) => {
             msg.includes('401') ||
             msg.includes('403')
           ) {
-            break;
+            return 'fatal';
           }
+          return 'retry';
         }
+      };
+
+      for (const modelName of staticCandidates) {
+        const status = await tryModel(modelName);
+        if (status === 'ok') {
+          controller.close();
+          return;
+        }
+        if (status === 'fatal') {
+          send({ error: classifyGeminiError(lastError) });
+          controller.close();
+          return;
+        }
+      }
+
+      // Autodescubrimiento: consulta a la API qué modelos tiene habilitados esta clave
+      const discovered = (await discoverAvailableModels(ai)).filter(
+        (m) => !staticCandidates.includes(m)
+      );
+      for (const modelName of discovered.slice(0, 4)) {
+        const status = await tryModel(modelName);
+        if (status === 'ok') {
+          controller.close();
+          return;
+        }
+        if (status === 'fatal') break;
       }
 
       send({ error: classifyGeminiError(lastError) });
