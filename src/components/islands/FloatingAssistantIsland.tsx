@@ -63,10 +63,13 @@ export default function FloatingAssistantIsland({
       if (e.key === 'Escape') setIsOpen(false);
     };
     window.addEventListener('keydown', onKeyDown);
-    const timer = window.setTimeout(() => inputRef.current?.focus(), 140);
+    const isDesktopPointer = window.matchMedia('(pointer: fine)').matches;
+    const timer = isDesktopPointer
+      ? window.setTimeout(() => inputRef.current?.focus(), 140)
+      : 0;
     return () => {
       window.removeEventListener('keydown', onKeyDown);
-      window.clearTimeout(timer);
+      if (timer) window.clearTimeout(timer);
     };
   }, [isOpen]);
 
@@ -257,7 +260,7 @@ export default function FloatingAssistantIsland({
             role="dialog"
             aria-modal="true"
             aria-label="Asistente virtual IA de papis.app"
-            className="fixed inset-x-3 bottom-3 top-16 sm:inset-x-auto sm:right-6 sm:bottom-6 sm:top-20 z-50 flex w-auto sm:w-[420px] max-h-[calc(100vh-5.5rem)] flex-col overflow-hidden rounded-2xl border bg-[#0B0D12]/96 backdrop-blur-2xl shadow-[0_24px_80px_-16px_rgba(0,0,0,0.95)]"
+            className="fixed inset-x-2.5 bottom-2.5 top-16 sm:inset-x-auto sm:right-6 sm:bottom-6 sm:top-20 z-50 flex w-auto sm:w-[420px] max-h-[calc(100dvh-4.75rem)] flex-col overflow-hidden rounded-2xl border bg-[#0B0D12]/96 backdrop-blur-2xl shadow-[0_24px_80px_-16px_rgba(0,0,0,0.95)]"
             style={{ borderColor: `rgba(${palette.rgb}, 0.34)` }}
           >
             <div
@@ -340,7 +343,7 @@ export default function FloatingAssistantIsland({
                     className={`flex items-end gap-2 ${isUser ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[86%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
+                      className={`max-w-[86%] min-w-0 break-words rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
                         isUser
                           ? 'text-white rounded-br-sm'
                           : msg.error
@@ -424,7 +427,7 @@ export default function FloatingAssistantIsland({
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Escríbeme lo que necesites..."
                   disabled={isStreaming}
-                  className="flex-1 rounded-xl border border-white/[0.1] bg-[#0D1017] px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none disabled:opacity-60"
+                  className="flex-1 min-w-0 rounded-xl border border-white/[0.1] bg-[#0D1017] px-3.5 py-2.5 text-base sm:text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none disabled:opacity-60"
                 />
                 <button
                   type="submit"

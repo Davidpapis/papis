@@ -326,7 +326,7 @@ export default function ContactFormIsland({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Ej. Carlos Martínez"
-                    className="w-full rounded-xl border border-white/[0.1] bg-[#080A0F] px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none"
+                    className="w-full rounded-xl border border-white/[0.1] bg-[#080A0F] px-4 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none"
                   />
                 </div>
 
@@ -342,7 +342,7 @@ export default function ContactFormIsland({
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
                     placeholder="600 000 000 o tu@empresa.es"
-                    className="w-full rounded-xl border border-white/[0.1] bg-[#080A0F] px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none"
+                    className="w-full rounded-xl border border-white/[0.1] bg-[#080A0F] px-4 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none"
                   />
                 </div>
               </div>
@@ -372,7 +372,7 @@ export default function ContactFormIsland({
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Cuéntanos brevemente tu negocio, proyecto o el problema técnico que tienes..."
-                  className="w-full resize-none rounded-xl border border-white/[0.1] bg-[#080A0F] px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none"
+                  className="w-full resize-none rounded-xl border border-white/[0.1] bg-[#080A0F] px-4 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none"
                 />
               </div>
 
