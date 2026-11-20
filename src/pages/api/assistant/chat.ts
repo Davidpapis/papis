@@ -47,13 +47,31 @@ BASE DE CONOCIMIENTO ACTIVA:
 ${kbBlock}`;
 }
 
+function classifyGeminiError(err: unknown): string {
+  const raw = err instanceof Error ? err.message : String(err);
+  if (raw.includes('API_KEY_INVALID') || raw.includes('API key not valid') || raw.includes('401')) {
+    return 'La clave API de Gemini no es válida o está mal copiada. Revísala en Google AI Studio y en Vercel.';
+  }
+  if (raw.includes('PERMISSION_DENIED') || raw.includes('403')) {
+    return 'La clave API no tiene permisos para Gemini API (verifica en Google AI Studio que la clave esté activa sin restricciones de dominio/IP).';
+  }
+  if (raw.includes('RESOURCE_EXHAUSTED') || raw.includes('429') || raw.includes('quota')) {
+    return 'Se ha alcanzado el límite temporal de consultas de la API de Gemini. Inténtalo en un minuto o escríbenos por WhatsApp.';
+  }
+  if (raw.includes('NOT_FOUND') || raw.includes('404')) {
+    return 'El modelo de Gemini configurado no está disponible para esta clave API.';
+  }
+  return 'No hemos podido conectar con el asistente ahora mismo. Escríbenos por WhatsApp y te atendemos al instante.';
+}
+
 export const POST: APIRoute = async ({ request }) => {
   const apiKey =
     process.env.GEMINI_API_KEY?.trim() ||
     process.env.papisapp?.trim() ||
     import.meta.env.GEMINI_API_KEY?.trim() ||
     import.meta.env.papisapp?.trim();
-  const model =
+
+  const preferredModel =
     process.env.GEMINI_MODEL?.trim() ||
     import.meta.env.GEMINI_MODEL?.trim() ||
     'gemini-2.5-flash';
@@ -62,7 +80,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         error:
-          'El asistente IA necesita configurar GEMINI_API_KEY en el servidor. Mientras tanto, escríbenos por WhatsApp.',
+          'El asistente IA necesita configurar GEMINI_API_KEY (o papisapp) en el servidor. Mientras tanto, escríbenos por WhatsApp.',
       }),
       { status: 503, headers: { 'Content-Type': 'application/json' } }
     );
@@ -88,6 +106,9 @@ export const POST: APIRoute = async ({ request }) => {
 
   const ai = new GoogleGenAI({ apiKey });
   const encoder = new TextEncoder();
+  const candidateModels = Array.from(
+    new Set([preferredModel, 'gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'])
+  );
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -95,28 +116,44 @@ export const POST: APIRoute = async ({ request }) => {
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
       };
 
-      try {
-        const result = await ai.models.generateContentStream({
-          model,
-          contents: sanitized,
-          config: {
-            systemInstruction: buildSystemInstruction(),
-          },
-        });
+      const systemInstruction = buildSystemInstruction();
+      let lastError: unknown = null;
 
-        for await (const chunk of result) {
-          if (chunk.text) send({ text: chunk.text });
+      for (const modelName of candidateModels) {
+        try {
+          const result = await ai.models.generateContentStream({
+            model: modelName,
+            contents: sanitized,
+            config: {
+              systemInstruction,
+            },
+          });
+
+          for await (const chunk of result) {
+            if (chunk.text) send({ text: chunk.text });
+          }
+          send({ done: true });
+          controller.close();
+          return;
+        } catch (err) {
+          lastError = err;
+          const msg = err instanceof Error ? err.message : String(err);
+          console.error(`Error Gemini con modelo ${modelName}:`, msg);
+          // Si la clave es inválida o sin permisos, no tiene sentido probar otros modelos
+          if (
+            msg.includes('API_KEY_INVALID') ||
+            msg.includes('API key not valid') ||
+            msg.includes('PERMISSION_DENIED') ||
+            msg.includes('401') ||
+            msg.includes('403')
+          ) {
+            break;
+          }
         }
-        send({ done: true });
-      } catch (err) {
-        console.error('Error en /api/assistant/chat:', err);
-        send({
-          error:
-            'No hemos podido conectar con el asistente ahora mismo. Escríbenos por WhatsApp y te atendemos al instante.',
-        });
-      } finally {
-        controller.close();
       }
+
+      send({ error: classifyGeminiError(lastError) });
+      controller.close();
     },
   });
 
