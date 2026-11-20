@@ -33,7 +33,7 @@ const QUICK_PROMPTS = [
 const INITIAL_WELCOME: ChatMessage = {
   id: 'welcome',
   role: 'model',
-  text: '¡Buenas! Estás hablando con el equipo de David en papis.app. Cuéntame sin compromiso qué tienes en mente o qué necesitas y vemos cómo ayudarte.',
+  text: '¡Buenas! Estás en papis.app con el equipo de David. ¿Cómo te llamas y en qué te podemos echar una mano hoy?',
 };
 
 export default function FloatingAssistantIsland({
