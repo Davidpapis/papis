@@ -1,0 +1,42 @@
+---
+import { PILLAR_PALETTES, type PillarId } from '../lib/theme';
+
+interface Props {
+  theme: PillarId;
+  class?: string;
+}
+
+const { theme, class: className = '' } = Astro.props;
+const palette = PILLAR_PALETTES[theme];
+---
+
+<div
+  class={`inline-flex items-center gap-3.5 select-none ${className}`}
+  aria-label={`papis.app ${palette.divisionPrefix} ${palette.divisionHighlight}`}
+>
+  <svg
+    viewBox="0 0 100 108"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class="w-10 h-[43px] shrink-0"
+    aria-hidden="true"
+  >
+    <path
+      d="M12 6H54A38.5 38.5 0 0 1 54 83H48V72.5H54A28 28 0 0 0 54 16.5H22.5V55.5L12 60.8V6Z"
+      fill={palette.accent}
+    />
+    <path
+      d="M31.5 21.5L68 40V49.5L22.5 72.5V92.5H31.5V72.5H42V103H12V67.3L56.5 44.75L31.5 32.1V21.5Z"
+      fill="#F8FAFC"
+    />
+  </svg>
+  <div class="flex flex-col">
+    <span class="font-display text-xl font-bold tracking-[-0.03em] leading-none">
+      <span class="text-[#F8FAFC]">papis.</span><span style={`color: ${palette.accent};`}>app</span>
+    </span>
+    <span class="mt-1 text-[11px] font-semibold tracking-[0.11em] leading-none whitespace-nowrap">
+      <span class="text-slate-300">{palette.divisionPrefix} </span>
+      <span style={`color: ${palette.accent};`}>{palette.divisionHighlight}</span>
+    </span>
+  </div>
+</div>

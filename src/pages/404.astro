@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlowButton from '../components/GlowButton.astro';
+---
+
+<BaseLayout
+  title="Página no encontrada (404) | papis.app"
+  description="La página que buscas no existe en papis.app. Vuelve al inicio o contacta directamente."
+  noindex={true}
+>
+  <section class="pt-36 pb-28 text-center">
+    <div class="mx-auto max-w-xl px-4 sm:px-6">
+      <p class="font-mono-tabular text-sm font-semibold text-blue-400">Error 404</p>
+      <h1 class="mt-3 font-display text-4xl sm:text-5xl font-bold tracking-[-0.03em] text-white">
+        Esta página no existe
+      </h1>
+      <p class="mt-4 text-base text-slate-300">
+        Puede que el enlace haya cambiado o esté mal escrito. Vuelve a la portada o cuéntanos qué
+        necesitas.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <GlowButton href="/" size="lg" solid>Volver al inicio</GlowButton>
+        <GlowButton href="/contacto" size="lg">Ir a contacto</GlowButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

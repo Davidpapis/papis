@@ -1,0 +1,20 @@
+{
+  "brandName": "papis.app",
+  "domain": "https://papis.app",
+  "phoneDisplay": "+34 652 918 061",
+  "whatsappNumber": "34652918061",
+  "email": "dyminfo@gmail.com",
+  "city": "Marbella, Costa del Sol",
+  "serviceAreas": [
+    "Marbella",
+    "San Pedro Alcántara",
+    "Nueva Andalucía",
+    "Puerto Banús",
+    "Estepona"
+  ],
+  "defaultSeoTitle": "Diseño Web, Software y Técnico en Marbella | papis.app",
+  "defaultSeoDescription": "Creamos páginas web ultrarrápidas con SEO y GEO, software ERP/CRM a medida para empresas y servicio técnico informático a domicilio en Marbella.",
+  "legalOwner": "David Papis",
+  "legalNoticeNote": "Pendiente de completar con razón social / NIF y domicilio fiscal en Marbella, Málaga desde /keystatic.",
+  "socialLinks": []
+}

@@ -1,0 +1,351 @@
+---
+import { Image } from 'astro:assets';
+import GlowButton from './GlowButton.astro';
+import { HERO_IMAGES } from '../lib/images';
+import { PILLAR_PALETTES, type PillarId } from '../lib/theme';
+
+interface HeroSlide {
+  pillar: PillarId;
+  indexLabel: string;
+  shortTitle: string;
+  kicker: string;
+  title: string;
+  description: string;
+  primaryCta: string;
+  secondaryCta: string;
+  serviceHref: string;
+}
+
+interface Props {
+  slides: HeroSlide[];
+}
+
+const { slides } = Astro.props;
+const initialSlide = slides[0];
+const initialPalette = PILLAR_PALETTES[initialSlide.pillar];
+---
+
+<section
+  id="inicio"
+  data-scroll-hero
+  data-slides={JSON.stringify(
+    slides.map((s) => ({
+      ...s,
+      palette: PILLAR_PALETTES[s.pillar],
+    }))
+  )}
+  class="relative min-h-[220vh] sm:min-h-[250vh] w-full"
+  aria-label="Presentación principal de papis.app"
+>
+  <!-- Contenedor sticky 100vh: crossfade cinematográfico de las 3 fotos del estudio -->
+  <div class="sticky top-0 h-screen w-full overflow-hidden bg-[#050507]">
+    <div
+      data-hero-parallax
+      aria-hidden="true"
+      class="absolute inset-0 will-change-transform"
+      style="transform: translate3d(0, 0, 0) scale(1.04); transition: transform 280ms var(--ease-out);"
+    >
+      {
+        slides.map((slide, idx) => (
+          <Image
+            src={HERO_IMAGES[slide.pillar]}
+            alt={`Estudio papis.app — ${slide.shortTitle} en Marbella`}
+            widths={[768, 1280, 1920]}
+            sizes="100vw"
+            loading={idx === 0 ? 'eager' : 'lazy'}
+            fetchpriority={idx === 0 ? 'high' : 'auto'}
+            decoding="async"
+            data-hero-img={slide.pillar}
+            class="absolute inset-0 h-full w-full object-cover object-[64%_center] sm:object-center select-none pointer-events-none"
+            style={`opacity: ${idx === 0 ? 1 : 0};`}
+          />
+        ))
+      }
+    </div>
+
+    <!-- Halo atmosférico reactivo -->
+    <div
+      data-hero-halo
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0"
+      style={`background: radial-gradient(62% 58% at 72% 40%, rgba(${initialPalette.rgb}, 0.16) 0%, transparent 72%); transition: opacity 300ms var(--ease-out);`}
+    >
+    </div>
+
+    <!-- Scrims WCAG AA+ manteniendo visible la iluminación del estudio -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#050507]/95 via-[#050507]/75 to-[#050507]/20"
+    >
+    </div>
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050507] via-transparent to-[#050507]/60"
+    >
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-between px-4 pb-8 pt-24 sm:px-6 sm:pb-10 sm:pt-28 lg:px-8">
+      <div class="my-auto max-w-3xl">
+        <p
+          data-hero-kicker
+          class="mb-4 text-xs sm:text-sm font-medium tracking-wide"
+          style={`color: ${initialPalette.accent}; transition: color 240ms ease;`}
+        >
+          {initialSlide.kicker}
+        </p>
+
+        <h1
+          data-hero-title
+          class="font-display font-bold tracking-[-0.03em] text-white leading-[1.06]"
+          style="font-size: clamp(2.2rem, 5vw, 4.1rem); text-wrap: balance;"
+        >
+          {initialSlide.title}
+        </h1>
+
+        <p
+          data-hero-desc
+          class="mt-5 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-300"
+        >
+          {initialSlide.description}
+        </p>
+
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <GlowButton
+            href={`/contacto?servicio=${initialSlide.pillar}`}
+            size="lg"
+            solid
+            class="hero-primary-cta"
+          >
+            <span data-hero-primary-label>{initialSlide.primaryCta}</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </GlowButton>
+
+          <GlowButton
+            href={initialSlide.serviceHref}
+            size="lg"
+            class="hero-secondary-cta"
+          >
+            <span data-hero-secondary-label>{initialSlide.secondaryCta}</span>
+          </GlowButton>
+        </div>
+      </div>
+
+      <!-- Barra inferior interactiva de progreso de los 3 pilares -->
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between border-t border-white/[0.1] pt-5">
+        <div
+          class="grid grid-cols-3 gap-3 sm:gap-6 w-full sm:max-w-xl"
+          role="tablist"
+          aria-label="Servicios principales de papis.app"
+        >
+          {
+            slides.map((slide, idx) => {
+              const p = PILLAR_PALETTES[slide.pillar];
+              return (
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={idx === 0 ? 'true' : 'false'}
+                  data-hero-tab={idx}
+                  class="group text-left min-h-[44px] focus-visible:outline-2 focus-visible:outline-offset-4 rounded cursor-pointer"
+                >
+                  <div class="h-[2px] w-full overflow-hidden rounded-full bg-white/10">
+                    <div
+                      data-hero-bar={idx}
+                      class="h-full origin-left"
+                      style={`background-color: ${p.accent}; transform: scaleX(${idx === 0 ? 0.2 : 0}); transition: transform 150ms var(--ease-out);`}
+                    />
+                  </div>
+                  <div class="mt-2 flex items-center gap-1.5 text-xs whitespace-nowrap">
+                    <span
+                      data-hero-idx={idx}
+                      class="font-mono-tabular"
+                      style={`color: ${idx === 0 ? p.accent : '#64748B'};`}
+                    >
+                      {slide.indexLabel}
+                    </span>
+                    <span
+                      data-hero-label={idx}
+                      class={`truncate font-medium transition-colors ${
+                        idx === 0 ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'
+                      }`}
+                    >
+                      {slide.shortTitle}
+                    </span>
+                  </div>
+                </button>
+              );
+            })
+          }
+        </div>
+
+        <div class="hidden sm:flex items-center gap-2.5 text-xs text-slate-400 whitespace-nowrap shrink-0">
+          <span data-hero-percent class="font-mono-tabular text-slate-300">0%</span>
+          <span aria-hidden="true">·</span>
+          <span>Desliza para explorar los 3 servicios</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const hero = document.querySelector<HTMLElement>('[data-scroll-hero]');
+  if (hero) {
+    const slides = JSON.parse(hero.dataset.slides || '[]');
+    const parallaxEl = hero.querySelector<HTMLElement>('[data-hero-parallax]');
+    const haloEl = hero.querySelector<HTMLElement>('[data-hero-halo]');
+    const kickerEl = hero.querySelector<HTMLElement>('[data-hero-kicker]');
+    const titleEl = hero.querySelector<HTMLElement>('[data-hero-title]');
+    const descEl = hero.querySelector<HTMLElement>('[data-hero-desc]');
+    const primaryLink = hero.querySelector<HTMLAnchorElement>('.hero-primary-cta');
+    const primaryLabel = hero.querySelector<HTMLElement>('[data-hero-primary-label]');
+    const secondaryLink = hero.querySelector<HTMLAnchorElement>('.hero-secondary-cta');
+    const secondaryLabel = hero.querySelector<HTMLElement>('[data-hero-secondary-label]');
+    const percentEl = hero.querySelector<HTMLElement>('[data-hero-percent]');
+
+    const imgMap = new Map<string, HTMLElement>();
+    hero.querySelectorAll<HTMLElement>('[data-hero-img]').forEach((img) => {
+      if (img.dataset.heroImg) imgMap.set(img.dataset.heroImg, img);
+    });
+
+    const tabs = Array.from(hero.querySelectorAll<HTMLButtonElement>('[data-hero-tab]'));
+    const bars = Array.from(hero.querySelectorAll<HTMLElement>('[data-hero-bar]'));
+    const idxs = Array.from(hero.querySelectorAll<HTMLElement>('[data-hero-idx]'));
+    const labels = Array.from(hero.querySelectorAll<HTMLElement>('[data-hero-label]'));
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    let currentIdx = 0;
+    let pointerX = 0.5;
+    let pointerY = 0.5;
+    let rafId = 0;
+
+    const applySlideTheme = (idx: number) => {
+      const slide = slides[idx];
+      if (!slide) return;
+      const p = slide.palette;
+      const root = document.documentElement;
+      root.style.setProperty('--accent', p.accent);
+      root.style.setProperty('--accent-secondary', p.secondary);
+      root.style.setProperty('--accent-rgb', p.rgb);
+      root.style.setProperty('--accent-soft', p.softBg);
+
+      document.querySelectorAll<SVGPathElement>('[data-logo-accent]').forEach((el) => {
+        el.setAttribute('fill', p.accent);
+      });
+      document.querySelectorAll<HTMLElement>('[data-logo-accent-text]').forEach((el) => {
+        el.style.color = p.accent;
+      });
+
+      if (haloEl) {
+        haloEl.style.background = `radial-gradient(62% 58% at 72% 40%, rgba(${p.rgb}, 0.16) 0%, transparent 72%)`;
+      }
+      if (kickerEl) {
+        kickerEl.textContent = slide.kicker;
+        kickerEl.style.color = p.accent;
+      }
+      if (titleEl) titleEl.textContent = slide.title;
+      if (descEl) descEl.textContent = slide.description;
+      if (primaryLink) primaryLink.href = `/contacto?servicio=${slide.pillar}`;
+      if (primaryLabel) primaryLabel.textContent = slide.primaryCta;
+      if (secondaryLink) secondaryLink.href = slide.serviceHref;
+      if (secondaryLabel) secondaryLabel.textContent = slide.secondaryCta;
+
+      tabs.forEach((tab, i) => {
+        const active = i === idx;
+        tab.setAttribute('aria-selected', String(active));
+        if (idxs[i]) idxs[i].style.color = active ? slides[i].palette.accent : '#64748B';
+        if (labels[i]) {
+          labels[i].classList.toggle('text-white', active);
+          labels[i].classList.toggle('text-slate-400', !active);
+        }
+      });
+    };
+
+    const renderFrame = () => {
+      const rect = hero.getBoundingClientRect();
+      const scrollable = Math.max(hero.offsetHeight - window.innerHeight, 1);
+      const scrolled = Math.min(Math.max(-rect.top, 0), scrollable);
+      const progress = scrolled / scrollable;
+
+      const webW = Math.max(0, 1 - Math.max(0, progress - 0.22) / 0.22);
+      const softW =
+        Math.max(0, Math.min(1, (progress - 0.2) / 0.18)) *
+        Math.max(0, 1 - Math.max(0, progress - 0.56) / 0.2);
+      const techW = Math.max(0, Math.min(1, (progress - 0.54) / 0.2));
+
+      const weights: Record<string, number> = {
+        web: webW,
+        software: softW,
+        tecnico: techW,
+      };
+
+      imgMap.forEach((img, key) => {
+        img.style.opacity = String(weights[key] ?? 0);
+      });
+
+      if (parallaxEl && !reduceMotion) {
+        const px = finePointer ? (pointerX - 0.5) * -14 : 0;
+        const py = finePointer ? (pointerY - 0.5) * -10 : 0;
+        const scale = 1.04 + progress * 0.04;
+        parallaxEl.style.transform = `translate3d(${px}px, ${py}px, 0) scale(${scale})`;
+      }
+
+      if (percentEl) percentEl.textContent = `${Math.round(progress * 100)}%`;
+
+      const nextIdx = progress < 0.34 ? 0 : progress < 0.67 ? 1 : 2;
+      bars.forEach((bar, i) => {
+        const segStart = i / 3;
+        const fill = Math.max(0, Math.min(1, (progress - segStart) * 3));
+        bar.style.transform = `scaleX(${i === nextIdx ? Math.max(0.18, fill) : fill})`;
+      });
+
+      if (nextIdx !== currentIdx) {
+        currentIdx = nextIdx;
+        applySlideTheme(nextIdx);
+      }
+    };
+
+    const scheduleRender = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(renderFrame);
+    };
+
+    window.addEventListener('scroll', scheduleRender, { passive: true });
+    window.addEventListener('resize', scheduleRender, { passive: true });
+
+    if (finePointer && !reduceMotion) {
+      hero.addEventListener(
+        'mousemove',
+        (e) => {
+          pointerX = e.clientX / window.innerWidth;
+          pointerY = e.clientY / window.innerHeight;
+          scheduleRender();
+        },
+        { passive: true }
+      );
+    }
+
+    tabs.forEach((tab, idx) => {
+      tab.addEventListener('click', () => {
+        const scrollable = Math.max(hero.offsetHeight - window.innerHeight, 1);
+        const targets = [0.05, 0.48, 0.9];
+        window.scrollTo({
+          top: hero.offsetTop + scrollable * targets[idx],
+          behavior: reduceMotion ? 'auto' : 'smooth',
+        });
+      });
+    });
+
+    renderFrame();
+  }
+</script>

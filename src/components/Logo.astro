@@ -1,0 +1,45 @@
+---
+import { PILLAR_PALETTES, type PillarId } from '../lib/theme';
+
+interface Props {
+  theme?: PillarId;
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const { theme = 'web', size = 'md', class: className = '' } = Astro.props;
+const accentColor = PILLAR_PALETTES[theme].accent;
+const iconDimensions = size === 'sm' ? 'w-7 h-[30px]' : 'w-8 h-[34px]';
+const textClass = size === 'sm' ? 'text-lg' : 'text-[1.32rem]';
+---
+
+<span
+  class={`inline-flex items-center gap-2.5 select-none whitespace-nowrap shrink-0 ${className}`}
+  aria-label="papis.app"
+>
+  <svg
+    viewBox="0 0 100 108"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class={`shrink-0 ${iconDimensions}`}
+    aria-hidden="true"
+  >
+    <path
+      data-logo-accent
+      d="M12 6H54A38.5 38.5 0 0 1 54 83H48V72.5H54A28 28 0 0 0 54 16.5H22.5V55.5L12 60.8V6Z"
+      fill={accentColor}
+      style="transition: fill 260ms var(--ease-out);"
+    />
+    <path
+      d="M31.5 21.5L68 40V49.5L22.5 72.5V92.5H31.5V72.5H42V103H12V67.3L56.5 44.75L31.5 32.1V21.5Z"
+      fill="#F8FAFC"
+    />
+  </svg>
+
+  <span class={`font-display font-bold tracking-[-0.03em] leading-none ${textClass}`}>
+    <span class="text-[#F8FAFC]">papis.</span><span
+      data-logo-accent-text
+      style={`color: ${accentColor}; transition: color 260ms var(--ease-out);`}
+    >app</span>
+  </span>
+</span>

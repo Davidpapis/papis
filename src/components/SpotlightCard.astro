@@ -1,0 +1,25 @@
+---
+import { PILLAR_PALETTES, type PillarId } from '../lib/theme';
+
+interface Props {
+  accent?: PillarId;
+  as?: 'div' | 'article';
+  class?: string;
+}
+
+const { accent = 'web', as = 'div', class: className = '' } = Astro.props;
+const palette = PILLAR_PALETTES[accent];
+const Tag = as;
+---
+
+<Tag
+  data-spotlight-card
+  class={`spotlight-card backdrop-blur-md ${className}`}
+  style={`--card-rgb: ${palette.rgb};`}
+>
+  <div aria-hidden="true" class="spotlight-card__glow"></div>
+  <div aria-hidden="true" class="spotlight-card__topline"></div>
+  <div class="relative z-10 h-full">
+    <slot />
+  </div>
+</Tag>

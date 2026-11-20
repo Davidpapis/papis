@@ -1,0 +1,6 @@
+{
+  "question": "¿Podré editar textos, fotos y proyectos de mi web sin depender de un programador?",
+  "pillar": "web",
+  "answer": "Sí. Construimos tu página web en arquitectura estática ultrarrápida (Astro) conectada a un panel de administración propio en español con Keystatic. Desde ese panel puedes cambiar titulares, descripciones, precios, casos de éxito y preguntas frecuentes en segundos, sin tocar código y sin riesgo de romper el diseño ni las velocidades de carga en móvil. Además, tu web queda libre de plugins vulnerables o actualizaciones constantes.",
+  "order": 2
+}

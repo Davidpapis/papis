@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Diseño Web, Software y Técnico en Marbella | papis.app",
+    "description": "Páginas web ultrarrápidas con SEO y GEO, software a medida para empresas y servicio técnico informático a domicilio en Marbella y Costa del Sol."
+  },
+  "heroSlides": [
+    {
+      "pillar": "web",
+      "indexLabel": "01",
+      "shortTitle": "Web & SEO/GEO",
+      "kicker": "Desarrollo Web de Alto Nivel · Marbella",
+      "title": "Páginas web ultrarrápidas que posicionan en Google e IA",
+      "description": "Arquitecturas web a medida, editables desde tu propio panel y diseñadas para posicionar tu negocio en Google, ChatGPT y Gemini.",
+      "primaryCta": "Quiero mi Web",
+      "secondaryCta": "Ver Diseño Web",
+      "serviceHref": "/paginas-web"
+    },
+    {
+      "pillar": "software",
+      "indexLabel": "02",
+      "shortTitle": "Software Empresas",
+      "kicker": "Software a Medida para Empresas · ERP y CRM",
+      "title": "Software a medida para automatizar tu empresa",
+      "description": "Digitalizamos la operativa completa de tu negocio: inmobiliarias, academias de baile y plataformas privadas sin licencias abusivas.",
+      "primaryCta": "Quiero mi Software",
+      "secondaryCta": "Ver Software Empresas",
+      "serviceHref": "/software-empresas"
+    },
+    {
+      "pillar": "tecnico",
+      "indexLabel": "03",
+      "shortTitle": "Técnico a Domicilio",
+      "kicker": "Servicio Técnico y Formación a Domicilio · Costa del Sol",
+      "title": "Tu técnico informático de confianza en casa",
+      "description": "Vamos directamente a tu vivienda en Marbella para reparar ordenadores, dominar tu móvil y resolver cualquier problema técnico.",
+      "primaryCta": "Pedir Técnico a Domicilio",
+      "secondaryCta": "Ver Servicio Técnico",
+      "serviceHref": "/servicio-tecnico"
+    }
+  ],
+  "pillarsIntro": {
+    "kicker": "Tres divisiones claras · Un solo interlocutor",
+    "heading": "Tecnología útil para hacer crecer tu empresa o simplificar tu día a día",
+    "description": "Sin intermediarios ni soluciones genéricas. Elige el área que necesitas y descubre cómo trabajamos con presupuestos cerrados y trato directo en Marbella y toda España."
+  },
+  "aboutBlock": {
+    "kicker": "Trato directo en Marbella · Remoto para toda España",
+    "heading": "Hablas directamente con quien diseña, programa o viene a tu casa",
+    "body": "En papis.app no hay comerciales que prometen una cosa y técnicos que entregan otra. Combinamos ingeniería web de alto rendimiento (Astro, SEO local y GEO para IA), desarrollo de software a medida para pymes y soporte informático presencial en Marbella, San Pedro Alcántara, Nueva Andalucía, Puerto Banús y Estepona.",
+    "highlights": [
+      {
+        "value": "< 0.8s",
+        "label": "Velocidad objetivo en webs a medida"
+      },
+      {
+        "value": "< 24h",
+        "label": "Visita técnica a domicilio en Marbella"
+      },
+      {
+        "value": "0€",
+        "label": "Licencias por usuario en tu software"
+      }
+    ]
+  }
+}

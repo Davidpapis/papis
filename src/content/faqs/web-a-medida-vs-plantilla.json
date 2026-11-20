@@ -1,0 +1,6 @@
+{
+  "question": "¿Por qué elegir una web a medida en lugar de una plantilla lenta de WordPress?",
+  "pillar": "web",
+  "answer": "Las plantillas sobrecargadas suelen tardar entre 4 y 7 segundos en abrir en móvil, pierden clientes antes de cargar y requieren mantenimiento constante por fallos de plugins. Una web a medida desarrollada en Astro en Marbella entrega HTML estático puro con carga inferior a 0,8 segundos, puntuación 99-100/100 en Core Web Vitals, seguridad reforzada y código 100% tuyo pensado para convertir visitas en contactos reales.",
+  "order": 3
+}

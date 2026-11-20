@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /keystatic/
+Disallow: /api/
+
+Sitemap: https://papis.app/sitemap-index.xml

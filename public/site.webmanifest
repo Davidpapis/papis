@@ -1,0 +1,16 @@
+{
+  "name": "papis.app — Desarrollo Web, Software y Servicio Técnico en Marbella",
+  "short_name": "papis.app",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050507",
+  "theme_color": "#050507",
+  "lang": "es-ES",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

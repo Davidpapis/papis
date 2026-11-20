@@ -1,0 +1,71 @@
+---
+import { PILLAR_PALETTES, type PillarId } from '../lib/theme';
+
+interface Props {
+  href?: string;
+  variant?: 'dynamic' | PillarId;
+  size?: 'sm' | 'md' | 'lg';
+  solid?: boolean;
+  fullWidth?: boolean;
+  target?: string;
+  rel?: string;
+  type?: 'button' | 'submit' | 'reset';
+  ariaLabel?: string;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'dynamic',
+  size = 'md',
+  solid = false,
+  fullWidth = false,
+  target,
+  rel,
+  type = 'button',
+  ariaLabel,
+  class: className = '',
+} = Astro.props;
+
+const SIZE_CLASSES: Record<'sm' | 'md' | 'lg', string> = {
+  sm: 'px-4 py-2 text-xs font-semibold min-h-[40px]',
+  md: 'px-5 py-2.5 text-sm font-semibold min-h-[44px]',
+  lg: 'px-6 py-3.5 text-sm sm:text-[15px] font-semibold min-h-[48px]',
+};
+
+const styleStr =
+  variant !== 'dynamic'
+    ? `--btn-accent: ${PILLAR_PALETTES[variant].accent}; --btn-accent-secondary: ${PILLAR_PALETTES[variant].secondary}; --btn-accent-rgb: ${PILLAR_PALETTES[variant].rgb};`
+    : undefined;
+
+const outerClasses = `beam-button ${solid ? 'beam-button-solid' : ''} ${fullWidth ? 'w-full' : ''} ${className}`;
+const innerClasses = `beam-button-inner text-white whitespace-nowrap shrink-0 ${SIZE_CLASSES[size]}`;
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      target={target}
+      rel={rel}
+      aria-label={ariaLabel}
+      style={styleStr}
+      class={outerClasses}
+    >
+      <span class={innerClasses}>
+        <slot />
+      </span>
+    </a>
+  ) : (
+    <button
+      type={type}
+      aria-label={ariaLabel}
+      style={styleStr}
+      class={outerClasses}
+    >
+      <span class={innerClasses}>
+        <slot />
+      </span>
+    </button>
+  )
+}

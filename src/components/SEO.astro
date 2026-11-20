@@ -1,0 +1,61 @@
+---
+import siteSettings from '../content/singletons/site-settings.json';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  schemas?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  canonicalPath = Astro.url.pathname,
+  ogImage = '/assets/optimized/hero-web.webp',
+  ogType = 'website',
+  noindex = false,
+  schemas = [],
+} = Astro.props;
+
+const baseUrl = siteSettings.domain.replace(/\/$/, '');
+const normalizedPath = canonicalPath === '/' ? '' : canonicalPath.replace(/\/$/, '');
+const canonicalUrl = `${baseUrl}${normalizedPath || '/'}`;
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${baseUrl}${ogImage}`;
+const robotsContent = noindex ? 'noindex, follow' : 'index, follow';
+
+const jsonLdPayload =
+  schemas.length > 0
+    ? JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': schemas,
+      })
+    : null;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content={robotsContent} />
+<link rel="canonical" href={canonicalUrl} />
+<link rel="alternate" hreflang="es" href={canonicalUrl} />
+<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+
+<!-- Open Graph -->
+<meta property="og:type" content={ogType} />
+<meta property="og:locale" content="es_ES" />
+<meta property="og:site_name" content={siteSettings.brandName} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+{jsonLdPayload && <script type="application/ld+json" set:html={jsonLdPayload} />}

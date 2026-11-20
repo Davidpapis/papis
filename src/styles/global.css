@@ -1,0 +1,522 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Tokens de diseño papis.app (Tailwind v4 + Emil Kowalski + Apple HIG)
+   ============================================================================ */
+@theme {
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-canvas: #050507;
+  --color-surface: #0d0f14;
+  --color-surface-elevated: #11141c;
+  --color-ink-primary: #f8fafc;
+  --color-ink-secondary: #cbd5e1;
+  --color-ink-muted: #94a3b8;
+
+  --color-web: #3b82f6;
+  --color-web-secondary: #06b6d4;
+  --color-software: #10b981;
+  --color-software-secondary: #34d399;
+  --color-tecnico: #f97316;
+  --color-tecnico-secondary: #fb923c;
+}
+
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --avatar-color-a {
+  syntax: "<color>";
+  initial-value: #3b82f6;
+  inherits: true;
+}
+
+@property --avatar-color-b {
+  syntax: "<color>";
+  initial-value: #06b6d4;
+  inherits: true;
+}
+
+:root {
+  --bg-base: #050507;
+  --bg-surface: #0d0f14;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --accent: #3b82f6;
+  --accent-secondary: #06b6d4;
+  --accent-rgb: 59, 130, 246;
+  --accent-soft: rgba(59, 130, 246, 0.14);
+
+  /* Curvas obligatorias Emil Kowalski (nunca ease-in en UI) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+html {
+  background-color: var(--bg-base);
+  color: #f1f5f9;
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-base);
+  overflow-x: clip;
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tipografía Apple HIG: optical sizing + tracking negativo en titulares */
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+
+.font-mono-tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Skip to content accesible con teclado */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.65rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: transform 160ms var(--ease-out);
+}
+
+.skip-link:focus {
+  top: 1rem;
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   Header translúcido estilo Apple + adaptabilidad reduced-transparency/contrast
+   ============================================================================ */
+.site-header {
+  background-color: rgba(5, 5, 7, 0.76);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-header {
+    background-color: #050507;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .site-header {
+    background-color: #050507;
+    border-bottom-color: rgba(255, 255, 255, 0.35);
+  }
+}
+
+/* ============================================================================
+   Glowing Border Beam (100% CSS puro, 0 KB JS)
+   Afinado con Emil Kowalski: propiedades explícitas, --ease-out, :active 0.97
+   ============================================================================ */
+@keyframes beam-rotate {
+  0% {
+    --beam-angle: 0deg;
+  }
+  100% {
+    --beam-angle: 360deg;
+  }
+}
+
+.beam-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  padding: 1.5px;
+  isolation: isolate;
+  cursor: pointer;
+  background: conic-gradient(
+    from var(--beam-angle),
+    rgba(255, 255, 255, 0.1) 0deg,
+    rgba(255, 255, 255, 0.06) 240deg,
+    var(--btn-accent-secondary, var(--accent-secondary)) 295deg,
+    var(--btn-accent, var(--accent)) 330deg,
+    #ffffff 352deg,
+    rgba(255, 255, 255, 0.1) 360deg
+  );
+  animation: beam-rotate 3.4s linear infinite;
+  transition:
+    transform 160ms var(--ease-out),
+    box-shadow 220ms var(--ease-out);
+  box-shadow: 0 0 24px -8px rgba(var(--btn-accent-rgb, var(--accent-rgb)), 0.45);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .beam-button:hover {
+    transform: scale(1.018);
+    box-shadow:
+      0 0 34px -6px rgba(var(--btn-accent-rgb, var(--accent-rgb)), 0.72),
+      0 8px 24px -12px rgba(0, 0, 0, 0.8);
+  }
+
+  .beam-button:hover .beam-button-inner {
+    background: linear-gradient(
+      180deg,
+      rgba(var(--btn-accent-rgb, var(--accent-rgb)), 0.2) 0%,
+      rgba(13, 15, 20, 0.96) 100%
+    );
+  }
+}
+
+.beam-button:active {
+  transform: scale(0.97);
+}
+
+.beam-button:focus-visible {
+  outline: 2px solid var(--btn-accent, var(--accent));
+  outline-offset: 3px;
+}
+
+.beam-button-inner {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  border-radius: 10.5px;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 24, 34, 0.96) 0%,
+    rgba(11, 13, 19, 0.98) 100%
+  );
+  transition: background-color 180ms ease;
+}
+
+.beam-button-solid .beam-button-inner {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--btn-accent-rgb, var(--accent-rgb)), 0.28) 0%,
+    rgba(13, 15, 20, 0.94) 100%
+  );
+}
+
+/* ============================================================================
+   Spotlight Card (Halo reactivo al puntero + borde superior iluminado)
+   ============================================================================ */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  background-color: rgba(13, 15, 20, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 200ms var(--ease-out);
+}
+
+.spotlight-card__glow {
+  pointer-events: none;
+  position: absolute;
+  inset: -1px;
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+  background: radial-gradient(
+    460px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(var(--card-rgb, var(--accent-rgb)), 0.14),
+    transparent 68%
+  );
+}
+
+.spotlight-card__topline {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  opacity: 0.28;
+  transition: opacity 240ms var(--ease-out);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--card-rgb, var(--accent-rgb)), 0.78),
+    transparent
+  );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .spotlight-card:hover {
+    border-color: rgba(var(--card-rgb, var(--accent-rgb)), 0.36);
+  }
+  .spotlight-card:hover .spotlight-card__glow {
+    opacity: 1;
+  }
+  .spotlight-card:hover .spotlight-card__topline {
+    opacity: 0.95;
+  }
+}
+
+/* Botones interactivos estándar con feedback táctil instantáneo */
+.pressable {
+  transition:
+    transform 150ms var(--ease-out),
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.pressable:active {
+  transform: scale(0.97);
+}
+
+/* Revelado escalonado (nunca desde scale(0), siempre GPU-only) */
+.reveal-item {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    opacity 280ms var(--ease-out),
+    transform 280ms var(--ease-out);
+}
+
+.js-ready .reveal-item:not(.is-visible) {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0) scale(0.98);
+}
+
+/* Acordeón FAQ nativo <details> sin JS */
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item[open] .faq-chevron {
+  transform: rotate(180deg);
+}
+.faq-chevron {
+  transition: transform 200ms var(--ease-out);
+}
+
+/* ============================================================================
+   WhatsApp Pulse & Living Avatar Tricolor 2.5D (100% CSS)
+   ============================================================================ */
+@keyframes whatsapp-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(1.38);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.38);
+    opacity: 0;
+  }
+}
+
+.whatsapp-pulse-ring {
+  animation: whatsapp-pulse 2.4s var(--ease-out) infinite;
+}
+
+@keyframes avatar-color-cycle {
+  0%,
+  100% {
+    --avatar-color-a: #3b82f6;
+    --avatar-color-b: #06b6d4;
+  }
+  33% {
+    --avatar-color-a: #10b981;
+    --avatar-color-b: #34d399;
+  }
+  66% {
+    --avatar-color-a: #f97316;
+    --avatar-color-b: #fb923c;
+  }
+}
+
+@keyframes avatar-halo-breathe {
+  0%,
+  100% {
+    opacity: 0.52;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.88;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes living-head-motion {
+  0%,
+  100% {
+    transform: perspective(420px) translate3d(0px, 0px, 0px) rotateX(0deg)
+      rotateY(0deg) rotateZ(0deg) scale(1.06);
+  }
+  18% {
+    transform: perspective(420px) translate3d(0.8px, -1.2px, 0px) rotateX(1.6deg)
+      rotateY(3.4deg) rotateZ(-1.3deg) scale(1.075);
+  }
+  38% {
+    transform: perspective(420px) translate3d(0px, -0.4px, 0px) rotateX(-1.4deg)
+      rotateY(0.8deg) rotateZ(0.4deg) scale(1.065);
+  }
+  60% {
+    transform: perspective(420px) translate3d(-0.9px, -1px, 0px) rotateX(1.2deg)
+      rotateY(-3.2deg) rotateZ(1.4deg) scale(1.075);
+  }
+  80% {
+    transform: perspective(420px) translate3d(0px, 0.4px, 0px) rotateX(-2.2deg)
+      rotateY(-0.6deg) rotateZ(-0.4deg) scale(1.062);
+  }
+}
+
+@keyframes living-head-speaking {
+  0%,
+  100% {
+    transform: perspective(420px) translate3d(0px, 0px, 0px) rotateX(0deg)
+      rotateY(0deg) rotateZ(0deg) scale(1.065);
+  }
+  30% {
+    transform: perspective(420px) translate3d(0.6px, -1.4px, 0px) rotateX(-2.8deg)
+      rotateY(2.4deg) rotateZ(-1.1deg) scale(1.08);
+  }
+  65% {
+    transform: perspective(420px) translate3d(-0.6px, -0.8px, 0px) rotateX(1.6deg)
+      rotateY(-2.4deg) rotateZ(1.1deg) scale(1.075);
+  }
+}
+
+.avatar-tricolor-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  animation: avatar-color-cycle 9s ease-in-out infinite;
+}
+
+.avatar-ambient-halo {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg,
+    transparent 150deg,
+    var(--avatar-color-b) 250deg,
+    var(--avatar-color-a) 320deg,
+    transparent 360deg
+  );
+  filter: blur(13px);
+  animation:
+    beam-rotate 3.4s linear infinite,
+    avatar-halo-breathe 4.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.avatar-beam-ring {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 3px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    rgba(255, 255, 255, 0.14) 0deg,
+    rgba(255, 255, 255, 0.06) 200deg,
+    var(--avatar-color-b) 270deg,
+    var(--avatar-color-a) 322deg,
+    #ffffff 350deg,
+    rgba(255, 255, 255, 0.14) 360deg
+  );
+  animation: beam-rotate 3.4s linear infinite;
+  box-shadow:
+    0 0 28px -4px var(--avatar-color-a),
+    0 12px 32px -10px rgba(0, 0, 0, 0.9);
+  transition: transform 200ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .avatar-tricolor-wrapper:hover .avatar-beam-ring {
+    transform: scale(1.055);
+  }
+}
+
+.avatar-tricolor-wrapper:active .avatar-beam-ring {
+  transform: scale(0.97);
+}
+
+.living-portrait-img {
+  animation: living-head-motion 9.5s ease-in-out infinite;
+  transform-origin: 50% 62%;
+  will-change: transform;
+}
+
+.living-portrait-img-speaking {
+  animation: living-head-speaking 3.2s ease-in-out infinite;
+  transform-origin: 50% 62%;
+  will-change: transform;
+}
+
+/* ============================================================================
+   Reduced Motion (Emil Kowalski + Apple HIG: más suave, no brusco)
+   ============================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .beam-button,
+  .avatar-tricolor-wrapper,
+  .avatar-ambient-halo,
+  .avatar-beam-ring,
+  .living-portrait-img,
+  .living-portrait-img-speaking {
+    animation: none;
+  }
+  .whatsapp-pulse-ring {
+    animation: none;
+    opacity: 0;
+  }
+  .js-ready .reveal-item:not(.is-visible) {
+    transform: none;
+  }
+  .reveal-item {
+    transition: opacity 200ms ease;
+  }
+}
+
+/* Scrollbar oscura sutil */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #050507;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.26);
+}

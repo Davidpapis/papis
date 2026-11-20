@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteSettings from '../content/singletons/site-settings.json';
+---
+
+<BaseLayout
+  title="Política de Privacidad (RGPD) | papis.app"
+  description="Información sobre el tratamiento de datos personales y derechos RGPD en papis.app."
+  noindex={true}
+>
+  <section class="pt-28 pb-24 sm:pt-36">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 space-y-5 text-sm sm:text-base leading-relaxed text-slate-300">
+      <h1 class="font-display text-3xl sm:text-4xl font-bold text-white">
+        Política de Privacidad (RGPD)
+      </h1>
+      <p>
+        De conformidad con el Reglamento (UE) 2016/679 (RGPD) y la LOPDGDD 3/2018, los datos
+        personales facilitados a través del formulario de contacto o del asistente virtual serán
+        tratados por <strong class="text-white">{siteSettings.brandName}</strong> con la única
+        finalidad de atender tu solicitud de información, presupuesto o asistencia técnica.
+      </p>
+      <p>
+        <strong class="text-white">Base jurídica:</strong> consentimiento expreso del interesado al
+        enviar la consulta y aplicación de medidas precontractuales.
+      </p>
+      <p>
+        <strong class="text-white">Conservación y cesiones:</strong> los datos no se cederán a
+        terceros salvo obligación legal y se conservarán únicamente el tiempo necesario para
+        gestionar la solicitud o la relación comercial.
+      </p>
+      <p>
+        <strong class="text-white">Derechos:</strong> puedes ejercer tus derechos de acceso,
+        rectificación, supresión, oposición, limitación y portabilidad escribiendo a{' '}
+        <a href={`mailto:${siteSettings.email}`} class="text-blue-400 underline">
+          {siteSettings.email}
+        </a>
+        .
+      </p>
+    </div>
+  </section>
+</BaseLayout>
