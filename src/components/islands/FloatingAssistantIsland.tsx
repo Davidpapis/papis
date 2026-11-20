@@ -24,16 +24,16 @@ interface ChatMessage {
 }
 
 const QUICK_PROMPTS = [
-  '¿Qué incluye una web con SEO y GEO?',
-  '¿Cómo funciona el software para inmobiliarias?',
-  '¿Venís a domicilio en Marbella para arreglar mi ordenador?',
-  '¿Qué plazos habituales tenéis para un proyecto?',
+  'Quiero hacer una web que posicione en Google e IA',
+  'Busco un software a medida para mi empresa',
+  'Necesito un técnico en casa en Marbella',
+  '¿Cuánto tardáis y cómo trabajáis?',
 ];
 
 const INITIAL_WELCOME: ChatMessage = {
   id: 'welcome',
   role: 'model',
-  text: 'Hola, soy el asistente virtual de papis.app. Pregúntame cualquier duda sobre diseño web con SEO/GEO, software a medida para tu empresa o servicio técnico a domicilio en Marbella.',
+  text: '¡Buenas! Estás hablando con el equipo de David en papis.app. Cuéntame sin compromiso qué tienes en mente o qué necesitas y vemos cómo ayudarte.',
 };
 
 export default function FloatingAssistantIsland({
@@ -263,10 +263,10 @@ export default function FloatingAssistantIsland({
                 </div>
                 <div className="min-w-0">
                   <h2 className="font-display text-base font-semibold text-white truncate">
-                    papis.app
+                    David · papis.app
                   </h2>
                   <p className="text-xs text-slate-400 truncate">
-                    {isStreaming ? 'Escribiendo respuesta...' : 'En línea · Asistente oficial'}
+                    {isStreaming ? 'Escribiendo...' : 'En línea · Marbella'}
                   </p>
                 </div>
               </div>
@@ -380,7 +380,7 @@ export default function FloatingAssistantIsland({
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Escribe tu duda sobre servicios o plazos..."
+                  placeholder="Escríbeme lo que necesites..."
                   disabled={isStreaming}
                   className="flex-1 rounded-xl border border-white/[0.1] bg-[#0D1017] px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none disabled:opacity-60"
                 />
