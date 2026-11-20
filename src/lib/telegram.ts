@@ -3,12 +3,17 @@
  * Registra el motivo exacto en los logs de Vercel si Telegram devuelve error (400/401/403).
  */
 export async function sendTelegramMessage(text: string): Promise<boolean> {
-  const token =
+  const rawToken =
     process.env.TELEGRAM_BOT_TOKEN?.trim() ||
-    import.meta.env.TELEGRAM_BOT_TOKEN?.trim();
-  const chatId =
+    import.meta.env.TELEGRAM_BOT_TOKEN?.trim() ||
+    '';
+  // Normaliza por si se pegó con comillas o con el prefijo "bot" delante
+  const token = rawToken.replace(/^["']|["']$/g, '').replace(/^bot/i, '').trim();
+  const chatId = (
     process.env.TELEGRAM_CHAT_ID?.trim() ||
-    import.meta.env.TELEGRAM_CHAT_ID?.trim();
+    import.meta.env.TELEGRAM_CHAT_ID?.trim() ||
+    ''
+  ).replace(/^["']|["']$/g, '').trim();
 
   if (!token || !chatId) {
     console.warn('Telegram omitido: faltan TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID');

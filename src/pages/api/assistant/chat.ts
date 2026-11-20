@@ -115,7 +115,7 @@ export const POST: APIRoute = async ({ request }) => {
   const preferredModel =
     process.env.GEMINI_MODEL?.trim() ||
     import.meta.env.GEMINI_MODEL?.trim() ||
-    'gemini-2.5-flash-lite';
+    'gemini-3.5-flash-lite';
 
   if (!apiKey) {
     return new Response(
@@ -154,9 +154,8 @@ export const POST: APIRoute = async ({ request }) => {
       [
         cachedWorkingModel,
         preferredModel,
-        'gemini-2.5-flash-lite',
+        'gemini-3.5-flash-lite',
         'gemini-flash-lite-latest',
-        'gemini-2.5-flash',
         'gemini-flash-latest',
       ].filter((m): m is string => Boolean(m))
     )
