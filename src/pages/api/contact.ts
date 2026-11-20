@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { sendTelegramMessage } from '../../lib/telegram';
 
 export const prerender = false;
 
@@ -65,6 +66,17 @@ export const POST: APIRoute = async ({ request }) => {
     };
 
     const deliveredVia: string[] = [];
+
+    const telegramOk = await sendTelegramMessage(
+      [
+        `📩 Nuevo lead en papis.app (${lead.service})`,
+        `👤 Nombre: ${lead.name}`,
+        `📞 Contacto: ${lead.contact}`,
+        `📌 Asunto: ${lead.subject}`,
+        `📝 Mensaje: ${lead.message || '(Sin mensaje adicional)'}`,
+      ].join('\n')
+    );
+    if (telegramOk) deliveredVia.push('telegram');
 
     const webhookUrl = import.meta.env.CONTACT_WEBHOOK_URL?.trim();
     if (webhookUrl) {

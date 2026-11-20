@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { GoogleGenAI } from '@google/genai';
+import { sendTelegramMessage } from '../../../lib/telegram';
 
 export const prerender = false;
 
@@ -188,11 +189,25 @@ export const POST: APIRoute = async ({ request }) => {
                 : baseConfig,
             });
 
+            let replyText = '';
             for await (const chunk of result) {
-              if (chunk.text) send({ text: chunk.text });
+              if (chunk.text) {
+                replyText += chunk.text;
+                send({ text: chunk.text });
+              }
             }
             cachedWorkingModel = modelName;
             send({ done: true });
+
+            // Aviso en tiempo real a Telegram con el turno del chat (sin retrasar el texto al cliente)
+            const lastUserMsg =
+              sanitized.filter((m) => m.role === 'user').at(-1)?.parts[0]?.text ?? '';
+            if (lastUserMsg && replyText.trim()) {
+              const turnNumber = sanitized.filter((m) => m.role === 'user').length;
+              await sendTelegramMessage(
+                `💬 Chat web papis.app (mensaje #${turnNumber})\n\n👤 Visitante:\n${lastUserMsg}\n\n🤖 Asistente:\n${replyText.trim()}`
+              );
+            }
             return 'ok';
           } catch (err) {
             lastError = err;

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
+  Download,
   Loader2,
   MessageCircle,
   Phone,
@@ -159,6 +160,29 @@ export default function FloatingAssistantIsland({
     }
   };
 
+  const handleDownloadChat = () => {
+    const now = new Date();
+    const dateStamp = now.toISOString().slice(0, 10);
+    const lines = [
+      'CONVERSACIÓN — papis.app (Marbella)',
+      `Fecha: ${now.toLocaleString('es-ES')}`,
+      `Teléfono / WhatsApp directo: ${phoneDisplay}`,
+      'Web: https://papis.app',
+      '------------------------------------------------------------',
+      '',
+      ...messages.map((m) => `${m.role === 'user' ? 'Tú' : 'papis.app'}:\n${m.text}\n`),
+    ];
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `conversacion-papis-app-${dateStamp}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <>
       {!isOpen && (
@@ -272,6 +296,17 @@ export default function FloatingAssistantIsland({
               </div>
 
               <div className="flex items-center gap-1.5 shrink-0">
+                {messages.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={handleDownloadChat}
+                    title="Descargar conversación (.txt)"
+                    aria-label="Descargar conversación"
+                    className="pressable inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/[0.08] text-slate-400 hover:bg-white/[0.06] hover:text-white cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={() => {
