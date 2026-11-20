@@ -51,6 +51,8 @@ BASE DE CONOCIMIENTO:
 ${kbBlock}`;
 }
 
+const CACHED_SYSTEM_INSTRUCTION = buildSystemInstruction();
+
 function classifyGeminiError(err: unknown): string {
   const raw = err instanceof Error ? err.message : String(err);
   if (raw.includes('API_KEY_INVALID') || raw.includes('API key not valid') || raw.includes('401')) {
@@ -165,7 +167,7 @@ export const POST: APIRoute = async ({ request }) => {
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
       };
 
-      const systemInstruction = buildSystemInstruction();
+      const systemInstruction = CACHED_SYSTEM_INSTRUCTION;
       let lastError: unknown = null;
 
       const tryModel = async (modelName: string): Promise<'ok' | 'fatal' | 'retry'> => {

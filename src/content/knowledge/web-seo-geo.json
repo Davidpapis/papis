@@ -1,7 +1,7 @@
 {
-  "title": "Diseño Web a Medida, SEO y GEO",
+  "title": "Pilar 1: Diseño Web, SEO y GEO",
   "category": "Web y SEO/GEO",
-  "content": "Creamos páginas web a medida en HTML estático ultrarrápido (Astro) sin plantillas lentas: objetivo 99-100/100 en Core Web Vitals y carga inferior a 0,8s, seguridad blindada con SSL y panel autogestionable Keystatic en español para editar textos, proyectos y preguntas frecuentes sin tocar código. Incluimos SEO técnico local y GEO (Generative Engine Optimization) mediante datos estructurados JSON-LD para que Google, ChatGPT, Gemini y Perplexity recomienden el negocio del cliente.",
+  "content": "- Webs a medida ultrarrápidas en Astro (sin plantillas lentas ni WordPress pesado).\n- Velocidad objetivo: < 0,8s y 99-100/100 en Core Web Vitals.\n- Autogestionable: panel Keystatic en español para cambiar textos, fotos, proyectos y FAQs sin tocar código.\n- SEO + GEO incluido: optimizada para salir en Google local (Marbella/Costa del Sol) y para que ChatGPT, Gemini y Perplexity recomienden el negocio.\n- Plazo habitual: 2 a 4 semanas.",
   "enabled": true,
   "order": 2
 }

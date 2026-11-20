@@ -479,6 +479,42 @@ h3,
   will-change: transform;
 }
 
+/* Indicador humano de "Escribiendo..." con 3 puntitos (GPU-only) */
+@keyframes typing-dot-bounce {
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-2.5px);
+  }
+}
+
+.typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.typing-dots span {
+  width: 4.5px;
+  height: 4.5px;
+  border-radius: 9999px;
+  background-color: currentColor;
+  animation: typing-dot-bounce 1.2s var(--ease-in-out) infinite;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: 150ms;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 300ms;
+}
+
 /* ============================================================================
    Reduced Motion (Emil Kowalski + Apple HIG: más suave, no brusco)
    ============================================================================ */
@@ -491,7 +527,8 @@ h3,
   .avatar-ambient-halo,
   .avatar-beam-ring,
   .living-portrait-img,
-  .living-portrait-img-speaking {
+  .living-portrait-img-speaking,
+  .typing-dots span {
     animation: none;
   }
   .whatsapp-pulse-ring {

@@ -322,9 +322,16 @@ export default function FloatingAssistantIsland({
                       }
                     >
                       {msg.text || (
-                        <span className="inline-flex items-center gap-2 text-xs text-slate-400">
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                          Consultando base de conocimiento...
+                        <span
+                          className="inline-flex items-center gap-2 text-xs text-slate-300"
+                          aria-label="Escribiendo respuesta"
+                        >
+                          <span>Escribiendo</span>
+                          <span className="typing-dots" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </span>
                         </span>
                       )}
                     </div>
