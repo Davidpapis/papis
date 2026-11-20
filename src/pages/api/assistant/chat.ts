@@ -16,6 +16,9 @@ interface KnowledgeDoc {
   order?: number;
 }
 
+// Caché en memoria del modelo más rápido que funcionó para evitar reintentos en cada mensaje
+let cachedWorkingModel: string | null = null;
+
 // Carga directa desde los archivos JSON editables en Keystatic (src/content/knowledge/)
 const knowledgeModules = import.meta.glob<{ default: KnowledgeDoc }>(
   '../../../content/knowledge/*.json',
@@ -35,15 +38,16 @@ function buildSystemInstruction(): string {
     )
     .join('\n\n');
 
-  return `Eres el asistente virtual oficial de papis.app (agencia tecnológica y servicio técnico en Marbella, España).
+  return `Eres el asistente virtual oficial de papis.app (Marbella, España).
 
-INSTRUCCIONES OBLIGATORIAS:
-1. Responde siempre en español de España, con tono cercano, profesional, directo y sin humo.
-2. Responde basándote EXCLUSIVAMENTE en la BASE DE CONOCIMIENTO proporcionada a continuación.
-3. Si el usuario pregunta por un dato que no figura en la base de conocimiento, dilo con honestidad sin inventar cifras ni promesas e invítale a usar el formulario o WhatsApp.
-4. Respuestas claras y concisas (2-4 párrafos breves o viñetas cortas).
+REGLAS ESTRICTAS DE ESTILO Y BREVEDAD:
+1. Habla en español de España, cercano, directo y como en un chat rápido de WhatsApp.
+2. NUNCA sueltes parrafadas largas.
+3. Si el usuario solo saluda ("hola", "buenas", etc.), responde en MÁXIMO 1-2 frases cortas (ej: "¡Hola! ¿En qué te puedo ayudar hoy: una web, software para tu empresa o técnico a domicilio en Marbella?") sin soltar todo el catálogo.
+4. Para preguntas concretas, responde al grano en máximo 2-3 frases cortas (o 3 viñetas muy breves).
+5. Usa EXCLUSIVAMENTE los datos de la BASE DE CONOCIMIENTO. Si un dato no está, dilo en 1 frase e invita a escribir por WhatsApp (+34 652 918 061) o usar el formulario.
 
-BASE DE CONOCIMIENTO ACTIVA:
+BASE DE CONOCIMIENTO:
 ${kbBlock}`;
 }
 
@@ -53,13 +57,13 @@ function classifyGeminiError(err: unknown): string {
     return 'La clave API de Gemini no es válida o está mal copiada. Revísala en Google AI Studio y en Vercel.';
   }
   if (raw.includes('PERMISSION_DENIED') || raw.includes('403')) {
-    return 'La clave API no tiene permisos para Gemini API (verifica en Google AI Studio que la clave esté activa sin restricciones de dominio/IP).';
+    return 'La clave API no tiene permisos para Gemini API.';
   }
   if (raw.includes('RESOURCE_EXHAUSTED') || raw.includes('429') || raw.includes('quota')) {
-    return 'Se ha alcanzado el límite temporal de consultas de la API de Gemini. Inténtalo en un minuto o escríbenos por WhatsApp.';
+    return 'Se ha alcanzado el límite temporal de consultas. Inténtalo en un minuto o escríbenos por WhatsApp.';
   }
   if (raw.includes('NOT_FOUND') || raw.includes('404')) {
-    return 'Ningún modelo compatible de Gemini respondió para esta clave API. Verifica en Google AI Studio qué modelos tiene habilitados tu proyecto.';
+    return 'Ningún modelo compatible de Gemini respondió para esta clave API.';
   }
   return 'No hemos podido conectar con el asistente ahora mismo. Escríbenos por WhatsApp y te atendemos al instante.';
 }
@@ -71,8 +75,7 @@ async function discoverAvailableModels(ai: GoogleGenAI): Promise<string[]> {
     for await (const m of pager) {
       const name = typeof m.name === 'string' ? m.name.replace(/^models\//, '') : '';
       const actions = Array.isArray(m.supportedActions) ? m.supportedActions : [];
-      const supportsGenerate =
-        actions.length === 0 || actions.includes('generateContent');
+      const supportsGenerate = actions.length === 0 || actions.includes('generateContent');
       if (
         name &&
         supportsGenerate &&
@@ -86,10 +89,11 @@ async function discoverAvailableModels(ai: GoogleGenAI): Promise<string[]> {
         names.push(name);
       }
     }
-    // Priorizar modelos flash rápidos y recientes
+    // Priorizar modelos flash-lite y flash rápidos (nunca pro/thinking lentos)
     return names.sort((a, b) => {
       const score = (n: string) =>
-        (n.includes('flash') ? 0 : 10) + (n.includes('lite') ? 2 : 0) + (n.includes('exp') ? 5 : 0);
+        (n.includes('flash-lite') ? 0 : n.includes('flash') ? 2 : 20) +
+        (n.includes('exp') ? 5 : 0);
       return score(a) - score(b);
     });
   } catch (err) {
@@ -108,7 +112,7 @@ export const POST: APIRoute = async ({ request }) => {
   const preferredModel =
     process.env.GEMINI_MODEL?.trim() ||
     import.meta.env.GEMINI_MODEL?.trim() ||
-    'gemini-flash-latest';
+    'gemini-2.5-flash-lite';
 
   if (!apiKey) {
     return new Response(
@@ -128,8 +132,8 @@ export const POST: APIRoute = async ({ request }) => {
         typeof m.text === 'string' &&
         m.text.trim().length > 0
     )
-    .map((m) => ({ role: m.role, parts: [{ text: m.text.trim().slice(0, 1500) }] }))
-    .slice(-14);
+    .map((m) => ({ role: m.role, parts: [{ text: m.text.trim().slice(0, 1000) }] }))
+    .slice(-10);
 
   if (sanitized.length === 0) {
     return new Response(JSON.stringify({ error: 'Escribe una consulta para el asistente.' }), {
@@ -140,14 +144,19 @@ export const POST: APIRoute = async ({ request }) => {
 
   const ai = new GoogleGenAI({ apiKey });
   const encoder = new TextEncoder();
+
+  // Si ya descubrimos un modelo rápido que funciona, ir directo a él en el primer intento
   const staticCandidates = Array.from(
-    new Set([
-      preferredModel,
-      'gemini-flash-latest',
-      'gemini-2.5-flash',
-      'gemini-2.5-flash-lite',
-      'gemini-3-flash-preview',
-    ])
+    new Set(
+      [
+        cachedWorkingModel,
+        preferredModel,
+        'gemini-2.5-flash-lite',
+        'gemini-flash-lite-latest',
+        'gemini-2.5-flash',
+        'gemini-flash-latest',
+      ].filter((m): m is string => Boolean(m))
+    )
   );
 
   const stream = new ReadableStream({
@@ -160,35 +169,50 @@ export const POST: APIRoute = async ({ request }) => {
       let lastError: unknown = null;
 
       const tryModel = async (modelName: string): Promise<'ok' | 'fatal' | 'retry'> => {
-        try {
-          const result = await ai.models.generateContentStream({
-            model: modelName,
-            contents: sanitized,
-            config: {
-              systemInstruction,
-            },
-          });
+        const baseConfig = {
+          systemInstruction,
+          maxOutputTokens: 220,
+          temperature: 0.4,
+        };
 
-          for await (const chunk of result) {
-            if (chunk.text) send({ text: chunk.text });
+        // Intentar primero con thinkingBudget: 0 para respuesta instantánea (< 1s)
+        for (const withNoThinking of [true, false]) {
+          try {
+            const result = await ai.models.generateContentStream({
+              model: modelName,
+              contents: sanitized,
+              config: withNoThinking
+                ? { ...baseConfig, thinkingConfig: { thinkingBudget: 0 } }
+                : baseConfig,
+            });
+
+            for await (const chunk of result) {
+              if (chunk.text) send({ text: chunk.text });
+            }
+            cachedWorkingModel = modelName;
+            send({ done: true });
+            return 'ok';
+          } catch (err) {
+            lastError = err;
+            const msg = err instanceof Error ? err.message : String(err);
+            // Si el modelo no soporta thinkingConfig, reintentar sin esa opción
+            if (withNoThinking && (msg.includes('thinking') || msg.includes('INVALID_ARGUMENT'))) {
+              continue;
+            }
+            console.error(`Error Gemini con modelo ${modelName}:`, msg);
+            if (
+              msg.includes('API_KEY_INVALID') ||
+              msg.includes('API key not valid') ||
+              msg.includes('PERMISSION_DENIED') ||
+              msg.includes('401') ||
+              msg.includes('403')
+            ) {
+              return 'fatal';
+            }
+            return 'retry';
           }
-          send({ done: true });
-          return 'ok';
-        } catch (err) {
-          lastError = err;
-          const msg = err instanceof Error ? err.message : String(err);
-          console.error(`Error Gemini con modelo ${modelName}:`, msg);
-          if (
-            msg.includes('API_KEY_INVALID') ||
-            msg.includes('API key not valid') ||
-            msg.includes('PERMISSION_DENIED') ||
-            msg.includes('401') ||
-            msg.includes('403')
-          ) {
-            return 'fatal';
-          }
-          return 'retry';
         }
+        return 'retry';
       };
 
       for (const modelName of staticCandidates) {
@@ -204,11 +228,10 @@ export const POST: APIRoute = async ({ request }) => {
         }
       }
 
-      // Autodescubrimiento: consulta a la API qué modelos tiene habilitados esta clave
       const discovered = (await discoverAvailableModels(ai)).filter(
         (m) => !staticCandidates.includes(m)
       );
-      for (const modelName of discovered.slice(0, 4)) {
+      for (const modelName of discovered.slice(0, 3)) {
         const status = await tryModel(modelName);
         if (status === 'ok') {
           controller.close();
