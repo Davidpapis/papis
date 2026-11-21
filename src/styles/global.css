@@ -58,6 +58,8 @@
 
 html {
   background-color: var(--bg-base);
+  overflow-x: clip;
+  max-width: 100%;
   color: #f1f5f9;
   font-family: var(--font-sans);
   scroll-behavior: smooth;
@@ -67,6 +69,7 @@ html {
 body {
   background-color: var(--bg-base);
   overflow-x: clip;
+  max-width: 100%;
   letter-spacing: 0.005em;
   -webkit-font-smoothing: antialiased;
 }
