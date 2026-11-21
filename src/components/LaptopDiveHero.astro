@@ -1015,14 +1015,15 @@ const CASES: DiveCase[] = [
   .hd-ticket-rows {
     margin-top: 8px;
     border-top: 1.5px dashed rgba(13, 15, 14, 0.25);
+    text-align: center;
   }
 
-  .hd-ticket-rows div {
+  .hd-ticket-rows :global(div) {
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-align: center;
-    padding: 3.5px 0;
+    padding: 4px 0;
     border-bottom: 1px solid rgba(13, 15, 14, 0.1);
   }
 
@@ -1263,9 +1264,10 @@ const CASES: DiveCase[] = [
       font-size: 1.35rem;
     }
 
-    .hd-ticket-rows div {
+    .hd-ticket-rows :global(div) {
       font-size: 9px;
-      padding: 2px 0;
+      padding: 2.5px 0;
+      text-align: center;
     }
 
     .hd-screen {
@@ -1681,15 +1683,16 @@ const CASES: DiveCase[] = [
       if (animate) {
         animateTextStagger();
         startTypewriter(item.subtitle);
-        // Efecto entrada limpia de la matrícula metálica (tornillos fijos sin giro)
+        // Aparición sutil sin saltos ni giros bruscos (en móvil respeta translateX(-50%) centrado)
         if (!rm && ticketEl) {
+          const isMobileView = window.matchMedia('(max-width: 820px)').matches;
+          const baseTx = isMobileView ? 'translateX(-50%) ' : '';
           ticketEl.animate(
             [
-              { transform: 'scale(1.12) translateY(-12px) rotate(-2deg)', opacity: 0.75 },
-              { transform: 'scale(0.98) translateY(1px) rotate(0.4deg)', opacity: 1, offset: 0.65 },
-              { transform: 'scale(1) translateY(0) rotate(0deg)', opacity: 1 },
+              { transform: `${baseTx}translateY(-6px) scale(0.97)`, opacity: 0.2 },
+              { transform: `${baseTx}translateY(0) scale(1)`, opacity: 1 },
             ],
-            { duration: 360, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+            { duration: 380, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
           );
         }
       } else if (subtitleEl) {
