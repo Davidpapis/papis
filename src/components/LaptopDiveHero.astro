@@ -117,13 +117,13 @@ const CASES: DiveCase[] = [
       </text>
     </svg>
 
-    <!-- Capa 3: Recorte transparente de David Papis (pixel-aligned con frame 0) -->
+    <!-- Capa 3: Recorte transparente de David Papis (pixel-aligned 1280x720 con f-00.webp) -->
     <img
       data-hd-cut
       src="/hero-dive/cut.webp"
       alt=""
-      width="1376"
-      height="768"
+      width="1280"
+      height="720"
       loading="eager"
       decoding="async"
       aria-hidden="true"
@@ -327,7 +327,7 @@ const CASES: DiveCase[] = [
     --ink: #0d0f0e;
     --mint: #cfeee0;
     --green-800: #11402c;
-    height: 175vh;
+    height: 360vh;
     background: #07131e;
     font-family: "Inter Tight", var(--font-sans);
   }
@@ -540,8 +540,8 @@ const CASES: DiveCase[] = [
     height: 100%;
     object-fit: cover;
     object-position: center center;
-    transform: scale(1.08);
-    filter: blur(7px) brightness(0.42) saturate(1.18);
+    transform: scale(1.04);
+    filter: blur(2.5px) brightness(0.52) saturate(1.12);
   }
 
   .hd-screen-scrim {
@@ -549,8 +549,8 @@ const CASES: DiveCase[] = [
     inset: 0;
     z-index: 2;
     background:
-      radial-gradient(85% 80% at 50% 0%, color-mix(in srgb, var(--case-accent) 26%, transparent) 0%, transparent 65%),
-      linear-gradient(180deg, rgba(6, 11, 20, 0.35) 0%, rgba(6, 11, 20, 0.72) 100%);
+      radial-gradient(85% 80% at 50% 0%, color-mix(in srgb, var(--case-accent) 24%, transparent) 0%, transparent 65%),
+      linear-gradient(180deg, rgba(6, 11, 20, 0.28) 0%, rgba(6, 11, 20, 0.68) 100%);
     transition: background 420ms var(--ease-out);
   }
 
@@ -607,9 +607,29 @@ const CASES: DiveCase[] = [
   .hd-service-subtitle {
     margin-top: clamp(8px, 1.2vw, 14px);
     max-width: 46ch;
-    font-size: clamp(0.72rem, 1.05vw, 0.98rem);
+    min-height: 3.1em;
+    font-size: clamp(0.74rem, 1.05vw, 0.98rem);
     line-height: 1.5;
-    color: rgba(226, 232, 240, 0.92);
+    color: rgba(241, 245, 249, 0.95);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+  }
+
+  .hd-service-subtitle.is-typing::after {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 3px;
+    vertical-align: -0.14em;
+    background: var(--case-accent);
+    box-shadow: 0 0 8px var(--case-glow);
+    animation: hd-caret 0.75s steps(1) infinite;
+  }
+
+  @keyframes hd-caret {
+    50% {
+      opacity: 0;
+    }
   }
 
   .hd-service-actions {
@@ -933,7 +953,7 @@ const CASES: DiveCase[] = [
   /* Responsive móvil (<= 820px) */
   @media (max-width: 820px) {
     .hd-track {
-      height: 160vh;
+      height: 300vh;
     }
 
     .hd-nav {
@@ -1156,11 +1176,21 @@ const CASES: DiveCase[] = [
     let cw = 1;
     let ch = 1;
     let dpr = 1;
-    let currentIdx = 0;
+    let currentIdx = -1;
     let smoothP = 0;
     let currentDrawnFrame = -1;
     let needsDraw = true;
     let isCaseActive = false;
+    let typingTimer: number | null = null;
+
+    // Tramos exactos del scroll (0 -> 1):
+    // 0.00..0.34 = vuelo del portátil frame a frame (rápido, ~1 giro cómodo)
+    // 0.34..0.56 = Servicio 1 (Web)
+    // 0.56..0.78 = Servicio 2 (Software)
+    // 0.78..1.00 = Servicio 3 (Técnico)
+    // > 1.00     = sube la sección #pilares comiéndose suavemente la pantalla
+    const DIVE_END = 0.34;
+    const SERVICE_ANCHORS = [0.45, 0.67, 0.89];
 
     const getDrawRect = (p: number) => {
       const isMobile = cw <= 820;
@@ -1189,7 +1219,7 @@ const CASES: DiveCase[] = [
       const mobileFitX = (cw - mobileFitW) / 2;
       const mobileFitY = ch * 0.52 - mobileFitH * 0.45;
 
-      const t = Math.min(1, Math.max(0, p / 0.64));
+      const t = Math.min(1, Math.max(0, p / DIVE_END));
       const ease = t * t * (3 - 2 * t);
       return {
         x: coverX + (mobileFitX - coverX) * ease,
@@ -1218,18 +1248,52 @@ const CASES: DiveCase[] = [
       return null;
     };
 
+    const stopTyping = () => {
+      if (typingTimer !== null) {
+        window.clearTimeout(typingTimer);
+        typingTimer = null;
+      }
+      subtitleEl?.classList.remove('is-typing');
+    };
+
+    const startTypewriter = (text: string) => {
+      if (!subtitleEl) return;
+      stopTyping();
+      if (rm) {
+        subtitleEl.textContent = text;
+        return;
+      }
+      subtitleEl.textContent = '';
+      subtitleEl.classList.add('is-typing');
+      let pos = 0;
+      const step = () => {
+        pos += 2;
+        subtitleEl.textContent = text.slice(0, pos);
+        if (pos < text.length) {
+          typingTimer = window.setTimeout(step, 20);
+        } else {
+          subtitleEl.textContent = text;
+          typingTimer = window.setTimeout(() => subtitleEl.classList.remove('is-typing'), 900);
+        }
+      };
+      // Empieza justo después del fade-in inicial del título
+      typingTimer = window.setTimeout(step, 260);
+    };
+
     const animateTextStagger = () => {
       if (rm) return;
       staggerEls.forEach((el, i) => {
+        // El subtítulo tiene su propio efecto máquina de escribir
+        if (el === subtitleEl) return;
         el.animate(
           [
-            { opacity: 0, transform: 'translateY(16px)', filter: 'blur(8px)' },
+            { opacity: 0, transform: 'translateY(16px)', filter: 'blur(7px)' },
             { opacity: 1, transform: 'translateY(0)', filter: 'blur(0px)' },
           ],
           {
-            duration: 520,
-            delay: i * 75,
-            easing: 'cubic-bezier(0.23, 1, 0.32, 1)',
+            duration: 760,
+            delay: i * 120,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
             fill: 'both',
           }
         );
@@ -1239,9 +1303,9 @@ const CASES: DiveCase[] = [
     const renderScene = (p: number) => {
       if (!ctx || !stage) return;
 
-      const animP = Math.min(1, Math.max(0, p / 0.64));
+      const animP = Math.min(1, Math.max(0, p / DIVE_END));
       const frameIdx = rm
-        ? p > 0.35
+        ? p > 0.25
           ? TOTAL_FRAMES - 1
           : 0
         : Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(animP * (TOTAL_FRAMES - 1))));
@@ -1259,13 +1323,14 @@ const CASES: DiveCase[] = [
       }
       ctx.restore();
 
-      const heroFade = Math.max(0, 1 - p / 0.14);
+      const heroFade = Math.max(0, 1 - p / 0.09);
       if (cutEl) {
         cutEl.style.left = `${rect.x}px`;
         cutEl.style.top = `${rect.y}px`;
         cutEl.style.width = `${rect.w}px`;
         cutEl.style.height = `${rect.h}px`;
-        cutEl.style.opacity = String(p < 0.02 ? 1 : heroFade);
+        // Ocultamos cut.webp en cuanto avanza al frame 1 para que nunca haya doble silueta
+        cutEl.style.opacity = String(frameIdx === 0 ? 1 : Math.max(0, 1 - frameIdx / 3));
       }
 
       if (wordmarkEl) {
@@ -1280,11 +1345,10 @@ const CASES: DiveCase[] = [
         badgeEl.style.transform = `translateY(${(1 - heroFade) * -90}px)`;
       }
       if (hintEl) {
-        hintEl.style.opacity = String(Math.max(0, 1 - p / 0.1));
-        hintEl.style.pointerEvents = p < 0.08 ? 'auto' : 'none';
+        hintEl.style.opacity = String(Math.max(0, 1 - p / 0.06));
+        hintEl.style.pointerEvents = p < 0.05 ? 'auto' : 'none';
       }
 
-      // Pantalla del MacBook + Chevrons simétricos exactos a ambos lados de la pantalla
       const sx = rect.x + rect.w * SCREEN_RECT.left;
       const sy = rect.y + rect.h * SCREEN_RECT.top;
       const sw = rect.w * SCREEN_RECT.width;
@@ -1313,11 +1377,21 @@ const CASES: DiveCase[] = [
         nextBtn.style.top = `${midY}px`;
       }
 
-      const shouldBeCase = p >= 0.62;
+      const shouldBeCase = p >= DIVE_END - 0.015;
       if (shouldBeCase !== isCaseActive) {
         isCaseActive = shouldBeCase;
         stage.classList.toggle('is-case', isCaseActive);
-        if (isCaseActive) animateTextStagger();
+        if (!isCaseActive) {
+          stopTyping();
+        }
+      }
+
+      // Cambio automático de servicio según el scroll (1 -> 2 -> 3)
+      if (shouldBeCase) {
+        const targetIdx = p < 0.56 ? 0 : p < 0.78 ? 1 : 2;
+        if (targetIdx !== currentIdx) {
+          fillCase(targetIdx, true);
+        }
       }
     };
 
@@ -1355,7 +1429,6 @@ const CASES: DiveCase[] = [
 
       if (tagEl) tagEl.textContent = item.tag;
       if (titleEl) titleEl.textContent = item.title;
-      if (subtitleEl) subtitleEl.textContent = item.subtitle;
       if (ctaLinkEl) ctaLinkEl.href = item.href;
       if (ctaLabelEl) ctaLabelEl.textContent = item.ctaLabel;
       if (ticketTitleEl) ticketTitleEl.textContent = item.ticketTitle;
@@ -1373,19 +1446,26 @@ const CASES: DiveCase[] = [
         b.setAttribute('aria-selected', String(active));
       });
 
-      if (animate) animateTextStagger();
+      if (animate) {
+        animateTextStagger();
+        startTypewriter(item.subtitle);
+      } else if (subtitleEl) {
+        subtitleEl.textContent = item.subtitle;
+      }
 
       if (!rm && flashEl && animate) {
-        flashEl.animate([{ opacity: 0 }, { opacity: 0.25 }, { opacity: 0 }], {
-          duration: 300,
+        flashEl.animate([{ opacity: 0 }, { opacity: 0.22 }, { opacity: 0 }], {
+          duration: 340,
           easing: 'ease-out',
         });
       }
     };
 
-    const scrollToCase = () => {
+    const scrollToService = (idx: number) => {
+      const clamped = Math.max(0, Math.min(cases.length - 1, idx));
       const maxScroll = Math.max(0, track.offsetHeight - window.innerHeight);
-      window.scrollTo({ top: Math.round(maxScroll * 0.84), behavior: rm ? 'auto' : 'smooth' });
+      const anchor = SERVICE_ANCHORS[clamped] ?? 0.45;
+      window.scrollTo({ top: Math.round(maxScroll * anchor), behavior: rm ? 'auto' : 'smooth' });
     };
 
     const scrollToHero = () => {
@@ -1393,16 +1473,18 @@ const CASES: DiveCase[] = [
     };
 
     prevBtn?.addEventListener('click', () => {
-      fillCase((currentIdx - 1 + cases.length) % cases.length);
+      const base = currentIdx < 0 ? 0 : currentIdx;
+      scrollToService((base - 1 + cases.length) % cases.length);
     });
     nextBtn?.addEventListener('click', () => {
-      fillCase((currentIdx + 1) % cases.length);
+      const base = currentIdx < 0 ? 0 : currentIdx;
+      scrollToService((base + 1) % cases.length);
     });
     dotBtns.forEach((btn, idx) => {
-      btn.addEventListener('click', () => fillCase(idx));
+      btn.addEventListener('click', () => scrollToService(idx));
     });
-    diveBtn?.addEventListener('click', scrollToCase);
-    hintBtn?.addEventListener('click', scrollToCase);
+    diveBtn?.addEventListener('click', () => scrollToService(0));
+    hintBtn?.addEventListener('click', () => scrollToService(0));
     studioBtn?.addEventListener('click', scrollToHero);
     centerLogoBtn?.addEventListener('click', scrollToHero);
 
