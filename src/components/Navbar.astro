@@ -11,6 +11,15 @@ interface Props {
 const { activeTheme = 'web', currentPath } = Astro.props;
 const normalizedPath = currentPath === '/' ? '/' : currentPath.replace(/\/$/, '');
 const accentColor = PILLAR_PALETTES[activeTheme].accent;
+
+const MOBILE_LINK_COLORS: Record<string, { color: string; glow: string }> = {
+  '/': { color: '#38BDF8', glow: 'rgba(56, 189, 248, 0.6)' },
+  '/paginas-web': { color: '#3B82F6', glow: 'rgba(59, 130, 246, 0.65)' },
+  '/software-empresas': { color: '#10B981', glow: 'rgba(16, 185, 129, 0.65)' },
+  '/servicio-tecnico': { color: '#F97316', glow: 'rgba(249, 115, 22, 0.65)' },
+  '/proyectos': { color: '#A855F7', glow: 'rgba(168, 85, 247, 0.65)' },
+  '/contacto': { color: '#22D3EE', glow: 'rgba(34, 211, 238, 0.65)' },
+};
 ---
 
 <header class="site-header fixed top-0 inset-x-0 z-50">
@@ -83,42 +92,87 @@ const accentColor = PILLAR_PALETTES[activeTheme].accent;
     </div>
   </div>
 
-  <!-- Menú móvil accesible -->
+  <!-- Menú móvil futurista a pantalla completa centrado, MAYÚSCULAS y chevrons luminosos por sección -->
   <div
     id="mobile-nav-drawer"
     hidden
-    class="md:hidden border-t border-white/[0.08] bg-[#080A0F]/98 backdrop-blur-xl px-4 pb-5 pt-3"
+    class="mobile-tech-drawer md:hidden fixed inset-0 top-16 z-50 flex flex-col items-center justify-center bg-[#05070D]/96 backdrop-blur-2xl px-6 py-8"
   >
-    <nav aria-label="Navegación móvil" class="flex flex-col gap-1">
+    <nav aria-label="Navegación móvil" class="flex w-full max-w-sm flex-col items-center gap-3">
       {
         NAV_LINKS.map((link) => {
           const isActive =
             link.href === '/'
               ? normalizedPath === '/'
               : normalizedPath === link.href || normalizedPath.startsWith(`${link.href}/`);
+          const c = MOBILE_LINK_COLORS[link.href] ?? { color: '#3B82F6', glow: 'rgba(59,130,246,0.6)' };
           return (
             <a
               href={link.href}
               aria-current={isActive ? 'page' : undefined}
-              class={`flex items-center justify-between rounded-lg px-3 py-3 min-h-[44px] text-base font-medium transition-colors ${
+              style={`--m-accent: ${c.color}; --m-glow: ${c.glow};`}
+              class={`mobile-tech-link group flex w-full items-center justify-center gap-3.5 rounded-2xl border px-5 py-3.5 min-h-[54px] transition-all duration-200 ${
                 isActive
-                  ? 'bg-white/[0.08] text-white'
-                  : 'text-slate-300 hover:bg-white/[0.05] hover:text-white'
+                  ? 'border-[var(--m-accent)]/50 bg-white/[0.06] text-white'
+                  : 'border-white/[0.07] bg-white/[0.02] text-slate-200 hover:border-[var(--m-accent)]/40 hover:text-white'
               }`}
             >
-              <span>{link.label}</span>
+              <svg class="mobile-chev-icon w-7 h-5 shrink-0" viewBox="0 0 36 24" fill="none" aria-hidden="true">
+                <path class="m-c1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path class="m-c2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path class="m-c3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="font-display text-lg font-bold tracking-[0.12em] uppercase">
+                {link.label}
+              </span>
             </a>
           );
         })
       }
     </nav>
-    <div class="mt-4 pt-4 border-t border-white/[0.08]">
-      <GlowButton href="/contacto" size="md" solid fullWidth>
-        Pedir Presupuesto
+    <div class="mt-7 w-full max-w-sm">
+      <GlowButton href="/contacto" size="lg" solid fullWidth>
+        PEDIR PRESUPUESTO
       </GlowButton>
     </div>
   </div>
 </header>
+
+<style>
+  .mobile-chev-icon {
+    color: var(--m-accent);
+  }
+  .mobile-chev-icon path {
+    opacity: 0.25;
+    animation: nav-chev-pulse 1.5s ease-in-out infinite;
+  }
+  .mobile-chev-icon .m-c1 {
+    animation-delay: 0s;
+  }
+  .mobile-chev-icon .m-c2 {
+    animation-delay: 0.22s;
+  }
+  .mobile-chev-icon .m-c3 {
+    animation-delay: 0.44s;
+  }
+  @keyframes nav-chev-pulse {
+    0%,
+    100% {
+      opacity: 0.22;
+      filter: drop-shadow(0 0 2px transparent);
+    }
+    45% {
+      opacity: 1;
+      filter: drop-shadow(0 0 8px var(--m-glow));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-chev-icon path {
+      animation: none;
+      opacity: 0.9;
+    }
+  }
+</style>
 
 <script>
   const toggleBtn = document.getElementById('mobile-menu-toggle');

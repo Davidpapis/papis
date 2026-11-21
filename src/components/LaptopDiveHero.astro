@@ -26,7 +26,7 @@ const CASES: DiveCase[] = [
     id: 'web',
     tag: '01 / 03 · DISEÑO WEB & SEO/GEO',
     ticketTitle: 'WEB & SEO/GEO',
-    rows: ['ASTRO + KEYSTATIC', 'AAAR · SERINAMAR', '10–15 DÍAS'],
+    rows: ['TU PÁGINA WEB EN TIEMPO RÉCORD', 'ASTRO + KEYSTATIC', 'AAAR · SERINAMAR'],
     title: 'Webs a medida que posicionan en Google e IA',
     subtitle:
       'HTML estático ultrarrápido (< 0,8s), panel editable y SEO local + GEO en Marbella. Casos reales: AAAR Marbella (compromiso social), Grupo Serinamar o Cerrajería Carlos Neira.',
@@ -40,7 +40,7 @@ const CASES: DiveCase[] = [
     id: 'software',
     tag: '02 / 03 · SOFTWARE A MEDIDA',
     ticketTitle: 'SOFTWARE A MEDIDA',
-    rows: ['INMOBILIARIAS · ACADEMIAS', 'CUALQUIER SECTOR', '100% EN PROPIEDAD'],
+    rows: ['CUALQUIER SECTOR', 'INMOBILIARIAS · ACADEMIAS', '100% EN PROPIEDAD'],
     title: 'Software a medida para cualquier negocio',
     subtitle:
       'Inmobiliarias, academias o cualquier sector: estudiamos tus necesidades reales y diseñamos la herramienta exacta aplicada a tu negocio, 100% en propiedad y sin cuotas por usuario.',
@@ -273,7 +273,7 @@ const CASES: DiveCase[] = [
 
     <!-- Capa UI fijada al viewport sticky -->
     <div class="hd-ui">
-      <!-- Barra superior estilo sticker tags -->
+      <!-- Barra superior: Desktop sticker tags + botón menú futurista en móvil -->
       <nav aria-label="Navegación principal del estudio" class="hd-nav">
         <div class="hd-nav-left">
           <button type="button" data-hd-studio class="hd-tag">mi estudio</button>
@@ -295,14 +295,66 @@ const CASES: DiveCase[] = [
           <button type="button" data-hd-dive class="hd-tag">proyectos</button>
           <a href="/contacto" class="hd-tag hd-tag-accent">presupuesto</a>
         </div>
+
+        <!-- Barra móvil limpia (solo visible en <= 820px) -->
+        <div class="hd-mobile-bar">
+          <button type="button" data-hd-studio-m class="hd-mobile-brand">PAPIS.APP</button>
+          <button
+            type="button"
+            data-hd-menu-open
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            class="hd-mobile-menu-btn"
+          >
+            <span>MENÚ</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+              <line x1="4" y1="7" x2="20" y2="7" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+              <line x1="4" y1="17" x2="20" y2="17" />
+            </svg>
+          </button>
+        </div>
       </nav>
 
-      <!-- Ticket perforado (top-right en modo casos) -->
+      <!-- Menú móvil futurista centrado (MAYÚSCULAS + chevrons luminosos por color de sección) -->
+      <div data-hd-mobile-overlay hidden class="hd-mobile-overlay">
+        <button type="button" data-hd-menu-close aria-label="Cerrar menú" class="hd-mobile-close">
+          ✕
+        </button>
+        <div class="hd-mobile-links">
+          <button type="button" data-hd-m-studio class="hd-m-link" style="--m-accent:#38BDF8; --m-glow:rgba(56,189,248,0.65);">
+            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>MI ESTUDIO</span>
+          </button>
+          <a href="/paginas-web" class="hd-m-link" style="--m-accent:#3B82F6; --m-glow:rgba(59,130,246,0.65);">
+            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>DISEÑO WEB</span>
+          </a>
+          <a href="/software-empresas" class="hd-m-link" style="--m-accent:#10B981; --m-glow:rgba(16,185,129,0.65);">
+            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>SOFTWARE EMPRESAS</span>
+          </a>
+          <a href="/servicio-tecnico" class="hd-m-link" style="--m-accent:#F97316; --m-glow:rgba(249,115,22,0.65);">
+            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>SERVICIO TÉCNICO</span>
+          </a>
+          <a href="/proyectos" class="hd-m-link" style="--m-accent:#A855F7; --m-glow:rgba(168,85,247,0.65);">
+            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>PROYECTOS</span>
+          </a>
+          <a href="/contacto" class="hd-m-link" style="--m-accent:#22D3EE; --m-glow:rgba(34,211,238,0.65);">
+            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>PRESUPUESTO</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Matrícula metálica con 4 tornillos que se atornillan al impactar -->
       <article data-hd-ticket class="hd-ticket" aria-live="polite">
-        <span class="hd-hole hd-hole-tl" aria-hidden="true"></span>
-        <span class="hd-hole hd-hole-tr" aria-hidden="true"></span>
-        <span class="hd-hole hd-hole-bl" aria-hidden="true"></span>
-        <span class="hd-hole hd-hole-br" aria-hidden="true"></span>
+        <span data-hd-screw class="hd-screw hd-hole-tl" aria-hidden="true"></span>
+        <span data-hd-screw class="hd-screw hd-hole-tr" aria-hidden="true"></span>
+        <span data-hd-screw class="hd-screw hd-hole-bl" aria-hidden="true"></span>
+        <span data-hd-screw class="hd-screw hd-hole-br" aria-hidden="true"></span>
         <h2 data-hd-ticket-title>{CASES[0].ticketTitle}</h2>
         <div class="hd-ticket-rows" data-hd-ticket-rows>
           {CASES[0].rows.map((r) => <div>{r}</div>)}
@@ -868,17 +920,38 @@ const CASES: DiveCase[] = [
     pointer-events: auto;
   }
 
-  .hd-hole {
+  /* Tornillos metálicos con ranura para efecto de atornillado en la matrícula */
+  .hd-screw {
     position: absolute;
-    width: 12px;
-    height: 12px;
+    width: 13px;
+    height: 13px;
     border-radius: 999px;
-    background: #0a1b2b;
+    background: radial-gradient(circle at 35% 35%, #cbd5e1 0%, #64748b 55%, #1e293b 100%);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.7),
+      0 1px 3px rgba(0, 0, 0, 0.55);
+  }
+  .hd-screw::after {
+    content: "";
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    top: 50%;
+    height: 1.8px;
+    background: #0f172a;
+    transform: translateY(-50%) rotate(-32deg);
+    border-radius: 1px;
   }
   .hd-hole-tl { top: 8px; left: 8px; }
   .hd-hole-tr { top: 8px; right: 8px; }
   .hd-hole-bl { bottom: 8px; left: 8px; }
   .hd-hole-br { bottom: 8px; right: 8px; }
+
+  /* Barra móvil oculta en desktop */
+  .hd-mobile-bar,
+  .hd-mobile-overlay {
+    display: none;
+  }
 
   .hd-ticket h2 {
     font-family: "Anton", sans-serif;
@@ -967,18 +1040,122 @@ const CASES: DiveCase[] = [
     }
 
     .hd-nav-left,
-    .hd-nav-right {
-      display: contents;
-    }
-
-    .hd-tag {
-      height: 28px;
-      padding: 0 10px;
-      font-size: 11.5px;
-    }
-
+    .hd-nav-right,
     .hd-center-logo {
       display: none;
+    }
+
+    .hd-mobile-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      pointer-events: auto;
+    }
+
+    .hd-mobile-brand {
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: -0.04em;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(7, 19, 30, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(10px);
+    }
+
+    .hd-mobile-menu-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 36px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(7, 19, 30, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(12px);
+      color: #ffffff;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+    }
+
+    .hd-mobile-overlay:not([hidden]) {
+      display: flex;
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(5, 7, 13, 0.96);
+      backdrop-filter: blur(22px);
+      padding: 24px;
+      pointer-events: auto;
+    }
+
+    .hd-mobile-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .hd-mobile-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .hd-m-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      background: rgba(255, 255, 255, 0.03);
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-size: 1.08rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .hd-m-chev {
+      width: 28px;
+      height: 20px;
+      color: var(--m-accent);
+      flex-shrink: 0;
+    }
+
+    .hd-m-chev path {
+      opacity: 0.22;
+      animation: hd-m-pulse 1.5s ease-in-out infinite;
+    }
+    .hd-m-chev .mc1 { animation-delay: 0s; }
+    .hd-m-chev .mc2 { animation-delay: 0.22s; }
+    .hd-m-chev .mc3 { animation-delay: 0.44s; }
+
+    @keyframes hd-m-pulse {
+      0%, 100% { opacity: 0.22; filter: drop-shadow(0 0 2px transparent); }
+      45% { opacity: 1; filter: drop-shadow(0 0 8px var(--m-glow)); }
     }
 
     .hd-wordmark {
@@ -1123,8 +1300,15 @@ const CASES: DiveCase[] = [
     const subtitleEl = track.querySelector<HTMLElement>('[data-hd-subtitle]');
     const ctaLinkEl = track.querySelector<HTMLAnchorElement>('[data-hd-cta-link]');
     const ctaLabelEl = track.querySelector<HTMLElement>('[data-hd-cta-label]');
+    const ticketEl = track.querySelector<HTMLElement>('[data-hd-ticket]');
+    const screwEls = Array.from(track.querySelectorAll<HTMLElement>('[data-hd-screw]'));
     const ticketTitleEl = track.querySelector<HTMLElement>('[data-hd-ticket-title]');
     const ticketRowsEl = track.querySelector<HTMLElement>('[data-hd-ticket-rows]');
+    const mobileMenuOpenBtn = track.querySelector<HTMLButtonElement>('[data-hd-menu-open]');
+    const mobileMenuCloseBtn = track.querySelector<HTMLButtonElement>('[data-hd-menu-close]');
+    const mobileOverlayEl = track.querySelector<HTMLElement>('[data-hd-mobile-overlay]');
+    const mobileStudioBtn = track.querySelector<HTMLButtonElement>('[data-hd-studio-m]');
+    const mobileDrawerStudioBtn = track.querySelector<HTMLButtonElement>('[data-hd-m-studio]');
     const staggerEls = Array.from(track.querySelectorAll<HTMLElement>('[data-hd-stagger]'));
     const dotBtns = Array.from(track.querySelectorAll<HTMLButtonElement>('[data-hd-dot]'));
 
@@ -1449,6 +1633,27 @@ const CASES: DiveCase[] = [
       if (animate) {
         animateTextStagger();
         startTypewriter(item.subtitle);
+        // Efecto impacto + atornillado de la matrícula metálica
+        if (!rm && ticketEl) {
+          ticketEl.animate(
+            [
+              { transform: 'scale(1.18) translateY(-16px) rotate(-3deg)', opacity: 0.75 },
+              { transform: 'scale(0.97) translateY(2px) rotate(0.8deg)', opacity: 1, offset: 0.65 },
+              { transform: 'scale(1) translateY(0) rotate(0deg)', opacity: 1 },
+            ],
+            { duration: 380, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+          );
+          screwEls.forEach((screw, i) => {
+            screw.animate(
+              [
+                { transform: 'rotate(0deg) scale(1)' },
+                { transform: 'rotate(220deg) scale(1.18)', offset: 0.55 },
+                { transform: 'rotate(360deg) scale(1)' },
+              ],
+              { duration: 420, delay: 220 + i * 65, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+            );
+          });
+        }
       } else if (subtitleEl) {
         subtitleEl.textContent = item.subtitle;
       }
@@ -1487,6 +1692,19 @@ const CASES: DiveCase[] = [
     hintBtn?.addEventListener('click', () => scrollToService(0));
     studioBtn?.addEventListener('click', scrollToHero);
     centerLogoBtn?.addEventListener('click', scrollToHero);
+    mobileStudioBtn?.addEventListener('click', scrollToHero);
+
+    const setMobileMenu = (open: boolean) => {
+      if (!mobileOverlayEl) return;
+      mobileOverlayEl.hidden = !open;
+      mobileMenuOpenBtn?.setAttribute('aria-expanded', String(open));
+    };
+    mobileMenuOpenBtn?.addEventListener('click', () => setMobileMenu(true));
+    mobileMenuCloseBtn?.addEventListener('click', () => setMobileMenu(false));
+    mobileDrawerStudioBtn?.addEventListener('click', () => {
+      setMobileMenu(false);
+      scrollToHero();
+    });
 
     badgeHitEl?.addEventListener('pointerenter', () => {
       if (rm || !badgeEl || smoothP > 0.05) return;
