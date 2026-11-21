@@ -30,6 +30,12 @@ const QUICK_PROMPTS = [
   '¿Cuánto tardáis y cómo trabajáis?',
 ];
 
+const NUDGE_MESSAGES = [
+  '¿Tienes alguna duda? Pregúntame 👋',
+  'Soy David Tech · Pulsa aquí para hablar',
+  '¿Presupuesto o soporte? Te ayudo ahora',
+];
+
 const INITIAL_WELCOME: ChatMessage = {
   id: 'welcome',
   role: 'model',
@@ -48,15 +54,19 @@ export default function FloatingAssistantIsland({
   const [isStreaming, setIsStreaming] = useState(false);
   const [isAvatarAnimating, setIsAvatarAnimating] = useState(false);
   const [animCycleKey, setAnimCycleKey] = useState(0);
+  const [showNudge, setShowNudge] = useState(false);
+  const [nudgeIdx, setNudgeIdx] = useState(0);
+  const [nudgeDismissed, setNudgeDismissed] = useState(false);
 
   const scrollEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // Reproduce el avatar animado 1 ciclo completo (~18.9s, bucle perfecto frame 0 = último frame) y lo repite cada 60 segundos
+  // Reproduce el avatar animado 1 ciclo completo (~19s) y lo repite cada 20 segundos de pausa
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let stopTimer: number | null = null;
+    let nextTimer: number | null = null;
 
     const triggerAnim = () => {
       setAnimCycleKey((k) => k + 1);
@@ -64,18 +74,45 @@ export default function FloatingAssistantIsland({
       if (stopTimer) window.clearTimeout(stopTimer);
       stopTimer = window.setTimeout(() => {
         setIsAvatarAnimating(false);
+        nextTimer = window.setTimeout(triggerAnim, 20000);
       }, 19000);
     };
 
-    const initialTimer = window.setTimeout(triggerAnim, 1800);
-    const interval = window.setInterval(triggerAnim, 60000);
+    const initialTimer = window.setTimeout(triggerAnim, 1500);
 
     return () => {
       window.clearTimeout(initialTimer);
-      window.clearInterval(interval);
       if (stopTimer) window.clearTimeout(stopTimer);
+      if (nextTimer) window.clearTimeout(nextTimer);
     };
   }, []);
+
+  // Bocadillo sutil sobre el avatar: aparece a los 4s durante 5.5s y reaparece cada 20s si el chat está cerrado
+  useEffect(() => {
+    if (isOpen || nudgeDismissed) {
+      setShowNudge(false);
+      return;
+    }
+    let hideTimer: number | null = null;
+    let nextTimer: number | null = null;
+
+    const showCycle = (first = false) => {
+      if (!first) setNudgeIdx((i) => (i + 1) % NUDGE_MESSAGES.length);
+      setShowNudge(true);
+      hideTimer = window.setTimeout(() => {
+        setShowNudge(false);
+        nextTimer = window.setTimeout(() => showCycle(false), 20000);
+      }, 5500);
+    };
+
+    const initialTimer = window.setTimeout(() => showCycle(true), 4000);
+
+    return () => {
+      window.clearTimeout(initialTimer);
+      if (hideTimer) window.clearTimeout(hideTimer);
+      if (nextTimer) window.clearTimeout(nextTimer);
+    };
+  }, [isOpen, nudgeDismissed]);
 
   const avatarSrc =
     isAvatarAnimating || isStreaming
@@ -222,6 +259,57 @@ export default function FloatingAssistantIsland({
           className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center gap-3"
           aria-label="Accesos rápidos de contacto y asistente virtual"
         >
+          {/* Bocadillo llamativo encima del avatar que aparece periódicamente y abre el chat al pulsar */}
+          <div
+            aria-live="polite"
+            className={`absolute bottom-[calc(100%+12px)] right-0 z-10 transition-all duration-300 ${
+              showNudge
+                ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
+                : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
+            }`}
+          >
+            <div
+              className="relative flex items-center gap-2 rounded-2xl border bg-[#0B0F19]/95 px-3.5 py-2.5 text-xs font-medium text-white shadow-[0_14px_34px_rgba(0,0,0,0.65)] backdrop-blur-xl whitespace-nowrap"
+              style={{
+                borderColor: `rgba(${palette.rgb}, 0.5)`,
+                boxShadow: `0 12px 32px rgba(0,0,0,0.65), 0 0 20px -6px rgba(${palette.rgb}, 0.45)`,
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  setShowNudge(false);
+                  setIsOpen(true);
+                }}
+                className="flex items-center gap-2 text-left cursor-pointer hover:text-blue-200 transition-colors"
+              >
+                <span
+                  aria-hidden="true"
+                  className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] shrink-0"
+                />
+                <span>{NUDGE_MESSAGES[nudgeIdx]}</span>
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setNudgeDismissed(true);
+                  setShowNudge(false);
+                }}
+                aria-label="Ocultar aviso"
+                className="ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full text-slate-400 hover:bg-white/10 hover:text-white cursor-pointer"
+              >
+                <X className="h-3 w-3" />
+              </button>
+              {/* Triángulo apuntando hacia el avatar */}
+              <span
+                aria-hidden="true"
+                className="absolute -bottom-[6px] right-8 h-3 w-3 rotate-45 border-r border-b bg-[#0B0F19]"
+                style={{ borderColor: `rgba(${palette.rgb}, 0.5)` }}
+              />
+            </div>
+          </div>
+
           <a
             href={whatsappUrl}
             target="_blank"
