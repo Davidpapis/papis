@@ -14,6 +14,7 @@ interface Props {
   ogImage?: string;
   ogType?: 'website' | 'article';
   noindex?: boolean;
+  hideNavbar?: boolean;
   schemas?: Record<string, unknown>[];
 }
 
@@ -24,6 +25,7 @@ const {
   ogImage,
   ogType = 'website',
   noindex = false,
+  hideNavbar = false,
   schemas = [],
 } = Astro.props;
 
@@ -62,12 +64,13 @@ const rootStyle = `--accent: ${palette.accent}; --accent-secondary: ${palette.se
         <script is:inline defer src="/_vercel/speed-insights/script.js" />
       )
     }
+    <slot name="head" />
   </head>
 
   <body class="flex min-h-screen flex-col bg-[#050507] text-[#F1F5F9] selection:bg-blue-500/30 selection:text-white">
     <a href="#contenido-principal" class="skip-link">Saltar al contenido principal</a>
 
-    <Navbar activeTheme={activeTheme} currentPath={currentPath} />
+    {!hideNavbar && <Navbar activeTheme={activeTheme} currentPath={currentPath} />}
 
     <main id="contenido-principal" class="flex-1">
       <slot />

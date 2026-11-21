@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ScrollHero from '../components/ScrollHero.astro';
+import LaptopDiveHero from '../components/LaptopDiveHero.astro';
 import SpotlightCard from '../components/SpotlightCard.astro';
 import GlowButton from '../components/GlowButton.astro';
 import DivisionLogo from '../components/DivisionLogo.astro';
@@ -77,17 +77,20 @@ const schemas = [
   title={homeData.seo.title}
   description={homeData.seo.description}
   activeTheme="web"
+  hideNavbar={true}
   schemas={schemas}
 >
-  <ScrollHero
-    slides={homeData.heroSlides.map((s) => ({
-      ...s,
-      pillar: s.pillar as PillarId,
-    }))}
+  <link
+    slot="head"
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat+Brush&family=Inter+Tight:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet"
   />
+
+  <LaptopDiveHero />
 
   <!-- Resumen de los 3 Pilares con SpotlightCard -->
   <section
+    id="pilares"
     aria-labelledby="heading-pilares"
     class="relative py-20 sm:py-28 border-t border-white/[0.06]"
   >
