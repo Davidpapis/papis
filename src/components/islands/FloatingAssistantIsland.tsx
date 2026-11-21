@@ -47,10 +47,41 @@ export default function FloatingAssistantIsland({
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_WELCOME]);
   const [inputValue, setInputValue] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
+  const [isAvatarAnimating, setIsAvatarAnimating] = useState(false);
+  const [animCycleKey, setAnimCycleKey] = useState(0);
 
   const scrollEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  // Reproduce el avatar animado 1 ciclo completo (8s) al entrar y luego lo repite cada 60 segundos
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let stopTimer: number | null = null;
+
+    const triggerAnim = () => {
+      setAnimCycleKey((k) => k + 1);
+      setIsAvatarAnimating(true);
+      if (stopTimer) window.clearTimeout(stopTimer);
+      stopTimer = window.setTimeout(() => {
+        setIsAvatarAnimating(false);
+      }, 8100);
+    };
+
+    const initialTimer = window.setTimeout(triggerAnim, 1800);
+    const interval = window.setInterval(triggerAnim, 60000);
+
+    return () => {
+      window.clearTimeout(initialTimer);
+      window.clearInterval(interval);
+      if (stopTimer) window.clearTimeout(stopTimer);
+    };
+  }, []);
+
+  const avatarSrc =
+    isAvatarAnimating || isStreaming
+      ? `/assets/optimized/avatar-ia-anim.webp?c=${animCycleKey}`
+      : '/assets/optimized/avatar-ia-static.webp';
 
   const phoneHref = `tel:${phoneDisplay.replace(/\s+/g, '')}`;
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
@@ -220,28 +251,55 @@ export default function FloatingAssistantIsland({
           <button
             type="button"
             onClick={() => setIsOpen(true)}
+            onMouseEnter={() => {
+              if (!isAvatarAnimating) {
+                setAnimCycleKey((k) => k + 1);
+                setIsAvatarAnimating(true);
+                window.setTimeout(() => setIsAvatarAnimating(false), 8100);
+              }
+            }}
             aria-label="Abrir consulta interactiva de papis.app"
             title="¿Tienes alguna duda? Pregúntame"
             className="relative rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white shrink-0 cursor-pointer"
           >
-            <div className="avatar-tricolor-wrapper h-[72px] w-[72px] sm:h-[82px] sm:w-[82px]">
+            <div className="avatar-tricolor-wrapper h-[74px] w-[74px] sm:h-[86px] sm:w-[86px]">
               <span aria-hidden="true" className="avatar-ambient-halo" />
               <span className="avatar-beam-ring h-full w-full">
                 <span className="relative block h-full w-full overflow-hidden rounded-full bg-[#050507]">
                   <img
-                    src="/assets/optimized/avatar-ia.webp"
+                    src={avatarSrc}
                     alt="Abrir asistente virtual de papis.app"
-                    width={82}
-                    height={82}
-                    loading="lazy"
+                    width={86}
+                    height={86}
+                    loading="eager"
                     decoding="async"
-                    className="h-full w-full object-cover object-[50%_28%] grayscale contrast-[1.14] brightness-[0.98] select-none living-portrait-img"
+                    className="h-full w-full object-cover scale-[1.12] select-none"
                   />
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_18px_rgba(5,5,7,0.72)]"
+                    className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_16px_rgba(5,5,7,0.68)]"
                   />
                 </span>
+              </span>
+
+              {/* Badge P> inferior izquierdo (estilo avatar ia.png) */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -bottom-0.5 -left-0.5 z-10 flex h-6 w-6 items-center justify-center rounded-full border bg-[#060910] text-[10px] font-extrabold tracking-tighter text-white shadow-[0_0_12px_rgba(0,0,0,0.9)]"
+                style={{
+                  borderColor: palette.accent,
+                  boxShadow: `0 0 12px rgba(${palette.rgb}, 0.65)`,
+                }}
+              >
+                P<span style={{ color: palette.accent }}>&gt;</span>
+              </span>
+
+              {/* Indicador luminoso "En línea" inferior derecho */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute bottom-0.5 right-0.5 z-10 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#060910] p-[2px]"
+              >
+                <span className="h-full w-full rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
               </span>
             </div>
           </button>
@@ -277,13 +335,11 @@ export default function FloatingAssistantIsland({
                   <span className="avatar-beam-ring h-full w-full">
                     <span className="relative block h-full w-full overflow-hidden rounded-full bg-[#050507]">
                       <img
-                        src="/assets/optimized/avatar-ia.webp"
+                        src={avatarSrc}
                         alt="Asistente papis.app"
                         width={48}
                         height={48}
-                        className={`h-full w-full object-cover object-[50%_28%] grayscale contrast-[1.14] ${
-                          isStreaming ? 'living-portrait-img-speaking' : 'living-portrait-img'
-                        }`}
+                        className="h-full w-full object-cover scale-[1.12]"
                       />
                     </span>
                   </span>
