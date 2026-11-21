@@ -9,9 +9,11 @@ import {
   X,
 } from 'lucide-react';
 import { PILLAR_PALETTES, type PillarId } from '../../lib/theme';
+import type { Lang } from '../../lib/i18n';
 
 interface FloatingAssistantIslandProps {
   activeTheme: PillarId;
+  lang?: Lang;
   phoneDisplay: string;
   whatsappNumber: string;
 }
@@ -23,33 +25,57 @@ interface ChatMessage {
   error?: boolean;
 }
 
-const QUICK_PROMPTS = [
+const QUICK_PROMPTS_ES = [
   'Quiero hacer una web que posicione en Google e IA',
   'Busco un software a medida para mi empresa',
   'Necesito un técnico en casa en Marbella',
   '¿Cuánto tardáis y cómo trabajáis?',
 ];
 
-const NUDGE_MESSAGES = [
+const QUICK_PROMPTS_EN = [
+  'I want a custom website that ranks on Google & AI',
+  'I need bespoke software (ERP/CRM) for my business',
+  'I need home IT support in Marbella',
+  'How long does it take & what are your rates?',
+];
+
+const NUDGE_MESSAGES_ES = [
   '¿Tienes alguna duda? Pregúntame 👋',
   'Soy David Tech · Pulsa aquí para hablar',
   '¿Presupuesto o soporte? Te ayudo ahora',
 ];
 
-const INITIAL_WELCOME: ChatMessage = {
+const NUDGE_MESSAGES_EN = [
+  'Have a question? Ask me 👋',
+  "I'm David Tech · Tap to chat",
+  'Need a quote or IT support? I can help',
+];
+
+const INITIAL_WELCOME_ES: ChatMessage = {
   id: 'welcome',
   role: 'model',
   text: '¡Hola! ¿Cómo estás? Soy David Tech, la IA de David Papis. Voy a resolver todas tus dudas. Para empezar, dime cómo te llamas y en qué puedo echarte una mano hoy.',
 };
 
+const INITIAL_WELCOME_EN: ChatMessage = {
+  id: 'welcome',
+  role: 'model',
+  text: "Hi! How are you? I'm David Tech, David Papis' AI assistant. I'm here to answer all your questions. To get started, what's your name and how can I help you today?",
+};
+
 export default function FloatingAssistantIsland({
   activeTheme,
+  lang = 'es',
   phoneDisplay,
   whatsappNumber,
 }: FloatingAssistantIslandProps) {
+  const isEn = lang === 'en';
   const palette = PILLAR_PALETTES[activeTheme];
+  const initialWelcome = isEn ? INITIAL_WELCOME_EN : INITIAL_WELCOME_ES;
+  const quickPrompts = isEn ? QUICK_PROMPTS_EN : QUICK_PROMPTS_ES;
+  const nudgeMessages = isEn ? NUDGE_MESSAGES_EN : NUDGE_MESSAGES_ES;
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_WELCOME]);
+  const [messages, setMessages] = useState<ChatMessage[]>([initialWelcome]);
   const [inputValue, setInputValue] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [isAvatarAnimating, setIsAvatarAnimating] = useState(false);
@@ -97,7 +123,7 @@ export default function FloatingAssistantIsland({
     let nextTimer: number | null = null;
 
     const showCycle = (first = false) => {
-      if (!first) setNudgeIdx((i) => (i + 1) % NUDGE_MESSAGES.length);
+      if (!first) setNudgeIdx((i) => (i + 1) % nudgeMessages.length);
       setShowNudge(true);
       hideTimer = window.setTimeout(() => {
         setShowNudge(false);
@@ -173,7 +199,7 @@ export default function FloatingAssistantIsland({
       const response = await fetch('/api/assistant/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: payloadMessages }),
+        body: JSON.stringify({ messages: payloadMessages, lang }),
         signal: controller.signal,
       });
 
@@ -287,7 +313,7 @@ export default function FloatingAssistantIsland({
                   aria-hidden="true"
                   className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] shrink-0"
                 />
-                <span>{NUDGE_MESSAGES[nudgeIdx]}</span>
+                <span>{nudgeMessages[nudgeIdx]}</span>
               </button>
               <button
                 type="button"
@@ -448,7 +474,7 @@ export default function FloatingAssistantIsland({
                   onClick={() => {
                     abortRef.current?.abort();
                     setIsStreaming(false);
-                    setMessages([INITIAL_WELCOME]);
+                    setMessages([initialWelcome]);
                   }}
                   title="Reiniciar conversación"
                   aria-label="Reiniciar conversación"
@@ -512,9 +538,11 @@ export default function FloatingAssistantIsland({
 
               {messages.length === 1 && (
                 <div className="pt-2 space-y-2">
-                  <p className="text-[11px] font-medium text-slate-400">Preguntas frecuentes</p>
+                  <p className="text-[11px] font-medium text-slate-400">
+                    {isEn ? 'Quick questions' : 'Preguntas frecuentes'}
+                  </p>
                   <div className="flex flex-col gap-1.5">
-                    {QUICK_PROMPTS.map((prompt) => (
+                    {quickPrompts.map((prompt) => (
                       <button
                         key={prompt}
                         type="button"

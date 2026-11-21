@@ -127,7 +127,11 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  const body = (await request.json().catch(() => ({}))) as { messages?: ChatMessageInput[] };
+  const body = (await request.json().catch(() => ({}))) as {
+    messages?: ChatMessageInput[];
+    lang?: string;
+  };
+  const reqLang = body.lang === 'en' ? 'en' : 'es';
   const sanitized = (Array.isArray(body.messages) ? body.messages : [])
     .filter(
       (m) =>
@@ -167,7 +171,10 @@ export const POST: APIRoute = async ({ request }) => {
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(payload)}\n\n`));
       };
 
-      const systemInstruction = CACHED_SYSTEM_INSTRUCTION;
+      const systemInstruction =
+        reqLang === 'en'
+          ? `${CACHED_SYSTEM_INSTRUCTION}\n\nIMPORTANT LANGUAGE RULE: The visitor is browsing the ENGLISH version of papis.app (/en). Always reply in natural, warm, concise English (2-3 sentences max), asking their name naturally if not yet provided, using all the exact facts and rates from the knowledge base above.`
+          : CACHED_SYSTEM_INSTRUCTION;
       let lastError: unknown = null;
 
       const tryModel = async (modelName: string): Promise<'ok' | 'fatal' | 'retry'> => {

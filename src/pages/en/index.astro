@@ -1,0 +1,340 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LaptopDiveHero from '../../components/LaptopDiveHero.astro';
+import SpotlightCard from '../../components/SpotlightCard.astro';
+import GlowButton from '../../components/GlowButton.astro';
+import DivisionLogo from '../../components/DivisionLogo.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import { PILLAR_PALETTES, type PillarId } from '../../lib/theme';
+import { PROJECT_IMAGES } from '../../lib/images';
+import { EN_FAQS, EN_PROJECTS } from '../../lib/i18n';
+import {
+  buildFaqSchema,
+  buildLocalBusinessSchema,
+  buildPersonSchema,
+  buildWebSiteSchema,
+  buildWhatsAppUrl,
+} from '../../lib/seo';
+
+const featuredProjects = EN_PROJECTS.filter((p) => p.featured).slice(0, 4);
+const socialProject = EN_PROJECTS.find((p) => p.socialImpact);
+
+const PILLAR_CARDS: {
+  id: PillarId;
+  summary: string;
+  metric: string;
+  metricLabel: string;
+  href: string;
+  cta: string;
+}[] = [
+  {
+    id: 'web',
+    summary:
+      'Custom high-speed websites built in Astro without bloated templates, self-editable CMS, local SEO in Marbella and GEO positioning for ChatGPT & Gemini.',
+    metric: '10–15 days',
+    metricLabel: 'Typical delivery time',
+    href: '/en/web-design',
+    cta: 'Explore Web Design',
+  },
+  {
+    id: 'software',
+    summary:
+      'Bespoke ERP, CRM and private cloud platforms for real estate agencies, academies or any industry—tailored to your business with €0 per-user fees.',
+    metric: '€0',
+    metricLabel: 'Per-user fees (100% yours)',
+    href: '/en/custom-software',
+    cta: 'Explore Custom Software',
+  },
+  {
+    id: 'tecnico',
+    summary:
+      '20 years providing home IT support and private lessons from Cabopino to Estepona for any age or skill level: Mac, Windows, iPhone & online safety.',
+    metric: '20 years',
+    metricLabel: 'Cabopino to Estepona · RustDesk',
+    href: '/en/tech-support',
+    cta: 'Explore Tech Support',
+  },
+];
+
+const schemas = [
+  buildLocalBusinessSchema(),
+  buildPersonSchema(),
+  buildWebSiteSchema(),
+  buildFaqSchema(EN_FAQS.general),
+];
+---
+
+<BaseLayout
+  title="Web Design, Custom Software & IT Support Marbella | papis.app"
+  description="Ultra-fast custom websites with SEO & GEO, bespoke ERP/CRM software and 20 years of home IT support in Marbella (Cabopino to Estepona) by David Papis."
+  lang="en"
+  activeTheme="web"
+  hideNavbar={true}
+  schemas={schemas}
+>
+  <link
+    slot="head"
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat+Brush&family=Inter+Tight:wght@500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <LaptopDiveHero lang="en" />
+
+  <!-- 3 Pillars Curtain Section -->
+  <section
+    id="pilares"
+    aria-labelledby="heading-pilares-en"
+    class="relative z-30 -mt-6 rounded-t-[28px] bg-[#050507] py-20 sm:py-28 border-t border-white/[0.1] shadow-[0_-28px_70px_rgba(0,0,0,0.85)]"
+  >
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <p class="text-sm font-medium text-blue-400">Three clear divisions · One direct point of contact</p>
+        <h2
+          id="heading-pilares-en"
+          class="mt-3 font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-bold tracking-[-0.025em] text-white leading-[1.1]"
+          style="text-wrap: balance;"
+        >
+          Practical technology to grow your business or simplify your daily life
+        </h2>
+        <p class="mt-4 text-base sm:text-lg leading-relaxed text-slate-300">
+          No middlemen, no generic templates. Pick the division you need and work directly with David Papis on fixed quotes in Marbella, Spain &amp; worldwide.
+        </p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {
+          PILLAR_CARDS.map((card, idx) => {
+            const p = PILLAR_PALETTES[card.id];
+            return (
+              <SpotlightCard
+                accent={card.id}
+                as="article"
+                class="reveal-item p-6 sm:p-7 flex flex-col justify-between"
+              >
+                <div
+                  class="flex h-full flex-col justify-between gap-6"
+                  style={`transition-delay: ${idx * 60}ms;`}
+                >
+                  <div>
+                    <DivisionLogo theme={card.id} class="mb-5" />
+                    <p class="text-sm sm:text-[15px] leading-relaxed text-slate-300">
+                      {card.summary}
+                    </p>
+                  </div>
+
+                  <div class="border-t border-white/[0.08] pt-5 flex items-end justify-between gap-4">
+                    <div>
+                      <p class="font-mono-tabular text-2xl font-semibold" style={`color: ${p.accent};`}>
+                        {card.metric}
+                      </p>
+                      <p class="text-xs text-slate-400">{card.metricLabel}</p>
+                    </div>
+                    <GlowButton href={card.href} variant={card.id} size="sm">
+                      {card.cta}
+                    </GlowButton>
+                  </div>
+                </div>
+              </SpotlightCard>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Real Projects -->
+  <section
+    aria-labelledby="heading-proyectos-en"
+    class="relative py-20 sm:py-28 border-t border-white/[0.06]"
+  >
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div class="max-w-2xl">
+          <p class="text-sm font-medium text-slate-400">Real verifiable work</p>
+          <h2
+            id="heading-proyectos-en"
+            class="mt-2 font-display text-3xl sm:text-4xl font-bold tracking-[-0.025em] text-white leading-[1.1]"
+          >
+            Featured projects in Marbella &amp; Costa del Sol
+          </h2>
+        </div>
+        <GlowButton href="/en/projects" size="md">View all projects</GlowButton>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {
+          featuredProjects.map((project) => {
+            const p = PILLAR_PALETTES[project.pillar];
+            return (
+              <SpotlightCard accent={project.pillar} as="article" class="flex flex-col">
+                <div class="flex h-full flex-col justify-between">
+                  <a
+                    href={project.externalUrl || '/en/projects'}
+                    target={project.externalUrl ? '_blank' : undefined}
+                    rel={project.externalUrl ? 'noopener noreferrer' : undefined}
+                    class="block aspect-[16/9] w-full overflow-hidden border-b border-white/[0.08] bg-[#090B10]"
+                  >
+                    <Image
+                      src={PROJECT_IMAGES[project.imageKey]}
+                      alt={project.imageAlt}
+                      widths={[600, 1200]}
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      loading="lazy"
+                      class="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                    />
+                  </a>
+
+                  <div class="flex flex-1 flex-col justify-between p-6">
+                    <div>
+                      <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                        <span style={`color: ${p.accent};`} class="font-medium">
+                          {project.client}
+                        </span>
+                        <span aria-hidden="true">·</span>
+                        <span>{project.location}</span>
+                        {project.socialImpact && (
+                          <span class="inline-flex items-center gap-1 rounded-full border border-sky-400/30 bg-sky-400/10 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300">
+                            ♥ Social Impact · Subsidised
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 class="mt-2.5 font-display text-xl sm:text-2xl font-semibold text-white">
+                        {project.title}
+                      </h3>
+
+                      <p class="mt-2 text-sm leading-relaxed text-slate-300">{project.summary}</p>
+                    </div>
+
+                    <div class="mt-5 grid grid-cols-3 gap-3 border-t border-white/[0.08] pt-4">
+                      {project.metrics.map((metric, idx) => (
+                        <div class={idx > 0 ? 'border-l border-white/[0.08] pl-3' : ''}>
+                          <p
+                            class="font-mono-tabular text-base sm:text-lg font-semibold"
+                            style={`color: ${idx === 0 ? p.accent : '#F8FAFC'};`}
+                          >
+                            {metric.value}
+                          </p>
+                          <p class="text-[11px] text-slate-400">{metric.label}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {project.externalUrl && (
+                      <div class="mt-4 flex items-center justify-end border-t border-white/[0.06] pt-4 text-xs">
+                        <a
+                          href={project.externalUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="inline-flex items-center gap-1 font-semibold text-blue-300 hover:text-white"
+                        >
+                          Visit live website <span aria-hidden="true">↗</span>
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </SpotlightCard>
+            );
+          })
+        }
+      </div>
+
+      {
+        socialProject && (
+          <SpotlightCard accent="web" class="mt-8 p-6 sm:p-8 border-sky-400/20">
+            <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <div class="max-w-3xl">
+                <span class="inline-flex items-center gap-1.5 rounded-full border border-sky-400/30 bg-sky-400/10 px-3 py-1 text-xs font-semibold text-sky-300">
+                  ♥ Social Commitment in Marbella · Virtually subsidised website
+                </span>
+                <h3 class="mt-3 font-display text-2xl sm:text-3xl font-bold tracking-tight text-white">
+                  AAAR Marbella — Autism Association Ángel Rivière
+                </h3>
+                <p class="mt-2.5 text-sm sm:text-[15px] leading-relaxed text-slate-300">
+                  At papis.app we believe technology should give back to our community. We designed and built the official website of{' '}
+                  <strong class="text-white">AAAR Marbella</strong> —a Public Utility non-profit supporting autistic children and over 80 families since 2008— virtually subsidised so their resources stay focused on therapies and family support.
+                </p>
+              </div>
+              <div class="flex flex-wrap items-center gap-3 shrink-0">
+                {socialProject.externalUrl && (
+                  <a
+                    href={socialProject.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="pressable inline-flex items-center justify-center rounded-xl border border-sky-400/30 bg-sky-400/10 px-5 py-2.5 min-h-[44px] text-sm font-semibold text-sky-200 hover:bg-sky-400/20 hover:text-white"
+                  >
+                    Visit aaarm.vercel.app ↗
+                  </a>
+                )}
+              </div>
+            </div>
+          </SpotlightCard>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Direct Trust Block -->
+  <section
+    aria-labelledby="heading-about-en"
+    class="relative py-20 sm:py-24 border-t border-white/[0.06]"
+  >
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <SpotlightCard accent="web" class="p-7 sm:p-10">
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
+          <div class="lg:col-span-7">
+            <p class="text-sm font-medium text-blue-400">20 years in Marbella · Direct personal service</p>
+            <h2
+              id="heading-about-en"
+              class="mt-2 font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-[-0.025em] text-white leading-[1.12]"
+            >
+              You speak directly with the person who designs, codes or visits your home
+            </h2>
+            <p class="mt-4 text-sm sm:text-base leading-relaxed text-slate-300">
+              For 20 years I have been providing home IT support across Marbella and the Costa del Sol —from Cabopino to Estepona— alongside collaborations on Radio Televisión Marbella. At papis.app we combine high-performance web engineering (Astro, local SEO &amp; AI GEO), bespoke business software and friendly in-home tech support.
+            </p>
+            <div class="mt-7 flex flex-wrap items-center gap-4">
+              <GlowButton href="/en/contact" size="lg" solid>
+                Request a free quote
+              </GlowButton>
+              <a
+                href={buildWhatsAppUrl(
+                  'Hello papis.app, I would like to discuss a project or IT support in Marbella.'
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="pressable inline-flex items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 min-h-[48px] text-sm font-semibold text-emerald-300 hover:bg-emerald-500/20 hover:text-white"
+              >
+                Chat on WhatsApp
+              </a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-1 lg:border-l lg:border-white/[0.08] lg:pl-8">
+            <div class="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+              <p class="font-mono-tabular text-2xl sm:text-3xl font-bold text-white">20 years</p>
+              <p class="mt-1 text-xs sm:text-sm text-slate-400">Tech support from Cabopino to Estepona</p>
+            </div>
+            <div class="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+              <p class="font-mono-tabular text-2xl sm:text-3xl font-bold text-white">RTV Marbella</p>
+              <p class="mt-1 text-xs sm:text-sm text-slate-400">Collaborations on Marbella local TV</p>
+            </div>
+            <div class="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+              <p class="font-mono-tabular text-2xl sm:text-3xl font-bold text-white">AAAR Marbella</p>
+              <p class="mt-1 text-xs sm:text-sm text-slate-400">Subsidised website for local autism NGO</p>
+            </div>
+          </div>
+        </div>
+      </SpotlightCard>
+    </div>
+  </section>
+
+  <FaqSection
+    title="Frequently Asked Questions about papis.app in Marbella"
+    kicker="Direct answers · SEO & GEO"
+    accent="web"
+    faqs={EN_FAQS.general}
+  />
+</BaseLayout>

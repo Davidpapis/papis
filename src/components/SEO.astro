@@ -1,10 +1,12 @@
 ---
 import siteSettings from '../content/singletons/site-settings.json';
+import { getAlternatePath, type Lang } from '../lib/i18n';
 
 interface Props {
   title: string;
   description: string;
   canonicalPath?: string;
+  lang?: Lang;
   ogImage?: string;
   ogType?: 'website' | 'article';
   noindex?: boolean;
@@ -15,6 +17,7 @@ const {
   title,
   description,
   canonicalPath = Astro.url.pathname,
+  lang = 'es',
   ogImage = '/og-image.jpg',
   ogType = 'website',
   noindex = false,
@@ -24,8 +27,13 @@ const {
 const baseUrl = siteSettings.domain.replace(/\/$/, '');
 const normalizedPath = canonicalPath === '/' ? '' : canonicalPath.replace(/\/$/, '');
 const canonicalUrl = `${baseUrl}${normalizedPath || '/'}`;
+const esPath = getAlternatePath(canonicalPath, 'es');
+const enPath = getAlternatePath(canonicalPath, 'en');
+const esUrl = `${baseUrl}${esPath === '/' ? '/' : esPath}`;
+const enUrl = `${baseUrl}${enPath}`;
 const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${baseUrl}${ogImage}`;
 const robotsContent = noindex ? 'noindex, follow' : 'index, follow';
+const ogLocale = lang === 'en' ? 'en_US' : 'es_ES';
 
 const jsonLdPayload =
   schemas.length > 0
@@ -41,12 +49,13 @@ const jsonLdPayload =
 <meta name="robots" content={robotsContent} />
 <meta name="msvalidate.01" content="EB5E243788910E04CD95119476EE0BE4" />
 <link rel="canonical" href={canonicalUrl} />
-<link rel="alternate" hreflang="es" href={canonicalUrl} />
-<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+<link rel="alternate" hreflang="es" href={esUrl} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="x-default" href={esUrl} />
 
 <!-- Open Graph -->
 <meta property="og:type" content={ogType} />
-<meta property="og:locale" content="es_ES" />
+<meta property="og:locale" content={ogLocale} />
 <meta property="og:site_name" content={siteSettings.brandName} />
 <meta property="og:url" content={canonicalUrl} />
 <meta property="og:title" content={title} />

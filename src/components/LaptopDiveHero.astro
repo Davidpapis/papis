@@ -1,12 +1,13 @@
 ---
-/**
- * Hero "Laptop Dive" — Scroll-Driven Frame Sequence sobre <canvas> (60 frames WebP).
- * - Scroll 100% nativo (position: sticky sobre pista 175vh).
- * - Pantalla completa de borde a borde con esquinas redondeadas del MacBook Pro,
- *   imagen difuminada de ambiente y presentación tipográfica animada del servicio dentro.
- * - Chevrons futuristas (<<< / >>>) posicionados simétricamente a ambos lados exactos
- *   de la pantalla del portátil, iluminándose en cascada de dentro hacia fuera con el color del servicio activo.
- */
+import type { Lang } from '../lib/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
+const isEn = lang === 'en';
+
 interface DiveCase {
   id: string;
   tag: string;
@@ -21,50 +22,95 @@ interface DiveCase {
   accentGlow: string;
 }
 
-const CASES: DiveCase[] = [
-  {
-    id: 'web',
-    tag: '01 / 03 · DISEÑO WEB & SEO/GEO',
-    ticketTitle: 'WEB & SEO/GEO',
-    rows: ['TU PÁGINA WEB EN TIEMPO RÉCORD', 'ASTRO + KEYSTATIC', 'AAAR · SERINAMAR'],
-    title: 'Webs a medida que posicionan en Google e IA',
-    subtitle:
-      'HTML estático ultrarrápido (< 0,8s), panel editable y SEO local + GEO en Marbella. Casos reales: AAAR Marbella (compromiso social), Grupo Serinamar o Cerrajería Carlos Neira.',
-    image: '/hero-dive/case-web.webp',
-    href: '/paginas-web',
-    ctaLabel: 'Explorar Diseño Web',
-    accent: '#3B82F6',
-    accentGlow: 'rgba(59, 130, 246, 0.55)',
-  },
-  {
-    id: 'software',
-    tag: '02 / 03 · SOFTWARE A MEDIDA',
-    ticketTitle: 'SOFTWARE A MEDIDA',
-    rows: ['CUALQUIER SECTOR', 'INMOBILIARIAS · ACADEMIAS', '100% EN PROPIEDAD'],
-    title: 'Software a medida para cualquier negocio',
-    subtitle:
-      'Inmobiliarias, academias o cualquier sector: estudiamos tus necesidades reales y diseñamos la herramienta exacta aplicada a tu negocio, 100% en propiedad y sin cuotas por usuario.',
-    image: '/hero-dive/case-software.webp',
-    href: '/software-empresas',
-    ctaLabel: 'Explorar Software Empresas',
-    accent: '#10B981',
-    accentGlow: 'rgba(16, 185, 129, 0.55)',
-  },
-  {
-    id: 'tecnico',
-    tag: '03 / 03 · SERVICIO TÉCNICO',
-    ticketTitle: 'TÉCNICO EN CASA',
-    rows: ['20 AÑOS DE EXPERIENCIA', 'CUALQUIER EDAD O NIVEL', 'CABOPINO A ESTEPONA'],
-    title: '20 años de soporte técnico y clases en casa',
-    subtitle:
-      'Asistencia a domicilio desde Cabopino hasta Estepona para cualquier edad o dificultad: Mac, Windows, móvil, seguridad y clases particulares a tu ritmo. También remoto mundial vía RustDesk.',
-    image: '/assets/optimized/servicio-tecnico-marbella.webp',
-    href: '/servicio-tecnico',
-    ctaLabel: 'Explorar Servicio Técnico',
-    accent: '#F97316',
-    accentGlow: 'rgba(249, 115, 22, 0.55)',
-  },
-];
+const CASES: DiveCase[] = isEn
+  ? [
+      {
+        id: 'web',
+        tag: '01 / 03 · WEB DESIGN & SEO/GEO',
+        ticketTitle: 'WEB & SEO/GEO',
+        rows: ['YOUR WEBSITE IN RECORD TIME', 'ASTRO + KEYSTATIC', 'AAAR · SERINAMAR'],
+        title: 'Custom websites that rank on Google & AI',
+        subtitle:
+          'Ultra-fast static HTML (< 0.8s), self-editable CMS and local SEO + GEO in Marbella. Real clients: AAAR Marbella (social impact), Grupo Serinamar & Cerrajería Carlos Neira.',
+        image: '/hero-dive/case-web.webp',
+        href: '/en/web-design',
+        ctaLabel: 'Explore Web Design',
+        accent: '#3B82F6',
+        accentGlow: 'rgba(59, 130, 246, 0.55)',
+      },
+      {
+        id: 'software',
+        tag: '02 / 03 · CUSTOM SOFTWARE',
+        ticketTitle: 'CUSTOM SOFTWARE',
+        rows: ['ANY INDUSTRY', 'REAL ESTATE · ACADEMIES', '100% OWNED BY YOU'],
+        title: 'Bespoke software for any business',
+        subtitle:
+          'Real estate agencies, academies or any sector: we study your exact workflow and build the right tool for your business—100% owned by you with €0 per-user fees.',
+        image: '/hero-dive/case-software.webp',
+        href: '/en/custom-software',
+        ctaLabel: 'Explore Custom Software',
+        accent: '#10B981',
+        accentGlow: 'rgba(16, 185, 129, 0.55)',
+      },
+      {
+        id: 'tecnico',
+        tag: '03 / 03 · HOME IT SUPPORT',
+        ticketTitle: 'TECH SUPPORT',
+        rows: ['20 YEARS EXPERIENCE', 'ANY AGE OR SKILL LEVEL', 'CABOPINO TO ESTEPONA'],
+        title: '20 years of home IT support & lessons',
+        subtitle:
+          'Home visits from Cabopino to Estepona for any age or difficulty: Mac, Windows, iPhone, online safety and private lessons at your pace. Plus worldwide remote support via RustDesk.',
+        image: '/assets/optimized/servicio-tecnico-marbella.webp',
+        href: '/en/tech-support',
+        ctaLabel: 'Explore Tech Support',
+        accent: '#F97316',
+        accentGlow: 'rgba(249, 115, 22, 0.55)',
+      },
+    ]
+  : [
+      {
+        id: 'web',
+        tag: '01 / 03 · DISEÑO WEB & SEO/GEO',
+        ticketTitle: 'WEB & SEO/GEO',
+        rows: ['TU PÁGINA WEB EN TIEMPO RÉCORD', 'ASTRO + KEYSTATIC', 'AAAR · SERINAMAR'],
+        title: 'Webs a medida que posicionan en Google e IA',
+        subtitle:
+          'HTML estático ultrarrápido (< 0,8s), panel editable y SEO local + GEO en Marbella. Casos reales: AAAR Marbella (compromiso social), Grupo Serinamar o Cerrajería Carlos Neira.',
+        image: '/hero-dive/case-web.webp',
+        href: '/paginas-web',
+        ctaLabel: 'Explorar Diseño Web',
+        accent: '#3B82F6',
+        accentGlow: 'rgba(59, 130, 246, 0.55)',
+      },
+      {
+        id: 'software',
+        tag: '02 / 03 · SOFTWARE A MEDIDA',
+        ticketTitle: 'SOFTWARE A MEDIDA',
+        rows: ['CUALQUIER SECTOR', 'INMOBILIARIAS · ACADEMIAS', '100% EN PROPIEDAD'],
+        title: 'Software a medida para cualquier negocio',
+        subtitle:
+          'Inmobiliarias, academias o cualquier sector: estudiamos tus necesidades reales y diseñamos la herramienta exacta aplicada a tu negocio, 100% en propiedad y sin cuotas por usuario.',
+        image: '/hero-dive/case-software.webp',
+        href: '/software-empresas',
+        ctaLabel: 'Explorar Software Empresas',
+        accent: '#10B981',
+        accentGlow: 'rgba(16, 185, 129, 0.55)',
+      },
+      {
+        id: 'tecnico',
+        tag: '03 / 03 · SERVICIO TÉCNICO',
+        ticketTitle: 'TÉCNICO EN CASA',
+        rows: ['20 AÑOS DE EXPERIENCIA', 'CUALQUIER EDAD O NIVEL', 'CABOPINO A ESTEPONA'],
+        title: '20 años de soporte técnico y clases en casa',
+        subtitle:
+          'Asistencia a domicilio desde Cabopino hasta Estepona para cualquier edad o dificultad: Mac, Windows, móvil, seguridad y clases particulares a tu ritmo. También remoto mundial vía RustDesk.',
+        image: '/assets/optimized/servicio-tecnico-marbella.webp',
+        href: '/servicio-tecnico',
+        ctaLabel: 'Explorar Servicio Técnico',
+        accent: '#F97316',
+        accentGlow: 'rgba(249, 115, 22, 0.55)',
+      },
+    ];
 ---
 
 <section
@@ -273,20 +319,20 @@ const CASES: DiveCase[] = [
 
     <!-- Capa UI fijada al viewport sticky -->
     <div class="hd-ui">
-      <!-- Barra superior: Desktop sticker tags + botón menú futurista en móvil -->
-      <nav aria-label="Navegación principal del estudio" class="hd-nav">
+      <!-- Barra superior: Desktop sticker tags + selector ES/EN + botón menú futurista en móvil -->
+      <nav aria-label={isEn ? 'Main studio navigation' : 'Navegación principal del estudio'} class="hd-nav">
         <div class="hd-nav-left">
-          <button type="button" data-hd-studio class="hd-tag">mi estudio</button>
-          <a href="/paginas-web" class="hd-tag hd-tag-web">web</a>
-          <a href="/software-empresas" class="hd-tag hd-tag-software">software</a>
-          <a href="/servicio-tecnico" class="hd-tag hd-tag-tecnico">técnico</a>
+          <button type="button" data-hd-studio class="hd-tag">{isEn ? 'my studio' : 'mi estudio'}</button>
+          <a href={isEn ? '/en/web-design' : '/paginas-web'} class="hd-tag hd-tag-web">web</a>
+          <a href={isEn ? '/en/custom-software' : '/software-empresas'} class="hd-tag hd-tag-software">software</a>
+          <a href={isEn ? '/en/tech-support' : '/servicio-tecnico'} class="hd-tag hd-tag-tecnico">{isEn ? 'tech support' : 'técnico'}</a>
         </div>
 
         <button
           type="button"
           data-hd-center-logo
           class="hd-center-logo"
-          aria-label="Volver al principio del estudio papis.app"
+          aria-label={isEn ? 'Back to top of papis.app studio' : 'Volver al principio del estudio papis.app'}
         >
           <svg
             viewBox="0 0 100 108"
@@ -311,59 +357,67 @@ const CASES: DiveCase[] = [
         </button>
 
         <div class="hd-nav-right">
-          <a href="#pilares" class="hd-tag">proyectos</a>
-          <a href="/contacto" class="hd-tag hd-tag-accent">presupuesto</a>
+          <a href={isEn ? '/' : '/en'} class="hd-tag hd-tag-lang" aria-label={isEn ? 'Cambiar a español' : 'Switch to English'}>
+            {isEn ? 'ES' : 'EN'}
+          </a>
+          <a href="#pilares" class="hd-tag">{isEn ? 'projects' : 'proyectos'}</a>
+          <a href={isEn ? '/en/contact' : '/contacto'} class="hd-tag hd-tag-accent">{isEn ? 'quote' : 'presupuesto'}</a>
         </div>
 
         <!-- Barra móvil limpia (solo visible en <= 820px) -->
         <div class="hd-mobile-bar">
           <button type="button" data-hd-studio-m class="hd-mobile-brand">PAPIS.APP</button>
-          <button
-            type="button"
-            data-hd-menu-open
-            aria-label="Abrir menú"
-            aria-expanded="false"
-            class="hd-mobile-menu-btn"
-          >
-            <span>MENÚ</span>
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-              <line x1="4" y1="7" x2="20" y2="7" />
-              <line x1="4" y1="12" x2="20" y2="12" />
-              <line x1="4" y1="17" x2="20" y2="17" />
-            </svg>
-          </button>
+          <div class="flex items-center gap-2">
+            <a href={isEn ? '/' : '/en'} class="hd-mobile-lang-btn" aria-label={isEn ? 'Cambiar a español' : 'Switch to English'}>
+              {isEn ? 'ES' : 'EN'}
+            </a>
+            <button
+              type="button"
+              data-hd-menu-open
+              aria-label={isEn ? 'Open menu' : 'Abrir menú'}
+              aria-expanded="false"
+              class="hd-mobile-menu-btn"
+            >
+              <span>{isEn ? 'MENU' : 'MENÚ'}</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+                <line x1="4" y1="7" x2="20" y2="7" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="17" x2="20" y2="17" />
+              </svg>
+            </button>
+          </div>
         </div>
       </nav>
 
       <!-- Menú móvil futurista centrado (MAYÚSCULAS + chevrons luminosos por color de sección) -->
       <div data-hd-mobile-overlay hidden class="hd-mobile-overlay">
-        <button type="button" data-hd-menu-close aria-label="Cerrar menú" class="hd-mobile-close">
+        <button type="button" data-hd-menu-close aria-label={isEn ? 'Close menu' : 'Cerrar menú'} class="hd-mobile-close">
           ✕
         </button>
         <div class="hd-mobile-links">
           <button type="button" data-hd-m-studio class="hd-m-link" style="--m-accent:#38BDF8; --m-glow:rgba(56,189,248,0.65);">
             <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>MI ESTUDIO</span>
+            <span>{isEn ? 'MY STUDIO' : 'MI ESTUDIO'}</span>
           </button>
-          <a href="/paginas-web" class="hd-m-link" style="--m-accent:#3B82F6; --m-glow:rgba(59,130,246,0.65);">
+          <a href={isEn ? '/en/web-design' : '/paginas-web'} class="hd-m-link" style="--m-accent:#3B82F6; --m-glow:rgba(59,130,246,0.65);">
             <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>DISEÑO WEB</span>
+            <span>{isEn ? 'WEB DESIGN' : 'DISEÑO WEB'}</span>
           </a>
-          <a href="/software-empresas" class="hd-m-link" style="--m-accent:#10B981; --m-glow:rgba(16,185,129,0.65);">
+          <a href={isEn ? '/en/custom-software' : '/software-empresas'} class="hd-m-link" style="--m-accent:#10B981; --m-glow:rgba(16,185,129,0.65);">
             <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>SOFTWARE EMPRESAS</span>
+            <span>{isEn ? 'CUSTOM SOFTWARE' : 'SOFTWARE EMPRESAS'}</span>
           </a>
-          <a href="/servicio-tecnico" class="hd-m-link" style="--m-accent:#F97316; --m-glow:rgba(249,115,22,0.65);">
+          <a href={isEn ? '/en/tech-support' : '/servicio-tecnico'} class="hd-m-link" style="--m-accent:#F97316; --m-glow:rgba(249,115,22,0.65);">
             <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>SERVICIO TÉCNICO</span>
+            <span>{isEn ? 'TECH SUPPORT' : 'SERVICIO TÉCNICO'}</span>
           </a>
-          <a href="/proyectos" class="hd-m-link" style="--m-accent:#A855F7; --m-glow:rgba(168,85,247,0.65);">
+          <a href={isEn ? '/en/projects' : '/proyectos'} class="hd-m-link" style="--m-accent:#A855F7; --m-glow:rgba(168,85,247,0.65);">
             <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>PROYECTOS</span>
+            <span>{isEn ? 'PROJECTS' : 'PROYECTOS'}</span>
           </a>
-          <a href="/contacto" class="hd-m-link" style="--m-accent:#22D3EE; --m-glow:rgba(34,211,238,0.65);">
+          <a href={isEn ? '/en/contact' : '/contacto'} class="hd-m-link" style="--m-accent:#22D3EE; --m-glow:rgba(34,211,238,0.65);">
             <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>PRESUPUESTO</span>
+            <span>{isEn ? 'GET A QUOTE' : 'PRESUPUESTO'}</span>
           </a>
         </div>
       </div>
@@ -386,7 +440,7 @@ const CASES: DiveCase[] = [
           <span class="hd-drip-line" aria-hidden="true">
             <span class="hd-drip-bead"></span>
           </span>
-          <span>desliza para entrar en el portátil</span>
+          <span>{isEn ? 'scroll down to enter the laptop' : 'desliza para entrar en el portátil'}</span>
         </button>
       </div>
     </div>
@@ -893,6 +947,33 @@ const CASES: DiveCase[] = [
   .hd-tag-tecnico {
     border-bottom: 3px solid #f97316;
   }
+  .hd-tag-lang {
+    padding: 0 11px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+
+  .hd-mobile-lang-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(7, 19, 30, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: #ffffff;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
   .hd-tag-accent {
     background: var(--mint);
     color: var(--green-800);

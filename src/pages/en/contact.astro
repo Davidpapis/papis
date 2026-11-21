@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContactFormIsland from '../../components/islands/ContactFormIsland';
+import siteSettings from '../../content/singletons/site-settings.json';
+import { buildBreadcrumbSchema } from '../../lib/seo';
+
+const schemas = [
+  buildBreadcrumbSchema([
+    { name: 'Home', url: '/en' },
+    { name: 'Contact', url: '/en/contact' },
+  ]),
+];
+---
+
+<BaseLayout
+  title="Contact & Free Quote in Marbella | papis.app"
+  description="Request a fixed quote for web design, custom ERP/CRM software or home IT support in Marbella (Cabopino to Estepona). Direct response from David Papis."
+  lang="en"
+  activeTheme="web"
+  schemas={schemas}
+>
+  <section aria-labelledby="heading-contact-en" class="relative pt-28 pb-24 sm:pt-36 sm:pb-32">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-3xl text-center">
+        <p class="text-sm font-medium text-blue-400">Direct contact · Fixed quote · No middlemen</p>
+        <h1
+          id="heading-contact-en"
+          class="mt-3 font-display text-3xl sm:text-4xl lg:text-[2.85rem] font-bold tracking-[-0.025em] text-white leading-[1.08]"
+          style="text-wrap: balance;"
+        >
+          Tell us what you need and we'll get straight back to you
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-slate-300">
+          Pick a service below or message David directly on WhatsApp ({siteSettings.phoneDisplay}).
+        </p>
+      </div>
+
+      <ContactFormIsland
+        client:load
+        lang="en"
+        phoneDisplay={siteSettings.phoneDisplay}
+        whatsappNumber={siteSettings.whatsappNumber}
+        email={siteSettings.email}
+        city={siteSettings.city}
+      />
+    </div>
+  </section>
+</BaseLayout>

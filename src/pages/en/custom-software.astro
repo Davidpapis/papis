@@ -1,0 +1,128 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DivisionLogo from '../../components/DivisionLogo.astro';
+import SpotlightCard from '../../components/SpotlightCard.astro';
+import GlowButton from '../../components/GlowButton.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import { PROJECT_IMAGES } from '../../lib/images';
+import { EN_FAQS, EN_PROJECTS } from '../../lib/i18n';
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from '../../lib/seo';
+
+const softwareProjects = EN_PROJECTS.filter((p) => p.pillar === 'software');
+
+const schemas = [
+  buildServiceSchema({
+    name: 'Custom Business Software, ERP & CRM Development in Marbella',
+    serviceType: 'Custom Software Development',
+    description:
+      'Bespoke cloud web apps, ERP & CRM for real estate agencies, academies or any industry—100% owned by you with €0 per-user fees.',
+    url: '/en/custom-software',
+  }),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: '/en' },
+    { name: 'Custom Software', url: '/en/custom-software' },
+  ]),
+  buildFaqSchema(EN_FAQS.software),
+];
+---
+
+<BaseLayout
+  title="Custom Software, ERP & CRM Development Marbella | papis.app"
+  description="Bespoke ERP, CRM & cloud SaaS in Marbella for real estate, academies or any industry. From €6,000, €0 per-user fees, GitHub + Vercel + Supabase."
+  lang="en"
+  activeTheme="software"
+  ogImage="/assets/optimized/hero-software.webp"
+  schemas={schemas}
+>
+  <section aria-labelledby="heading-sw-en" class="relative pt-28 pb-20 sm:pt-36 sm:pb-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <DivisionLogo theme="software" class="mb-5" />
+        <p class="text-sm font-medium text-[#10B981]">02. Custom Business Software · Any Industry</p>
+        <h1
+          id="heading-sw-en"
+          class="mt-3 font-display text-3xl sm:text-4xl lg:text-[2.9rem] font-bold tracking-[-0.025em] text-white leading-[1.08]"
+          style="text-wrap: balance;"
+        >
+          Custom ERP &amp; CRM software tailored to your business—with €0 per-user fees
+        </h1>
+        <p class="mt-4 text-base sm:text-lg leading-relaxed text-slate-300">
+          Real estate agencies, dance &amp; training academies, clinics or any sector: we study your exact workflow and build a private cloud platform you 100% own, starting from €6,000.
+        </p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {
+          softwareProjects.map((project) => (
+            <SpotlightCard accent="software" as="article" class="flex flex-col overflow-hidden">
+              <a
+                href={project.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block aspect-[16/9] w-full overflow-hidden border-b border-white/[0.08] bg-[#090B10]"
+              >
+                <Image
+                  src={PROJECT_IMAGES[project.imageKey]}
+                  alt={project.imageAlt}
+                  widths={[600, 1200]}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  loading="lazy"
+                  class="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                />
+              </a>
+              <div class="p-6 flex flex-1 flex-col justify-between">
+                <div>
+                  <p class="text-xs font-medium text-emerald-400">
+                    {project.client} · {project.location}
+                  </p>
+                  <h2 class="mt-2 font-display text-2xl font-semibold text-white">{project.title}</h2>
+                  <p class="mt-2.5 text-sm leading-relaxed text-slate-300">{project.summary}</p>
+                </div>
+                <div class="mt-5 pt-4 border-t border-white/[0.08] flex items-center justify-between gap-3">
+                  {project.externalUrl && (
+                    <a
+                      href={project.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-sm font-semibold text-emerald-300 hover:text-white"
+                    >
+                      Open live portal ↗
+                    </a>
+                  )}
+                  <GlowButton href="/en/contact?servicio=software" variant="software" size="sm">
+                    Request a Demo
+                  </GlowButton>
+                </div>
+              </div>
+            </SpotlightCard>
+          ))
+        }
+      </div>
+
+      <SpotlightCard accent="software" class="mt-8 p-7 sm:p-9">
+        <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <div class="max-w-2xl">
+            <p class="text-sm font-medium text-emerald-400">GitHub · Vercel · Supabase · 1-month beta</p>
+            <h2 class="mt-2 font-display text-2xl sm:text-3xl font-bold text-white">
+              Different industry? We design it from scratch around your team
+            </h2>
+            <p class="mt-3 text-sm sm:text-[15px] leading-relaxed text-slate-300">
+              Start with a lean MVP and add modules as you grow. Includes WhatsApp/email/invoicing integrations, optional connected website (from €3,000), training videos and 1-month beta with ~24h improvements.
+            </p>
+          </div>
+          <GlowButton href="/en/contact?servicio=software" variant="software" size="lg" solid>
+            Discuss your software
+          </GlowButton>
+        </div>
+      </SpotlightCard>
+    </div>
+  </section>
+
+  <FaqSection
+    title="Custom Business Software FAQs"
+    kicker="ERP, CRM & Cloud Platforms"
+    accent="software"
+    faqs={EN_FAQS.software}
+  />
+</BaseLayout>

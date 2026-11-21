@@ -5,11 +5,13 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import FloatingAssistantIsland from '../components/islands/FloatingAssistantIsland';
 import { PILLAR_PALETTES, type PillarId } from '../lib/theme';
+import type { Lang } from '../lib/i18n';
 import siteSettings from '../content/singletons/site-settings.json';
 
 interface Props {
   title: string;
   description: string;
+  lang?: Lang;
   activeTheme?: PillarId;
   ogImage?: string;
   ogType?: 'website' | 'article';
@@ -21,6 +23,7 @@ interface Props {
 const {
   title,
   description,
+  lang = 'es',
   activeTheme = 'web',
   ogImage,
   ogType = 'website',
@@ -35,7 +38,7 @@ const rootStyle = `--accent: ${palette.accent}; --accent-secondary: ${palette.se
 ---
 
 <!doctype html>
-<html lang="es" class="dark" style={rootStyle}>
+<html lang={lang} class="dark" style={rootStyle}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,6 +49,7 @@ const rootStyle = `--accent: ${palette.accent}; --accent-secondary: ${palette.se
     <SEO
       title={title}
       description={description}
+      lang={lang}
       ogImage={ogImage}
       ogType={ogType}
       noindex={noindex}
@@ -68,20 +72,23 @@ const rootStyle = `--accent: ${palette.accent}; --accent-secondary: ${palette.se
   </head>
 
   <body class="flex min-h-screen flex-col bg-[#050507] text-[#F1F5F9] selection:bg-blue-500/30 selection:text-white">
-    <a href="#contenido-principal" class="skip-link">Saltar al contenido principal</a>
+    <a href="#contenido-principal" class="skip-link">
+      {lang === 'en' ? 'Skip to main content' : 'Saltar al contenido principal'}
+    </a>
 
-    {!hideNavbar && <Navbar activeTheme={activeTheme} currentPath={currentPath} />}
+    {!hideNavbar && <Navbar activeTheme={activeTheme} currentPath={currentPath} lang={lang} />}
 
     <main id="contenido-principal" class="flex-1">
       <slot />
     </main>
 
-    <Footer activeTheme={activeTheme} />
+    <Footer activeTheme={activeTheme} lang={lang} />
 
-    <!-- Accesos flotantes (Llamada + WhatsApp + Avatar 2.5D + Asistente IA en isla lazy) -->
+    <!-- Accesos flotantes (WhatsApp + Avatar 2.5D + Asistente IA en isla lazy) -->
     <FloatingAssistantIsland
       client:idle
       activeTheme={activeTheme}
+      lang={lang}
       phoneDisplay={siteSettings.phoneDisplay}
       whatsappNumber={siteSettings.whatsappNumber}
     />

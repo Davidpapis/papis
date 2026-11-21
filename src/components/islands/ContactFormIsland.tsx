@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState, type SubmitEvent } from 'react';
 import { ArrowRight, CheckCircle2, Loader2, MessageCircle, Phone } from 'lucide-react';
 import { PILLAR_PALETTES, type PillarId } from '../../lib/theme';
+import type { Lang } from '../../lib/i18n';
 
 interface ContactFormIslandProps {
+  lang?: Lang;
   phoneDisplay: string;
   whatsappNumber: string;
   email: string;
@@ -17,7 +19,7 @@ interface QuickNeedOption {
   defaultMessage: string;
 }
 
-const QUICK_NEEDS: QuickNeedOption[] = [
+const QUICK_NEEDS_ES: QuickNeedOption[] = [
   {
     id: 'web',
     title: 'Necesito una Web',
@@ -44,12 +46,42 @@ const QUICK_NEEDS: QuickNeedOption[] = [
   },
 ];
 
+const QUICK_NEEDS_EN: QuickNeedOption[] = [
+  {
+    id: 'web',
+    title: 'I need a Website',
+    subtitle: 'Custom design, instant speed and SEO + AI GEO to win clients.',
+    defaultSubject: 'Custom Web Design & SEO/GEO',
+    defaultMessage:
+      'Hello, I would like a quote for a fast, self-editable website ranked on Google and AI.',
+  },
+  {
+    id: 'software',
+    title: 'I need Custom Business Software',
+    subtitle: 'Private ERP, CRM or SaaS tailored to real estate, academies or any industry.',
+    defaultSubject: 'Custom Business Software (ERP / CRM)',
+    defaultMessage:
+      'Hello, I am looking for custom software tailored to manage and automate my business.',
+  },
+  {
+    id: 'tecnico',
+    title: 'I need Home IT Support',
+    subtitle: 'Mac/Windows repairs, private lessons or iPhone setup in Marbella.',
+    defaultSubject: 'Home IT Support or Private Lessons',
+    defaultMessage:
+      'Hello, I would like to book a home IT visit or private lesson in Marbella.',
+  },
+];
+
 export default function ContactFormIsland({
+  lang = 'es',
   phoneDisplay,
   whatsappNumber,
   email,
   city,
 }: ContactFormIslandProps) {
+  const isEn = lang === 'en';
+  const QUICK_NEEDS = isEn ? QUICK_NEEDS_EN : QUICK_NEEDS_ES;
   const nameInputRef = useRef<HTMLInputElement>(null);
   const [selectedNeed, setSelectedNeed] = useState<PillarId>('web');
   const [name, setName] = useState('');
@@ -219,7 +251,7 @@ export default function ContactFormIsland({
                       className="text-xs font-medium"
                       style={{ color: isSelected ? palette.accent : '#64748B' }}
                     >
-                      {isSelected ? 'Seleccionado' : 'Elegir'}
+                      {isSelected ? (isEn ? 'Selected' : 'Seleccionado') : (isEn ? 'Select' : 'Elegir')}
                     </span>
                   </div>
 
@@ -248,13 +280,23 @@ export default function ContactFormIsland({
                 aria-hidden="true"
               />
               <h3 className="mt-4 font-display text-2xl font-bold text-white">
-                Solicitud lista, {name.trim()}
+                {isEn ? `Request ready, ${name.trim()}` : `Solicitud lista, ${name.trim()}`}
               </h3>
               <p className="mt-2 max-w-lg text-sm sm:text-base leading-relaxed text-slate-300">
-                Hemos registrado tu consulta sobre{' '}
-                <span className="font-medium text-white">{subject}</span>. Te contactaremos en{' '}
-                <span className="text-white">{contact}</span> hoy mismo. Si prefieres acelerar la
-                respuesta ahora, envíanos este resumen por WhatsApp en un toque.
+                {isEn ? (
+                  <>
+                    We have received your request about{' '}
+                    <span className="font-medium text-white">{subject}</span> and will reach out at{' '}
+                    <span className="text-white">{contact}</span> today. Want an even faster reply? Send this summary via WhatsApp in one tap.
+                  </>
+                ) : (
+                  <>
+                    Hemos registrado tu consulta sobre{' '}
+                    <span className="font-medium text-white">{subject}</span>. Te contactaremos en{' '}
+                    <span className="text-white">{contact}</span> hoy mismo. Si prefieres acelerar la
+                    respuesta ahora, envíanos este resumen por WhatsApp en un toque.
+                  </>
+                )}
               </p>
 
               <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -266,7 +308,7 @@ export default function ContactFormIsland({
                 >
                   <span className="beam-button-inner text-white px-5 py-2.5 text-sm font-semibold min-h-[44px]">
                     <MessageCircle className="w-4 h-4" />
-                    Abrir resumen en WhatsApp
+                    {isEn ? 'Open summary in WhatsApp' : 'Abrir resumen en WhatsApp'}
                   </span>
                 </a>
 
@@ -280,7 +322,7 @@ export default function ContactFormIsland({
                   }}
                   className="pressable rounded-xl border border-white/10 px-4 py-2.5 min-h-[44px] text-sm font-medium text-slate-300 hover:bg-white/[0.05] hover:text-white cursor-pointer"
                 >
-                  Enviar otra consulta
+                  {isEn ? 'Send another request' : 'Enviar otra consulta'}
                 </button>
               </div>
             </div>
@@ -300,10 +342,10 @@ export default function ContactFormIsland({
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-4">
                 <div>
                   <h3 className="font-display text-xl font-semibold text-white">
-                    Cuéntanos en 30 segundos qué quieres lograr
+                    {isEn ? 'Tell us in 30 seconds what you need' : 'Cuéntanos en 30 segundos qué quieres lograr'}
                   </h3>
                   <p className="mt-1 text-xs text-slate-400">
-                    Presupuesto claro y sin compromiso · Trato directo en Marbella
+                    {isEn ? 'Clear fixed quote · Direct personal service in Marbella' : 'Presupuesto claro y sin compromiso · Trato directo en Marbella'}
                   </p>
                 </div>
                 <span className="text-xs font-medium" style={{ color: formPalette.accent }}>
@@ -314,7 +356,7 @@ export default function ContactFormIsland({
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label htmlFor="contact-name" className="block text-xs font-medium text-slate-300 mb-1.5">
-                    Tu nombre
+                    {isEn ? 'Your name' : 'Tu nombre'}
                   </label>
                   <input
                     ref={nameInputRef}
@@ -325,14 +367,14 @@ export default function ContactFormIsland({
                     autoComplete="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Ej. Carlos Martínez"
+                    placeholder={isEn ? 'e.g. Sarah Wilson' : 'Ej. Carlos Martínez'}
                     className="w-full rounded-xl border border-white/[0.1] bg-[#080A0F] px-4 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none"
                   />
                 </div>
 
                 <div>
                   <label htmlFor="contact-info" className="block text-xs font-medium text-slate-300 mb-1.5">
-                    Teléfono o email
+                    {isEn ? 'Phone or email' : 'Teléfono o email'}
                   </label>
                   <input
                     id="contact-info"
@@ -341,7 +383,7 @@ export default function ContactFormIsland({
                     required
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
-                    placeholder="600 000 000 o tu@empresa.es"
+                    placeholder={isEn ? '+34 600 000 000 or you@company.com' : '600 000 000 o tu@empresa.es'}
                     className="w-full rounded-xl border border-white/[0.1] bg-[#080A0F] px-4 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none"
                   />
                 </div>
@@ -349,7 +391,7 @@ export default function ContactFormIsland({
 
               <div>
                 <label htmlFor="contact-subject" className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Servicio seleccionado
+                  {isEn ? 'Selected service' : 'Servicio seleccionado'}
                 </label>
                 <input
                   id="contact-subject"
@@ -363,7 +405,7 @@ export default function ContactFormIsland({
 
               <div>
                 <label htmlFor="contact-message" className="block text-xs font-medium text-slate-300 mb-1.5">
-                  ¿Cómo podemos ayudarte?
+                  {isEn ? 'How can we help you?' : '¿Cómo podemos ayudarte?'}
                 </label>
                 <textarea
                   id="contact-message"
@@ -371,7 +413,11 @@ export default function ContactFormIsland({
                   rows={3}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Cuéntanos brevemente tu negocio, proyecto o el problema técnico que tienes..."
+                  placeholder={
+                    isEn
+                      ? 'Briefly tell us about your business, project or IT issue...'
+                      : 'Cuéntanos brevemente tu negocio, proyecto o el problema técnico que tienes...'
+                  }
                   className="w-full resize-none rounded-xl border border-white/[0.1] bg-[#080A0F] px-4 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:border-white/30 focus:outline-none"
                 />
               </div>
@@ -394,11 +440,11 @@ export default function ContactFormIsland({
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Enviando solicitud...
+                        {isEn ? 'Sending request...' : 'Enviando solicitud...'}
                       </>
                     ) : (
                       <>
-                        Empezar mi proyecto hoy
+                        {isEn ? 'Start my project today' : 'Empezar mi proyecto hoy'}
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
@@ -406,7 +452,7 @@ export default function ContactFormIsland({
                 </button>
 
                 <p className="text-xs text-slate-400">
-                  Sin spam. Te respondemos por teléfono o WhatsApp.
+                  {isEn ? 'No spam. Direct reply via phone or WhatsApp.' : 'Sin spam. Te respondemos por teléfono o WhatsApp.'}
                 </p>
               </div>
             </form>
@@ -417,14 +463,15 @@ export default function ContactFormIsland({
         <div className="lg:col-span-5 flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-[#0D0F14]/95 p-6 sm:p-8">
           <div>
             <p className="text-xs font-medium text-slate-400">
-              Atención inmediata en Marbella y Costa del Sol
+              {isEn ? 'Immediate attention in Marbella & Costa del Sol' : 'Atención inmediata en Marbella y Costa del Sol'}
             </p>
             <h3 className="mt-2 font-display text-2xl font-semibold text-white">
-              ¿Prefieres hablar ahora mismo?
+              {isEn ? 'Prefer to talk right now?' : '¿Prefieres hablar ahora mismo?'}
             </h3>
             <p className="mt-3 text-sm leading-relaxed text-slate-300">
-              Muchas veces una llamada de 5 minutos o un audio por WhatsApp ahorra días de correos.
-              Escríbenos o llámanos y te damos una orientación honesta al momento.
+              {isEn
+                ? 'Often a 5-minute call or a quick WhatsApp message saves days of emails. Reach out and we will give you honest advice straight away.'
+                : 'Muchas veces una llamada de 5 minutos o un audio por WhatsApp ahorra días de correos. Escríbenos o llámanos y te damos una orientación honesta al momento.'}
             </p>
 
             <div className="mt-7 space-y-4 border-t border-white/[0.08] pt-6">
@@ -437,7 +484,7 @@ export default function ContactFormIsland({
                     <Phone className="w-4 h-4" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400">Llamada directa</p>
+                    <p className="text-xs text-slate-400">{isEn ? 'Direct call' : 'Llamada directa'}</p>
                     <p className="font-mono-tabular text-base font-semibold text-white">
                       {phoneDisplay}
                     </p>
@@ -457,9 +504,9 @@ export default function ContactFormIsland({
                     <MessageCircle className="w-4 h-4" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="text-xs text-emerald-300/80">WhatsApp directo</p>
+                    <p className="text-xs text-emerald-300/80">{isEn ? 'Direct WhatsApp' : 'WhatsApp directo'}</p>
                     <p className="text-base font-semibold text-white">
-                      Escribir por WhatsApp ahora
+                      {isEn ? 'Message on WhatsApp now' : 'Escribir por WhatsApp ahora'}
                     </p>
                   </div>
                 </div>

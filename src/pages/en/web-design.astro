@@ -1,0 +1,165 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DivisionLogo from '../../components/DivisionLogo.astro';
+import SpotlightCard from '../../components/SpotlightCard.astro';
+import GlowButton from '../../components/GlowButton.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import { PROJECT_IMAGES } from '../../lib/images';
+import { EN_FAQS, EN_PROJECTS } from '../../lib/i18n';
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from '../../lib/seo';
+
+const webProjects = EN_PROJECTS.filter((p) => p.pillar === 'web');
+
+const schemas = [
+  buildServiceSchema({
+    name: 'Custom Web Design, Local SEO & AI GEO in Marbella',
+    serviceType: 'Web Design and Development',
+    description:
+      'Ultra-fast Astro websites in Marbella delivered in 10–15 days, self-editable CMS, cookieless analytics and SEO + GEO for Google, ChatGPT & Gemini.',
+    url: '/en/web-design',
+  }),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: '/en' },
+    { name: 'Web Design & SEO/GEO', url: '/en/web-design' },
+  ]),
+  buildFaqSchema(EN_FAQS.web),
+];
+---
+
+<BaseLayout
+  title="Web Design Marbella · Fast Astro Websites, SEO & GEO | papis.app"
+  description="Custom web design in Marbella delivered in 10–15 days. Static HTML (< 0.8s), self-editable CMS, cookieless GDPR analytics and SEO + GEO for Google & ChatGPT."
+  lang="en"
+  activeTheme="web"
+  ogImage="/assets/optimized/hero-web.webp"
+  schemas={schemas}
+>
+  <section aria-labelledby="heading-web-en" class="relative pt-28 pb-20 sm:pt-36 sm:pb-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <DivisionLogo theme="web" class="mb-5" />
+        <p class="text-sm font-medium text-[#3B82F6]">01. Web Design, SEO &amp; GEO · Marbella</p>
+        <h1
+          id="heading-web-en"
+          class="mt-3 font-display text-3xl sm:text-4xl lg:text-[2.9rem] font-bold tracking-[-0.025em] text-white leading-[1.08]"
+          style="text-wrap: balance;"
+        >
+          Ultra-fast custom websites in Marbella built to rank on Google &amp; AI
+        </h1>
+        <p class="mt-4 text-base sm:text-lg leading-relaxed text-slate-300">
+          Delivered in 10–15 days with clean Astro architecture, self-editable back-office, cookieless GDPR analytics and structured data ready for ChatGPT, Gemini &amp; Perplexity.
+        </p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-12">
+        <SpotlightCard accent="web" class="lg:col-span-7 p-6 sm:p-8">
+          <p class="text-xs font-medium text-blue-300">High-Performance Frontend Engineering</p>
+          <h2 class="mt-3 font-display text-2xl font-semibold text-white">
+            Speed, security &amp; clean code you actually own
+          </h2>
+          <p class="mt-3 text-sm sm:text-[15px] leading-relaxed text-slate-300">
+            Forget slow WordPress templates and broken plugins. Every website is compiled to static HTML for instant mobile loading, top Core Web Vitals and full multilingual scalability (EN / ES / FR / DE).
+          </p>
+          <div class="mt-6 grid grid-cols-3 gap-4 border-t border-white/[0.08] pt-6">
+            <div>
+              <p class="font-mono-tabular text-2xl sm:text-3xl font-semibold text-white">10–15d</p>
+              <p class="mt-1 text-xs text-slate-400">Typical delivery</p>
+            </div>
+            <div class="border-l border-white/[0.08] pl-4">
+              <p class="font-mono-tabular text-2xl sm:text-3xl font-semibold text-white">&lt; 0.8s</p>
+              <p class="mt-1 text-xs text-slate-400">First paint target</p>
+            </div>
+            <div class="border-l border-white/[0.08] pl-4">
+              <p class="font-mono-tabular text-2xl sm:text-3xl font-semibold text-white">50/50</p>
+              <p class="mt-1 text-xs text-slate-400">Clear split payment</p>
+            </div>
+          </div>
+        </SpotlightCard>
+
+        <SpotlightCard accent="web" class="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between gap-6">
+          <div>
+            <p class="text-xs font-medium text-cyan-300">Transparent Ongoing Plans</p>
+            <h2 class="mt-3 font-display text-2xl font-semibold text-white">
+              Maintenance, SEO &amp; AI GEO plans
+            </h2>
+            <ul class="mt-4 space-y-2.5 text-sm text-slate-300">
+              <li>• <strong class="text-white">Maintenance:</strong> Basic €50/mo · Standard €80/mo · AI/Calc €180/mo</li>
+              <li>• <strong class="text-white">SEO Basic:</strong> €190/mo (includes basic maintenance)</li>
+              <li>• <strong class="text-white">SEO + GEO + AEO:</strong> €290/mo (Google + ChatGPT/Gemini)</li>
+              <li>• <strong class="text-white">WordPress/Wix migration:</strong> +€300 keeping your SEO &amp; emails</li>
+            </ul>
+          </div>
+          <GlowButton href="/en/contact?servicio=web" variant="web" size="md" solid>
+            Request a Web Design Quote
+          </GlowButton>
+        </SpotlightCard>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Web Projects -->
+  <section class="relative py-20 border-t border-white/[0.06]">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display text-3xl font-bold text-white">Live websites built by papis.app</h2>
+      <div class="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {
+          webProjects.map((project) => (
+            <SpotlightCard accent="web" as="article" class="flex flex-col overflow-hidden">
+              <a
+                href={project.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block aspect-[16/9] w-full overflow-hidden border-b border-white/[0.08] bg-[#090B10]"
+              >
+                <Image
+                  src={PROJECT_IMAGES[project.imageKey]}
+                  alt={project.imageAlt}
+                  widths={[600, 1200]}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  loading="lazy"
+                  class="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                />
+              </a>
+              <div class="p-6 flex flex-1 flex-col justify-between">
+                <div>
+                  <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                    <span>{project.client}</span>
+                    <span>·</span>
+                    <span>{project.location}</span>
+                    {project.socialImpact && (
+                      <span class="rounded-full border border-sky-400/30 bg-sky-400/10 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300">
+                        ♥ Social Impact
+                      </span>
+                    )}
+                  </div>
+                  <h3 class="mt-2 font-display text-xl font-semibold text-white">{project.title}</h3>
+                  <p class="mt-2 text-sm text-slate-300">{project.summary}</p>
+                </div>
+                {project.externalUrl && (
+                  <div class="mt-5 pt-4 border-t border-white/[0.08] flex justify-end">
+                    <a
+                      href={project.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-sm font-semibold text-blue-300 hover:text-white"
+                    >
+                      Visit live website ↗
+                    </a>
+                  </div>
+                )}
+              </div>
+            </SpotlightCard>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <FaqSection
+    title="Web Design, SEO & GEO Frequently Asked Questions"
+    kicker="Clear pricing & process"
+    accent="web"
+    faqs={EN_FAQS.web}
+  />
+</BaseLayout>

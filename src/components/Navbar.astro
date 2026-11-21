@@ -2,42 +2,55 @@
 import Logo from './Logo.astro';
 import GlowButton from './GlowButton.astro';
 import { NAV_LINKS, PILLAR_PALETTES, type PillarId } from '../lib/theme';
+import { getAlternatePath, NAV_LINKS_EN, type Lang } from '../lib/i18n';
 
 interface Props {
   activeTheme?: PillarId;
   currentPath: string;
+  lang?: Lang;
 }
 
-const { activeTheme = 'web', currentPath } = Astro.props;
+const { activeTheme = 'web', currentPath, lang = 'es' } = Astro.props;
 const normalizedPath = currentPath === '/' ? '/' : currentPath.replace(/\/$/, '');
 const accentColor = PILLAR_PALETTES[activeTheme].accent;
+const links = lang === 'en' ? NAV_LINKS_EN : NAV_LINKS;
+const homeHref = lang === 'en' ? '/en' : '/';
+const contactHref = lang === 'en' ? '/en/contact' : '/contacto';
+const switchLang: Lang = lang === 'en' ? 'es' : 'en';
+const switchHref = getAlternatePath(currentPath, switchLang);
 
 const MOBILE_LINK_COLORS: Record<string, { color: string; glow: string }> = {
   '/': { color: '#38BDF8', glow: 'rgba(56, 189, 248, 0.6)' },
+  '/en': { color: '#38BDF8', glow: 'rgba(56, 189, 248, 0.6)' },
   '/paginas-web': { color: '#3B82F6', glow: 'rgba(59, 130, 246, 0.65)' },
+  '/en/web-design': { color: '#3B82F6', glow: 'rgba(59, 130, 246, 0.65)' },
   '/software-empresas': { color: '#10B981', glow: 'rgba(16, 185, 129, 0.65)' },
+  '/en/custom-software': { color: '#10B981', glow: 'rgba(16, 185, 129, 0.65)' },
   '/servicio-tecnico': { color: '#F97316', glow: 'rgba(249, 115, 22, 0.65)' },
+  '/en/tech-support': { color: '#F97316', glow: 'rgba(249, 115, 22, 0.65)' },
   '/proyectos': { color: '#A855F7', glow: 'rgba(168, 85, 247, 0.65)' },
+  '/en/projects': { color: '#A855F7', glow: 'rgba(168, 85, 247, 0.65)' },
   '/contacto': { color: '#22D3EE', glow: 'rgba(34, 211, 238, 0.65)' },
+  '/en/contact': { color: '#22D3EE', glow: 'rgba(34, 211, 238, 0.65)' },
 };
 ---
 
 <header class="site-header fixed top-0 inset-x-0 z-50">
   <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
     <a
-      href="/"
+      href={homeHref}
       class="focus-visible:outline-2 focus-visible:outline-offset-4 rounded-md shrink-0"
-      aria-label="Ir al inicio de papis.app"
+      aria-label={lang === 'en' ? 'Go to papis.app home' : 'Ir al inicio de papis.app'}
     >
       <Logo theme={activeTheme} />
     </a>
 
-    <nav aria-label="Navegación principal" class="hidden md:flex items-center gap-7">
+    <nav aria-label={lang === 'en' ? 'Main navigation' : 'Navegación principal'} class="hidden md:flex items-center gap-7">
       {
-        NAV_LINKS.map((link) => {
+        links.map((link) => {
           const isActive =
-            link.href === '/'
-              ? normalizedPath === '/'
+            link.href === '/' || link.href === '/en'
+              ? normalizedPath === link.href
               : normalizedPath === link.href || normalizedPath.startsWith(`${link.href}/`);
           return (
             <a
@@ -59,15 +72,25 @@ const MOBILE_LINK_COLORS: Record<string, { color: string; glow: string }> = {
       }
     </nav>
 
-    <div class="flex items-center gap-3 shrink-0">
+    <div class="flex items-center gap-2.5 shrink-0">
+      <a
+        href={switchHref}
+        aria-label={lang === 'en' ? 'Switch to Spanish' : 'Cambiar a inglés'}
+        class="inline-flex h-9 items-center gap-1 rounded-lg border border-white/12 bg-white/[0.04] px-2.5 text-xs font-bold tracking-wider text-slate-300 hover:border-white/30 hover:text-white transition-colors"
+      >
+        <span class={lang === 'es' ? 'text-white' : 'text-slate-500'}>ES</span>
+        <span class="text-slate-600">/</span>
+        <span class={lang === 'en' ? 'text-white' : 'text-slate-500'}>EN</span>
+      </a>
+
       <div class="hidden sm:block">
         <GlowButton
-          href="/contacto"
+          href={contactHref}
           size="sm"
           solid
-          ariaLabel="Pedir presupuesto en papis.app"
+          ariaLabel={lang === 'en' ? 'Request a quote on papis.app' : 'Pedir presupuesto en papis.app'}
         >
-          Pedir Presupuesto
+          {lang === 'en' ? 'Get a Quote' : 'Pedir Presupuesto'}
         </GlowButton>
       </div>
 
@@ -98,12 +121,12 @@ const MOBILE_LINK_COLORS: Record<string, { color: string; glow: string }> = {
     hidden
     class="mobile-tech-drawer md:hidden fixed inset-0 top-16 z-50 flex flex-col items-center justify-center bg-[#05070D]/96 backdrop-blur-2xl px-6 py-8"
   >
-    <nav aria-label="Navegación móvil" class="flex w-full max-w-sm flex-col items-center gap-3">
+    <nav aria-label={lang === 'en' ? 'Mobile navigation' : 'Navegación móvil'} class="flex w-full max-w-sm flex-col items-center gap-3">
       {
-        NAV_LINKS.map((link) => {
+        links.map((link) => {
           const isActive =
-            link.href === '/'
-              ? normalizedPath === '/'
+            link.href === '/' || link.href === '/en'
+              ? normalizedPath === link.href
               : normalizedPath === link.href || normalizedPath.startsWith(`${link.href}/`);
           const c = MOBILE_LINK_COLORS[link.href] ?? { color: '#3B82F6', glow: 'rgba(59,130,246,0.6)' };
           return (
@@ -131,8 +154,8 @@ const MOBILE_LINK_COLORS: Record<string, { color: string; glow: string }> = {
       }
     </nav>
     <div class="mt-7 w-full max-w-sm">
-      <GlowButton href="/contacto" size="lg" solid fullWidth>
-        PEDIR PRESUPUESTO
+      <GlowButton href={contactHref} size="lg" solid fullWidth>
+        {lang === 'en' ? 'GET A QUOTE' : 'PEDIR PRESUPUESTO'}
       </GlowButton>
     </div>
   </div>

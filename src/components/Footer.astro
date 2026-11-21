@@ -2,12 +2,16 @@
 import Logo from './Logo.astro';
 import siteSettings from '../content/singletons/site-settings.json';
 import { NAV_LINKS, type PillarId } from '../lib/theme';
+import { NAV_LINKS_EN, type Lang } from '../lib/i18n';
 
 interface Props {
   activeTheme?: PillarId;
+  lang?: Lang;
 }
 
-const { activeTheme = 'web' } = Astro.props;
+const { activeTheme = 'web', lang = 'es' } = Astro.props;
+const isEn = lang === 'en';
+const navLinks = isEn ? NAV_LINKS_EN : NAV_LINKS;
 const year = new Date().getFullYear();
 const phoneHref = `tel:${siteSettings.phoneDisplay.replace(/\s+/g, '')}`;
 
@@ -69,10 +73,10 @@ const CLIENT_LOGOS = [
   <div class="border-b border-white/[0.06] pb-9 mb-10">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-4 flex items-center justify-between gap-4">
       <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-        Clientes y proyectos reales en producción
+        {isEn ? 'Real clients & live projects in production' : 'Clientes y proyectos reales en producción'}
       </p>
-      <a href="/proyectos" class="text-xs font-medium text-slate-400 hover:text-white transition-colors">
-        Ver todos →
+      <a href={isEn ? '/en/projects' : '/proyectos'} class="text-xs font-medium text-slate-400 hover:text-white transition-colors">
+        {isEn ? 'View all →' : 'Ver todos →'}
       </a>
     </div>
 
@@ -113,18 +117,19 @@ const CLIENT_LOGOS = [
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
       <div>
-        <a href="/" aria-label="Ir al inicio en papis.app">
+        <a href={isEn ? '/en' : '/'} aria-label={isEn ? 'Go to papis.app home' : 'Ir al inicio en papis.app'}>
           <Logo theme={activeTheme} size="sm" />
         </a>
         <p class="mt-3 max-w-md text-xs sm:text-sm leading-relaxed text-slate-400">
-          Desarrollo web con SEO y GEO, software a medida para empresas y servicio técnico
-          informático a domicilio en {siteSettings.city}.
+          {isEn
+            ? `Custom web design with SEO & GEO, bespoke business software (ERP/CRM) and home IT support in ${siteSettings.city}.`
+            : `Desarrollo web con SEO y GEO, software a medida para empresas y servicio técnico informático a domicilio en ${siteSettings.city}.`}
         </p>
       </div>
 
-      <nav aria-label="Enlaces del pie de página" class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-400">
+      <nav aria-label={isEn ? 'Footer links' : 'Enlaces del pie de página'} class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-400">
         {
-          NAV_LINKS.map((link) => (
+          navLinks.map((link) => (
             <a href={link.href} class="hover:text-white transition-colors py-1">
               {link.label}
             </a>
@@ -135,11 +140,18 @@ const CLIENT_LOGOS = [
 
     <div class="mt-8 flex flex-col gap-3 border-t border-white/[0.06] pt-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5">
-        <p>© {year} {siteSettings.brandName} · Marbella, Málaga. Todos los derechos reservados.</p>
+        <p>
+          © {year} {siteSettings.brandName} · Marbella, Málaga.{' '}
+          {isEn ? 'All rights reserved.' : 'Todos los derechos reservados.'}
+        </p>
         <span aria-hidden="true" class="hidden sm:inline">·</span>
         <div class="flex items-center gap-3">
-          <a href="/aviso-legal" class="hover:text-white transition-colors">Aviso Legal</a>
-          <a href="/privacidad" class="hover:text-white transition-colors">Privacidad</a>
+          <a href="/aviso-legal" class="hover:text-white transition-colors">
+            {isEn ? 'Legal Notice' : 'Aviso Legal'}
+          </a>
+          <a href="/privacidad" class="hover:text-white transition-colors">
+            {isEn ? 'Privacy' : 'Privacidad'}
+          </a>
           <a href="/cookies" class="hover:text-white transition-colors">Cookies</a>
         </div>
       </div>

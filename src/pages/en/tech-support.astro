@@ -1,0 +1,136 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DivisionLogo from '../../components/DivisionLogo.astro';
+import SpotlightCard from '../../components/SpotlightCard.astro';
+import GlowButton from '../../components/GlowButton.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import { PROJECT_IMAGES } from '../../lib/images';
+import { EN_FAQS } from '../../lib/i18n';
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from '../../lib/seo';
+
+const HOME_SERVICES = [
+  {
+    title: 'Mac & Windows repairs and tune-ups at home',
+    description:
+      'Speeding up slow computers, malware removal, SSD/battery/screen replacements (with home pickup & return) and clean setups.',
+  },
+  {
+    title: 'Private lessons for any age or skill level',
+    description:
+      'Patient, jargon-free 1-on-1 classes at your pace: email, digital certificates, video calls, cloud backups or everyday tasks (30–40% savings with lesson bundles).',
+  },
+  {
+    title: 'iPhone, iPad & smartphone mastery',
+    description:
+      'Complete iPhone-to-iPhone data transfer (€120 flat rate), WhatsApp, iCloud photo backups, online banking and security.',
+  },
+  {
+    title: 'Home Wi-Fi, printers, Smart TV & Synology NAS',
+    description:
+      'Fixing dead Wi-Fi zones, printers, Smart TVs and configuring home/office servers and Synology NAS (€100/h).',
+  },
+  {
+    title: 'Instant worldwide remote support via RustDesk',
+    description:
+      'Not in Marbella right now? We connect securely via RustDesk from anywhere in the world to fix issues on the spot.',
+  },
+];
+
+const schemas = [
+  buildServiceSchema({
+    name: 'Home IT Support & Private Tech Lessons in Marbella (Cabopino to Estepona)',
+    serviceType: 'Computer Repair & IT Support',
+    description:
+      '20 years of home IT support from Cabopino to Estepona for any age or skill level. Apple & Windows specialists, from €45/h, plus worldwide RustDesk remote support.',
+    url: '/en/tech-support',
+  }),
+  buildBreadcrumbSchema([
+    { name: 'Home', url: '/en' },
+    { name: 'Home IT Support', url: '/en/tech-support' },
+  ]),
+  buildFaqSchema(EN_FAQS.tecnico),
+];
+---
+
+<BaseLayout
+  title="Home IT Support & Mac Repair Marbella (Cabopino–Estepona) | papis.app"
+  description="20 years of trusted home IT support & private lessons from Cabopino to Estepona. Apple Mac, Windows, iPhone transfers (€120), from €45/h & worldwide remote."
+  lang="en"
+  activeTheme="tecnico"
+  ogImage="/assets/optimized/hero-tecnico.webp"
+  schemas={schemas}
+>
+  <section aria-labelledby="heading-tech-en" class="relative pt-28 pb-20 sm:pt-36 sm:pb-24">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <DivisionLogo theme="tecnico" class="mb-5" />
+        <p class="text-sm font-medium text-[#F97316]">03. Home IT Support &amp; Private Lessons · 20 Years Experience</p>
+        <h1
+          id="heading-tech-en"
+          class="mt-3 font-display text-3xl sm:text-4xl lg:text-[2.9rem] font-bold tracking-[-0.025em] text-white leading-[1.08]"
+          style="text-wrap: balance;"
+        >
+          Trusted home IT support &amp; tech lessons in Marbella—for any age or difficulty
+        </h1>
+        <p class="mt-4 text-base sm:text-lg leading-relaxed text-slate-300">
+          No unplugging cables or waiting weeks at a shop. We come directly to your home from Cabopino to Estepona (Marbella €45/h, San Pedro €50/h, Estepona €65/h) usually within 24 hours.
+        </p>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <SpotlightCard accent="tecnico" class="lg:col-span-5 flex flex-col overflow-hidden">
+          <div class="aspect-[4/3] w-full overflow-hidden border-b border-white/[0.08]">
+            <Image
+              src={PROJECT_IMAGES['servicio-tecnico-marbella']}
+              alt="Home IT support specialist helping a client in Marbella"
+              widths={[600, 1200]}
+              sizes="(max-width: 1024px) 100vw, 42vw"
+              loading="eager"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <div class="p-6 flex flex-1 flex-col justify-between">
+            <div>
+              <p class="text-xs font-medium text-orange-400">Clear rates · No surprises</p>
+              <h2 class="mt-2 font-display text-xl font-semibold text-white">
+                20 years serving Marbella &amp; Costa del Sol
+              </h2>
+              <ul class="mt-4 space-y-2 text-sm text-slate-300">
+                <li>• Marbella: <strong class="text-white">€45/h</strong> · San Pedro: <strong class="text-white">€50/h</strong> · Estepona: <strong class="text-white">€65/h</strong></li>
+                <li>• iPhone-to-iPhone complete transfer: <strong class="text-white">€120 flat</strong></li>
+                <li>• Servers &amp; Synology NAS: <strong class="text-white">€100/h</strong></li>
+                <li>• Private lesson bundles: <strong class="text-white">30–40% savings</strong></li>
+              </ul>
+            </div>
+            <div class="mt-6 pt-5 border-t border-white/[0.08]">
+              <GlowButton href="/en/contact?servicio=tecnico" variant="tecnico" size="md" solid fullWidth>
+                Book a Home Visit
+              </GlowButton>
+            </div>
+          </div>
+        </SpotlightCard>
+
+        <SpotlightCard accent="tecnico" class="lg:col-span-7 p-6 sm:p-8">
+          <div class="divide-y divide-white/[0.08]">
+            {
+              HOME_SERVICES.map((service, idx) => (
+                <article class={idx === 0 ? 'pb-5' : idx === HOME_SERVICES.length - 1 ? 'pt-5' : 'py-5'}>
+                  <h2 class="font-display text-lg font-semibold text-white">{service.title}</h2>
+                  <p class="mt-1.5 text-sm leading-relaxed text-slate-300">{service.description}</p>
+                </article>
+              ))
+            }
+          </div>
+        </SpotlightCard>
+      </div>
+    </div>
+  </section>
+
+  <FaqSection
+    title="Home IT Support & Private Lessons FAQs"
+    kicker="Cabopino, Marbella, San Pedro & Estepona"
+    accent="tecnico"
+    faqs={EN_FAQS.tecnico}
+  />
+</BaseLayout>
