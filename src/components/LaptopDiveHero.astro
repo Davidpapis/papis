@@ -288,11 +288,30 @@ const CASES: DiveCase[] = [
           class="hd-center-logo"
           aria-label="Volver al principio del estudio papis.app"
         >
-          PAPIS.APP
+          <svg
+            viewBox="0 0 100 108"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="hd-center-logo-icon"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 6H54A38.5 38.5 0 0 1 54 83H48V72.5H54A28 28 0 0 0 54 16.5H22.5V55.5L12 60.8V6Z"
+              fill="var(--case-accent)"
+              style="transition: fill 260ms var(--ease-out);"
+            />
+            <path
+              d="M31.5 21.5L68 40V49.5L22.5 72.5V92.5H31.5V72.5H42V103H12V67.3L56.5 44.75L31.5 32.1V21.5Z"
+              fill="#F8FAFC"
+            />
+          </svg>
+          <span class="hd-center-logo-word">
+            <span>papis.</span><span style="color: var(--case-accent); transition: color 260ms var(--ease-out);">app</span>
+          </span>
         </button>
 
         <div class="hd-nav-right">
-          <button type="button" data-hd-dive class="hd-tag">proyectos</button>
+          <a href="#pilares" class="hd-tag">proyectos</a>
           <a href="/contacto" class="hd-tag hd-tag-accent">presupuesto</a>
         </div>
 
@@ -877,23 +896,54 @@ const CASES: DiveCase[] = [
   .hd-tag-accent {
     background: var(--mint);
     color: var(--green-800);
+    transition: transform 200ms var(--ease-out), background-color 300ms var(--ease-out), color 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+  }
+
+  /* En modo portátil, el botón "presupuesto" adopta el color del servicio activo */
+  .hd-stage.is-case .hd-tag-accent {
+    background: var(--case-accent);
+    color: #ffffff;
+    box-shadow: 0 6px 20px -4px var(--case-glow);
   }
 
   .hd-center-logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -62%);
     pointer-events: none;
     opacity: 0;
-    transform: translateY(-8px);
-    font-weight: 900;
-    font-size: 18px;
-    letter-spacing: -0.04em;
-    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+    border-radius: 999px;
+    background: rgba(7, 19, 30, 0.72);
+    border: 1px solid color-mix(in srgb, var(--case-accent) 45%, rgba(255, 255, 255, 0.14));
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 18px -6px var(--case-glow);
     cursor: pointer;
-    transition: opacity 320ms var(--ease-out), transform 320ms var(--ease-out);
+    transition: opacity 320ms var(--ease-out), transform 320ms var(--ease-out), border-color 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+  }
+
+  .hd-center-logo-icon {
+    width: 24px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+
+  .hd-center-logo-word {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: #f8fafc;
   }
 
   .hd-stage.is-case .hd-center-logo {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, -50%);
     pointer-events: auto;
   }
 
@@ -1301,7 +1351,6 @@ const CASES: DiveCase[] = [
     const ctaLinkEl = track.querySelector<HTMLAnchorElement>('[data-hd-cta-link]');
     const ctaLabelEl = track.querySelector<HTMLElement>('[data-hd-cta-label]');
     const ticketEl = track.querySelector<HTMLElement>('[data-hd-ticket]');
-    const screwEls = Array.from(track.querySelectorAll<HTMLElement>('[data-hd-screw]'));
     const ticketTitleEl = track.querySelector<HTMLElement>('[data-hd-ticket-title]');
     const ticketRowsEl = track.querySelector<HTMLElement>('[data-hd-ticket-rows]');
     const mobileMenuOpenBtn = track.querySelector<HTMLButtonElement>('[data-hd-menu-open]');
@@ -1316,7 +1365,6 @@ const CASES: DiveCase[] = [
     const nextBtn = track.querySelector<HTMLButtonElement>('[data-hd-next]');
     const studioBtn = track.querySelector<HTMLButtonElement>('[data-hd-studio]');
     const centerLogoBtn = track.querySelector<HTMLButtonElement>('[data-hd-center-logo]');
-    const diveBtn = track.querySelector<HTMLButtonElement>('[data-hd-dive]');
     const hintBtn = track.querySelector<HTMLButtonElement>('[data-hd-hint-btn]');
 
     const bgSlides = Array.from(track.querySelectorAll<HTMLElement>('[data-hd-media]'));
@@ -1633,26 +1681,16 @@ const CASES: DiveCase[] = [
       if (animate) {
         animateTextStagger();
         startTypewriter(item.subtitle);
-        // Efecto impacto + atornillado de la matrícula metálica
+        // Efecto entrada limpia de la matrícula metálica (tornillos fijos sin giro)
         if (!rm && ticketEl) {
           ticketEl.animate(
             [
-              { transform: 'scale(1.18) translateY(-16px) rotate(-3deg)', opacity: 0.75 },
-              { transform: 'scale(0.97) translateY(2px) rotate(0.8deg)', opacity: 1, offset: 0.65 },
+              { transform: 'scale(1.12) translateY(-12px) rotate(-2deg)', opacity: 0.75 },
+              { transform: 'scale(0.98) translateY(1px) rotate(0.4deg)', opacity: 1, offset: 0.65 },
               { transform: 'scale(1) translateY(0) rotate(0deg)', opacity: 1 },
             ],
-            { duration: 380, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+            { duration: 360, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
           );
-          screwEls.forEach((screw, i) => {
-            screw.animate(
-              [
-                { transform: 'rotate(0deg) scale(1)' },
-                { transform: 'rotate(220deg) scale(1.18)', offset: 0.55 },
-                { transform: 'rotate(360deg) scale(1)' },
-              ],
-              { duration: 420, delay: 220 + i * 65, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
-            );
-          });
         }
       } else if (subtitleEl) {
         subtitleEl.textContent = item.subtitle;
@@ -1688,7 +1726,6 @@ const CASES: DiveCase[] = [
     dotBtns.forEach((btn, idx) => {
       btn.addEventListener('click', () => scrollToService(idx));
     });
-    diveBtn?.addEventListener('click', () => scrollToService(0));
     hintBtn?.addEventListener('click', () => scrollToService(0));
     studioBtn?.addEventListener('click', scrollToHero);
     centerLogoBtn?.addEventListener('click', scrollToHero);

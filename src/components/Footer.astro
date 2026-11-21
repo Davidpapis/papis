@@ -10,9 +10,106 @@ interface Props {
 const { activeTheme = 'web' } = Astro.props;
 const year = new Date().getFullYear();
 const phoneHref = `tel:${siteSettings.phoneDisplay.replace(/\s+/g, '')}`;
+
+const CLIENT_LOGOS = [
+  {
+    abbr: 'AAAR',
+    name: 'AAAR Marbella',
+    tag: 'Compromiso Social',
+    url: 'https://aaarm.vercel.app',
+    accent: '#38BDF8',
+  },
+  {
+    abbr: 'GS',
+    name: 'Grupo Serinamar',
+    tag: 'Inmobiliaria · Marbella',
+    url: 'https://gruposerinamar.vercel.app',
+    accent: '#3B82F6',
+  },
+  {
+    abbr: 'CN',
+    name: 'Cerrajería Carlos Neira',
+    tag: 'Urgencias 24h',
+    url: 'https://cerrajeria24h.vercel.app',
+    accent: '#F43F5E',
+  },
+  {
+    abbr: 'JB',
+    name: 'Just Banús',
+    tag: 'Property Management',
+    url: 'https://justbanus-sepia.vercel.app',
+    accent: '#D97706',
+  },
+  {
+    abbr: '66N',
+    name: '66 Nunataks',
+    tag: 'Proyecto Editorial',
+    url: 'https://66nunataks.vercel.app',
+    accent: '#06B6D4',
+  },
+  {
+    abbr: 'FB',
+    name: 'Bobisapp · F. Bobis',
+    tag: 'ERP Inmobiliario',
+    url: 'https://bobisapp.vercel.app',
+    accent: '#10B981',
+  },
+  {
+    abbr: 'S27',
+    name: 'Academia La Clave',
+    tag: 'Studio-27 SaaS',
+    url: 'https://laclave-seven.vercel.app',
+    accent: '#EC4899',
+  },
+];
 ---
 
-<footer class="border-t border-white/[0.08] bg-[#050507] py-12">
+<footer class="border-t border-white/[0.08] bg-[#050507] pt-10 pb-12">
+  <!-- Slider infinito ultra-suave de clientes reales con enlace a sus webs -->
+  <div class="border-b border-white/[0.06] pb-9 mb-10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-4 flex items-center justify-between gap-4">
+      <p class="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+        Clientes y proyectos reales en producción
+      </p>
+      <a href="/proyectos" class="text-xs font-medium text-slate-400 hover:text-white transition-colors">
+        Ver todos →
+      </a>
+    </div>
+
+    <div class="footer-marquee" aria-label="Clientes con los que trabajamos">
+      <div class="footer-marquee-track">
+        {
+          [...CLIENT_LOGOS, ...CLIENT_LOGOS].map((client, idx) => (
+            <a
+              href={client.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-hidden={idx >= CLIENT_LOGOS.length ? 'true' : undefined}
+              tabindex={idx >= CLIENT_LOGOS.length ? -1 : undefined}
+              class="footer-client-pill group"
+            >
+              <span
+                class="footer-client-badge"
+                style={`border-color: ${client.accent}55; color: ${client.accent};`}
+              >
+                {client.abbr}
+              </span>
+              <span class="flex flex-col leading-tight">
+                <span class="text-xs font-semibold text-slate-200 group-hover:text-white transition-colors whitespace-nowrap">
+                  {client.name}
+                </span>
+                <span class="text-[10px] text-slate-400 whitespace-nowrap">{client.tag}</span>
+              </span>
+              <span class="text-[11px] text-slate-500 group-hover:text-white transition-colors" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
       <div>
@@ -59,3 +156,77 @@ const phoneHref = `tel:${siteSettings.phoneDisplay.replace(/\s+/g, '')}`;
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-marquee {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  }
+
+  .footer-marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: max-content;
+    animation: footer-scroll 38s linear infinite;
+  }
+
+  .footer-marquee:hover .footer-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .footer-client-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px 8px 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.025);
+    transition: border-color 200ms var(--ease-out), background-color 200ms var(--ease-out), transform 200ms var(--ease-out);
+  }
+
+  .footer-client-pill:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-1px);
+  }
+
+  .footer-client-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 6px;
+    border-radius: 999px;
+    border: 1px solid;
+    background: rgba(5, 7, 13, 0.85);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  @keyframes footer-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-marquee-track {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      padding-inline: 16px;
+    }
+  }
+</style>
