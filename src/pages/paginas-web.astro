@@ -5,6 +5,7 @@ import DivisionLogo from '../components/DivisionLogo.astro';
 import SpotlightCard from '../components/SpotlightCard.astro';
 import GlowButton from '../components/GlowButton.astro';
 import FaqSection from '../components/FaqSection.astro';
+import PillarProjectsSection from '../components/PillarProjectsSection.astro';
 import GeoSimulatorIsland from '../components/islands/GeoSimulatorIsland';
 import pageData from '../content/singletons/pillar-web.json';
 import {
@@ -164,6 +165,13 @@ const schemas = [
       </div>
     </div>
   </section>
+
+  <PillarProjectsSection
+    pillar="web"
+    kicker="Webs reales publicadas · Marbella y España"
+    title="Páginas web reales diseñadas y programadas por papis.app"
+    description="Ejemplos en producción que puedes abrir y comprobar tú mismo ahora mismo, incluyendo la web prácticamente subvencionada para AAAR Marbella."
+  />
 
   <FaqSection
     title="Preguntas frecuentes sobre diseño web, SEO y GEO en Marbella"

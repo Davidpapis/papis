@@ -1,0 +1,237 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import SpotlightCard from './SpotlightCard.astro';
+import GlowButton from './GlowButton.astro';
+import { PILLAR_PALETTES, type PillarId } from '../lib/theme';
+import { PROJECT_IMAGES } from '../lib/images';
+
+interface Props {
+  pillar: PillarId;
+  kicker: string;
+  title: string;
+  description: string;
+}
+
+const { pillar, kicker, title, description } = Astro.props;
+const palette = PILLAR_PALETTES[pillar];
+
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.pillar === pillar)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+{
+  projects.length > 0 && (
+    <section
+      aria-labelledby={`heading-proyectos-${pillar}`}
+      class="relative py-20 sm:py-24 border-t border-white/[0.06]"
+    >
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div class="max-w-2xl">
+            <p class="text-sm font-medium" style={`color: ${palette.accent};`}>
+              {kicker}
+            </p>
+            <h2
+              id={`heading-proyectos-${pillar}`}
+              class="mt-2 font-display text-3xl sm:text-4xl font-bold tracking-[-0.025em] text-white leading-[1.1]"
+              style="text-wrap: balance;"
+            >
+              {title}
+            </h2>
+            <p class="mt-3 text-sm sm:text-base leading-relaxed text-slate-300">{description}</p>
+          </div>
+          <GlowButton href="/proyectos" variant={pillar} size="md">
+            Ver portfolio completo
+          </GlowButton>
+        </div>
+
+        {projects.length === 1 ? (
+          projects.map((project) => (
+            <SpotlightCard accent={pillar} as="article" class="mt-10 overflow-hidden">
+              <div class="grid grid-cols-1 lg:grid-cols-12">
+                <a
+                  href={`/proyectos/${project.id}`}
+                  class="block lg:col-span-5 aspect-[16/9] lg:aspect-auto w-full overflow-hidden border-b lg:border-b-0 lg:border-r border-white/[0.08] bg-[#090B10]"
+                >
+                  <Image
+                    src={PROJECT_IMAGES[project.data.imageKey]}
+                    alt={project.data.imageAlt}
+                    widths={[600, 1200]}
+                    sizes="(max-width: 1024px) 100vw, 42vw"
+                    loading="lazy"
+                    class="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                  />
+                </a>
+                <div class="lg:col-span-7 flex flex-col justify-between p-6 sm:p-8">
+                  <div>
+                    <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                      <span style={`color: ${palette.accent};`} class="font-medium">
+                        {palette.label}
+                      </span>
+                      <span aria-hidden="true">·</span>
+                      <span>{project.data.client}</span>
+                      <span aria-hidden="true">·</span>
+                      <span>{project.data.location}</span>
+                    </div>
+                    <h3 class="mt-2.5 font-display text-2xl font-semibold text-white">
+                      <a href={`/proyectos/${project.id}`} class="hover:underline">
+                        {project.data.title}
+                      </a>
+                    </h3>
+                    <p class="mt-3 text-sm sm:text-[15px] leading-relaxed text-slate-300">
+                      {project.data.summary}
+                    </p>
+                  </div>
+
+                  <div class="mt-6 grid grid-cols-3 gap-3 border-y border-white/[0.08] py-4">
+                    {project.data.metrics.map((metric, idx) => (
+                      <div class={idx > 0 ? 'border-l border-white/[0.08] pl-3' : ''}>
+                        <p
+                          class="font-mono-tabular text-lg font-semibold"
+                          style={`color: ${idx === 0 ? palette.accent : '#F8FAFC'};`}
+                        >
+                          {metric.value}
+                        </p>
+                        <p class="text-[11px] text-slate-400">{metric.label}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+                    <a
+                      href={`/proyectos/${project.id}`}
+                      class="text-sm font-medium text-slate-300 hover:text-white underline underline-offset-4 decoration-white/25 hover:decoration-white"
+                    >
+                      Ver trayectoria completa
+                    </a>
+                    <GlowButton
+                      href={`/contacto?servicio=${pillar}&asunto=${encodeURIComponent(project.data.title)}`}
+                      variant={pillar}
+                      size="sm"
+                    >
+                      Solicitar cita a domicilio
+                    </GlowButton>
+                  </div>
+                </div>
+              </div>
+            </SpotlightCard>
+          ))
+        ) : (
+          <div class="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {projects.map((project) => (
+              <SpotlightCard accent={pillar} as="article" class="flex flex-col">
+                <div class="flex h-full flex-col justify-between">
+                  <div class="border-b border-white/[0.08] bg-[#090B10] px-4 pt-4">
+                    <div class="flex items-center justify-between gap-3 rounded-t-xl border border-b-0 border-white/[0.08] bg-[#11141C] px-3.5 py-2">
+                      <div class="flex items-center gap-1.5" aria-hidden="true">
+                        <span class="h-2 w-2 rounded-full bg-white/15" />
+                        <span class="h-2 w-2 rounded-full bg-white/15" />
+                        <span class="h-2 w-2 rounded-full bg-white/15" />
+                      </div>
+                      <span class="truncate text-[11px] font-mono-tabular text-slate-400">
+                        {project.data.urlPreview}
+                      </span>
+                      {project.data.externalUrl ? (
+                        <a
+                          href={project.data.externalUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="text-blue-300 hover:text-white transition-colors shrink-0 text-xs font-medium"
+                          aria-label={`Abrir web en vivo de ${project.data.title}`}
+                        >
+                          En vivo ↗
+                        </a>
+                      ) : (
+                        <a
+                          href={`/proyectos/${project.id}`}
+                          class="text-slate-400 hover:text-white transition-colors shrink-0 text-xs"
+                          aria-label={`Ver ficha de ${project.data.title}`}
+                        >
+                          ↗
+                        </a>
+                      )}
+                    </div>
+
+                    <a
+                      href={`/proyectos/${project.id}`}
+                      class="block aspect-[16/9] w-full overflow-hidden border-x border-white/[0.08] bg-[#0D0F14]"
+                    >
+                      <Image
+                        src={PROJECT_IMAGES[project.data.imageKey]}
+                        alt={project.data.imageAlt}
+                        widths={[600, 1200]}
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        loading="lazy"
+                        class="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                      />
+                    </a>
+                  </div>
+
+                  <div class="flex flex-1 flex-col justify-between p-6">
+                    <div>
+                      <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                        <span>{project.data.client}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{project.data.location}</span>
+                        {project.data.socialImpact && (
+                          <span class="inline-flex items-center gap-1 rounded-full border border-sky-400/30 bg-sky-400/10 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300">
+                            ♥ Compromiso Social · Subvencionada
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 class="mt-2.5 font-display text-xl sm:text-2xl font-semibold text-white">
+                        <a href={`/proyectos/${project.id}`} class="hover:underline">
+                          {project.data.title}
+                        </a>
+                      </h3>
+
+                      <p class="mt-2 text-sm leading-relaxed text-slate-300">
+                        {project.data.summary}
+                      </p>
+                    </div>
+
+                    <div class="mt-5 grid grid-cols-3 gap-3 border-t border-white/[0.08] pt-4">
+                      {project.data.metrics.map((metric, idx) => (
+                        <div class={idx > 0 ? 'border-l border-white/[0.08] pl-3' : ''}>
+                          <p
+                            class="font-mono-tabular text-base sm:text-lg font-semibold"
+                            style={`color: ${idx === 0 ? palette.accent : '#F8FAFC'};`}
+                          >
+                            {metric.value}
+                          </p>
+                          <p class="text-[11px] text-slate-400">{metric.label}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.06] pt-4 text-xs sm:text-sm">
+                      <a
+                        href={`/proyectos/${project.id}`}
+                        class="font-medium text-slate-300 hover:text-white underline underline-offset-4 decoration-white/25 hover:decoration-white"
+                      >
+                        Ver caso completo
+                      </a>
+                      {project.data.externalUrl && (
+                        <a
+                          href={project.data.externalUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="inline-flex items-center gap-1 font-semibold text-blue-300 hover:text-white"
+                        >
+                          Visitar web en vivo <span aria-hidden="true">↗</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </SpotlightCard>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}

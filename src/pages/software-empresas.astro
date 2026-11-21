@@ -5,6 +5,7 @@ import DivisionLogo from '../components/DivisionLogo.astro';
 import SpotlightCard from '../components/SpotlightCard.astro';
 import GlowButton from '../components/GlowButton.astro';
 import FaqSection from '../components/FaqSection.astro';
+import PillarProjectsSection from '../components/PillarProjectsSection.astro';
 import pageData from '../content/singletons/pillar-software.json';
 import {
   buildBreadcrumbSchema,
@@ -169,6 +170,13 @@ const schemas = [
       </SpotlightCard>
     </div>
   </section>
+
+  <PillarProjectsSection
+    pillar="software"
+    kicker="Aplicaciones reales en producción · Marbella"
+    title="Software a medida real funcionando hoy en empresas locales"
+    description="No vendemos humo ni maquetas: Bobisapp y Academia La Clave son plataformas reales en uso diario desarrolladas en TypeScript por papis.app."
+  />
 
   <FaqSection
     title="Preguntas frecuentes sobre software a medida para empresas"

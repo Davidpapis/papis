@@ -6,6 +6,7 @@ import DivisionLogo from '../components/DivisionLogo.astro';
 import SpotlightCard from '../components/SpotlightCard.astro';
 import GlowButton from '../components/GlowButton.astro';
 import FaqSection from '../components/FaqSection.astro';
+import PillarProjectsSection from '../components/PillarProjectsSection.astro';
 import pageData from '../content/singletons/pillar-tech-support.json';
 import { PROJECT_IMAGES } from '../lib/images';
 import {
@@ -184,6 +185,13 @@ const schemas = [
       </div>
     </div>
   </section>
+
+  <PillarProjectsSection
+    pillar="tecnico"
+    kicker="Trayectoria verificable · Cabopino a Estepona"
+    title="20 años de servicio técnico en Marbella y RTV Marbella"
+    description="Dos décadas ayudando a particulares y empresas en toda la franja de Marbella a Estepona con trato cercano y transparencia."
+  />
 
   <FaqSection
     title="Preguntas frecuentes sobre servicio técnico y clases a domicilio"
