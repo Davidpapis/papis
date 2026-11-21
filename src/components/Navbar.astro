@@ -114,52 +114,52 @@ const MOBILE_LINK_COLORS: Record<string, { color: string; glow: string }> = {
       </button>
     </div>
   </div>
-
-  <!-- Menú móvil futurista a pantalla completa centrado, MAYÚSCULAS y chevrons luminosos por sección -->
-  <div
-    id="mobile-nav-drawer"
-    hidden
-    class="mobile-tech-drawer md:hidden fixed inset-0 top-16 z-50 flex flex-col items-center justify-center bg-[#05070D]/96 backdrop-blur-2xl px-6 py-8"
-  >
-    <nav aria-label={lang === 'en' ? 'Mobile navigation' : 'Navegación móvil'} class="flex w-full max-w-sm flex-col items-center gap-3">
-      {
-        links.map((link) => {
-          const isActive =
-            link.href === '/' || link.href === '/en'
-              ? normalizedPath === link.href
-              : normalizedPath === link.href || normalizedPath.startsWith(`${link.href}/`);
-          const c = MOBILE_LINK_COLORS[link.href] ?? { color: '#3B82F6', glow: 'rgba(59,130,246,0.6)' };
-          return (
-            <a
-              href={link.href}
-              aria-current={isActive ? 'page' : undefined}
-              style={`--m-accent: ${c.color}; --m-glow: ${c.glow};`}
-              class={`mobile-tech-link group flex w-full items-center justify-center gap-3.5 rounded-2xl border px-5 py-3.5 min-h-[54px] transition-all duration-200 ${
-                isActive
-                  ? 'border-[var(--m-accent)]/50 bg-white/[0.06] text-white'
-                  : 'border-white/[0.07] bg-white/[0.02] text-slate-200 hover:border-[var(--m-accent)]/40 hover:text-white'
-              }`}
-            >
-              <svg class="mobile-chev-icon w-7 h-5 shrink-0" viewBox="0 0 36 24" fill="none" aria-hidden="true">
-                <path class="m-c1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
-                <path class="m-c2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
-                <path class="m-c3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <span class="font-display text-lg font-bold tracking-[0.12em] uppercase">
-                {link.label}
-              </span>
-            </a>
-          );
-        })
-      }
-    </nav>
-    <div class="mt-7 w-full max-w-sm">
-      <GlowButton href={contactHref} size="lg" solid fullWidth>
-        {lang === 'en' ? 'GET A QUOTE' : 'PEDIR PRESUPUESTO'}
-      </GlowButton>
-    </div>
-  </div>
 </header>
+
+<!-- Menú móvil futurista FUERA de <header> para evitar bug de stacking context / backdrop-filter en iOS Safari -->
+<div
+  id="mobile-nav-drawer"
+  hidden
+  class="mobile-tech-drawer md:hidden fixed inset-0 top-16 z-[9999] flex flex-col items-center justify-center bg-[#05070D]/98 backdrop-blur-2xl px-6 py-8 overflow-y-auto"
+>
+  <nav aria-label={lang === 'en' ? 'Mobile navigation' : 'Navegación móvil'} class="flex w-full max-w-sm flex-col items-center gap-3">
+    {
+      links.map((link) => {
+        const isActive =
+          link.href === '/' || link.href === '/en'
+            ? normalizedPath === link.href
+            : normalizedPath === link.href || normalizedPath.startsWith(`${link.href}/`);
+        const c = MOBILE_LINK_COLORS[link.href] ?? { color: '#3B82F6', glow: 'rgba(59,130,246,0.6)' };
+        return (
+          <a
+            href={link.href}
+            aria-current={isActive ? 'page' : undefined}
+            style={`--m-accent: ${c.color}; --m-glow: ${c.glow};`}
+            class={`mobile-tech-link group flex w-full items-center justify-center gap-3.5 rounded-2xl border px-5 py-3.5 min-h-[54px] transition-all duration-200 ${
+              isActive
+                ? 'border-[var(--m-accent)]/50 bg-white/[0.06] text-white'
+                : 'border-white/[0.07] bg-white/[0.02] text-slate-200 hover:border-[var(--m-accent)]/40 hover:text-white'
+            }`}
+          >
+            <svg class="mobile-chev-icon w-7 h-5 shrink-0" viewBox="0 0 36 24" fill="none" aria-hidden="true">
+              <path class="m-c1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+              <path class="m-c2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+              <path class="m-c3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="font-display text-lg font-bold tracking-[0.12em] uppercase">
+              {link.label}
+            </span>
+          </a>
+        );
+      })
+    }
+  </nav>
+  <div class="mt-7 w-full max-w-sm">
+    <GlowButton href={contactHref} size="lg" solid fullWidth>
+      {lang === 'en' ? 'GET A QUOTE' : 'PEDIR PRESUPUESTO'}
+    </GlowButton>
+  </div>
+</div>
 
 <style>
   .mobile-chev-icon {
@@ -206,6 +206,7 @@ const MOBILE_LINK_COLORS: Record<string, { color: string; glow: string }> = {
   if (toggleBtn && drawer && iconOpen && iconClose) {
     const setOpen = (open: boolean) => {
       drawer.hidden = !open;
+      document.body.style.overflow = open ? 'hidden' : '';
       toggleBtn.setAttribute('aria-expanded', String(open));
       toggleBtn.setAttribute('aria-label', open ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
       iconOpen.classList.toggle('hidden', open);

@@ -415,40 +415,7 @@ const CASES: DiveCase[] = isEn
         </div>
       </nav>
 
-      <!-- Menú móvil futurista centrado (MAYÚSCULAS + chevrons luminosos por color de sección) -->
-      <div data-hd-mobile-overlay hidden class="hd-mobile-overlay">
-        <button type="button" data-hd-menu-close aria-label={isEn ? 'Close menu' : 'Cerrar menú'} class="hd-mobile-close">
-          ✕
-        </button>
-        <div class="hd-mobile-links">
-          <button type="button" data-hd-m-studio class="hd-m-link" style="--m-accent:#38BDF8; --m-glow:rgba(56,189,248,0.65);">
-            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>{isEn ? 'MY STUDIO' : 'MI ESTUDIO'}</span>
-          </button>
-          <a href={isEn ? '/en/web-design' : '/paginas-web'} class="hd-m-link" style="--m-accent:#3B82F6; --m-glow:rgba(59,130,246,0.65);">
-            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>{isEn ? 'WEB DESIGN' : 'DISEÑO WEB'}</span>
-          </a>
-          <a href={isEn ? '/en/custom-software' : '/software-empresas'} class="hd-m-link" style="--m-accent:#10B981; --m-glow:rgba(16,185,129,0.65);">
-            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>{isEn ? 'CUSTOM SOFTWARE' : 'SOFTWARE EMPRESAS'}</span>
-          </a>
-          <a href={isEn ? '/en/tech-support' : '/servicio-tecnico'} class="hd-m-link" style="--m-accent:#F97316; --m-glow:rgba(249,115,22,0.65);">
-            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>{isEn ? 'TECH SUPPORT' : 'SERVICIO TÉCNICO'}</span>
-          </a>
-          <a href={isEn ? '/en/projects' : '/proyectos'} class="hd-m-link" style="--m-accent:#A855F7; --m-glow:rgba(168,85,247,0.65);">
-            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>{isEn ? 'PROJECTS' : 'PROYECTOS'}</span>
-          </a>
-          <a href={isEn ? '/en/contact' : '/contacto'} class="hd-m-link" style="--m-accent:#22D3EE; --m-glow:rgba(34,211,238,0.65);">
-            <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>{isEn ? 'GET A QUOTE' : 'PRESUPUESTO'}</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Matrícula metálica con 4 tornillos que se atornillan al impactar -->
+      <!-- Matrícula metálica con 4 tornillos -->
       <article data-hd-ticket class="hd-ticket" aria-live="polite">
         <span data-hd-screw class="hd-screw hd-hole-tl" aria-hidden="true"></span>
         <span data-hd-screw class="hd-screw hd-hole-tr" aria-hidden="true"></span>
@@ -469,6 +436,39 @@ const CASES: DiveCase[] = isEn
           <span>{isEn ? 'scroll down to enter the laptop' : 'desliza para entrar en el portátil'}</span>
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Menú móvil futurista FUERA de .hd-stage para quedar siempre por encima de toda la web (z-9999) -->
+  <div data-hd-mobile-overlay hidden class="hd-mobile-overlay">
+    <button type="button" data-hd-menu-close aria-label={isEn ? 'Close menu' : 'Cerrar menú'} class="hd-mobile-close">
+      ✕
+    </button>
+    <div class="hd-mobile-links">
+      <button type="button" data-hd-m-studio class="hd-m-link" style="--m-accent:#38BDF8; --m-glow:rgba(56,189,248,0.65);">
+        <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>{isEn ? 'MY STUDIO' : 'MI ESTUDIO'}</span>
+      </button>
+      <a href={isEn ? '/en/web-design' : '/paginas-web'} class="hd-m-link" style="--m-accent:#3B82F6; --m-glow:rgba(59,130,246,0.65);">
+        <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>{isEn ? 'WEB DESIGN' : 'DISEÑO WEB'}</span>
+      </a>
+      <a href={isEn ? '/en/custom-software' : '/software-empresas'} class="hd-m-link" style="--m-accent:#10B981; --m-glow:rgba(16,185,129,0.65);">
+        <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>{isEn ? 'CUSTOM SOFTWARE' : 'SOFTWARE EMPRESAS'}</span>
+      </a>
+      <a href={isEn ? '/en/tech-support' : '/servicio-tecnico'} class="hd-m-link" style="--m-accent:#F97316; --m-glow:rgba(249,115,22,0.65);">
+        <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>{isEn ? 'TECH SUPPORT' : 'SERVICIO TÉCNICO'}</span>
+      </a>
+      <a href={isEn ? '/en/projects' : '/proyectos'} class="hd-m-link" style="--m-accent:#A855F7; --m-glow:rgba(168,85,247,0.65);">
+        <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>{isEn ? 'PROJECTS' : 'PROYECTOS'}</span>
+      </a>
+      <a href={isEn ? '/en/contact' : '/contacto'} class="hd-m-link" style="--m-accent:#22D3EE; --m-glow:rgba(34,211,238,0.65);">
+        <svg class="hd-m-chev" viewBox="0 0 36 24" fill="none" aria-hidden="true"><path class="mc1" d="M4 4L12 12L4 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc2" d="M14 4L22 12L14 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path class="mc3" d="M24 4L32 12L24 20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>{isEn ? 'GET A QUOTE' : 'PRESUPUESTO'}</span>
+      </a>
     </div>
   </div>
 </section>
@@ -1274,14 +1274,15 @@ const CASES: DiveCase[] = isEn
       display: flex;
       position: fixed;
       inset: 0;
-      z-index: 60;
+      z-index: 9999;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: rgba(5, 7, 13, 0.96);
+      background: rgba(5, 7, 13, 0.98);
       backdrop-filter: blur(22px);
       padding: 24px;
       pointer-events: auto;
+      overflow-y: auto;
     }
 
     .hd-mobile-close {
@@ -1874,6 +1875,7 @@ const CASES: DiveCase[] = isEn
     const setMobileMenu = (open: boolean) => {
       if (!mobileOverlayEl) return;
       mobileOverlayEl.hidden = !open;
+      document.body.style.overflow = open ? 'hidden' : '';
       mobileMenuOpenBtn?.setAttribute('aria-expanded', String(open));
     };
     mobileMenuOpenBtn?.addEventListener('click', () => setMobileMenu(true));
