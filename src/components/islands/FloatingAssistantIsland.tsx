@@ -4,7 +4,6 @@ import {
   Download,
   Loader2,
   MessageCircle,
-  Phone,
   RotateCcw,
   Send,
   X,
@@ -34,7 +33,7 @@ const QUICK_PROMPTS = [
 const INITIAL_WELCOME: ChatMessage = {
   id: 'welcome',
   role: 'model',
-  text: '¡Buenas! Estás en papis.app con el equipo de David. ¿Cómo te llamas y en qué te podemos echar una mano hoy?',
+  text: '¡Hola! ¿Cómo estás? Soy David Tech, la IA de David Papis. Voy a resolver todas tus dudas. Para empezar, dime cómo te llamas y en qué puedo echarte una mano hoy.',
 };
 
 export default function FloatingAssistantIsland({
@@ -54,7 +53,7 @@ export default function FloatingAssistantIsland({
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // Reproduce el avatar animado 1 ciclo completo (8s) al entrar y luego lo repite cada 60 segundos
+  // Reproduce el avatar animado 1 ciclo completo (~18.9s, bucle perfecto frame 0 = último frame) y lo repite cada 60 segundos
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let stopTimer: number | null = null;
@@ -65,7 +64,7 @@ export default function FloatingAssistantIsland({
       if (stopTimer) window.clearTimeout(stopTimer);
       stopTimer = window.setTimeout(() => {
         setIsAvatarAnimating(false);
-      }, 8100);
+      }, 19000);
     };
 
     const initialTimer = window.setTimeout(triggerAnim, 1800);
@@ -83,7 +82,6 @@ export default function FloatingAssistantIsland({
       ? `/assets/optimized/avatar-ia-anim.webp?c=${animCycleKey}`
       : '/assets/optimized/avatar-ia-static.webp';
 
-  const phoneHref = `tel:${phoneDisplay.replace(/\s+/g, '')}`;
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     'Hola papis.app, quiero pedir información sobre vuestros servicios en Marbella.'
   )}`;
@@ -225,15 +223,6 @@ export default function FloatingAssistantIsland({
           aria-label="Accesos rápidos de contacto y asistente virtual"
         >
           <a
-            href={phoneHref}
-            aria-label={`Llamar ahora al ${phoneDisplay}`}
-            title={`Llamar: ${phoneDisplay}`}
-            className="pressable flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-[#0D0F14]/90 text-slate-200 backdrop-blur-md shadow-lg hover:border-white/35 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            <Phone className="w-4 h-4" aria-hidden="true" />
-          </a>
-
-          <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -255,7 +244,7 @@ export default function FloatingAssistantIsland({
               if (!isAvatarAnimating) {
                 setAnimCycleKey((k) => k + 1);
                 setIsAvatarAnimating(true);
-                window.setTimeout(() => setIsAvatarAnimating(false), 8100);
+                window.setTimeout(() => setIsAvatarAnimating(false), 19000);
               }
             }}
             aria-label="Abrir consulta interactiva de papis.app"
@@ -346,7 +335,7 @@ export default function FloatingAssistantIsland({
                 </div>
                 <div className="min-w-0">
                   <h2 className="font-display text-base font-semibold text-white truncate">
-                    David · papis.app
+                    David Tech · papis.app
                   </h2>
                   <p className="text-xs text-slate-400 truncate">
                     {isStreaming ? 'Escribiendo...' : 'En línea · Marbella'}
