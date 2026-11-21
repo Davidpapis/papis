@@ -57,6 +57,11 @@ const rootStyle = `--accent: ${palette.accent}; --accent-secondary: ${palette.se
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    {
+      import.meta.env.PROD && (
+        <script is:inline defer src="/_vercel/speed-insights/script.js" />
+      )
+    }
   </head>
 
   <body class="flex min-h-screen flex-col bg-[#050507] text-[#F1F5F9] selection:bg-blue-500/30 selection:text-white">

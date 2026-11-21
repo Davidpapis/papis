@@ -12,7 +12,7 @@
 
 ### 1. Diseño y Desarrollo Web a Medida + SEO, GEO y AEO
 - URL: https://papis.app/paginas-web
-- Arquitectura web ultrarrápida en Astro (HTML estático, objetivo 99–100/100 Core Web Vitals, < 0,8s), autogestionable con back-office/Keystatic.
+- Arquitectura web ultrarrápida en Astro (HTML estático, objetivo 99–100/100 Core Web Vitals, < 0,8s), autogestionable con back-office/Keystatic y analítica real sin cookies (100% RGPD sin banners invasivos).
 - Plazo habitual: 10 a 15 días. Pago: 50% al aceptar presupuesto y 50% a la entrega.
 - Mantenimiento mensual: Básico 50€/mes (disponibilidad y actualizaciones), Estándar 80€/mes (+2h/mes de cambios), Gestión/IA 180€/mes (webs con cálculos automáticos o asistente IA y base de conocimiento).
 - Planes SEO: SEO Básico 190€/mes (incluye mantenimiento básico + posicionamiento Google); SEO Avanzado + GEO + AEO 290€/mes (posicionamiento integral en Google y motores de IA como ChatGPT, Gemini y Perplexity).
