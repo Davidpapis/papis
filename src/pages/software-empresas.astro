@@ -20,35 +20,37 @@ const softwareFaqs = (await getCollection('faqs'))
 const SECTOR_SOLUTIONS = [
   {
     id: 'inmobiliaria',
-    category: 'Sector Inmobiliario · Listo para adaptar',
+    category: 'Sector Inmobiliario · Caso real: Bobisapp',
     title: 'Software de Gestión Inmobiliaria',
     description:
-      'Centraliza toda tu cartera de propiedades, contratos de venta y alquiler, seguimiento de clientes y automatizaciones administrativas en un panel privado hecho a la medida de tu agencia.',
+      'Basado en nuestra plataforma real Bobisapp en Marbella: centraliza toda tu cartera de propiedades, contratos de venta y alquiler, seguimiento de clientes y automatizaciones administrativas en un panel privado hecho a tu medida.',
     features: [
       'Control completo de propiedades, llaves y disponibilidad',
       'Gestión de alquileres, fianzas, cobros y liquidaciones',
       'CRM de compradores, propietarios y alertas de visitas',
       'Generación automática de contratos, recibos y avisos',
     ],
-    metricValue: '-65%',
-    metricLabel: 'Menos horas en administración semanal',
+    metricValue: 'Bobisapp',
+    metricLabel: 'Caso real en producción · Marbella',
+    caseHref: '/proyectos/bobisapp-erp-inmobiliario',
     ctaLabel: 'Solicitar demo inmobiliaria',
     href: '/contacto?servicio=software&asunto=Software+de+Gestión+Inmobiliaria',
   },
   {
     id: 'academia-baile',
-    category: 'Escuelas y Formación · Listo para adaptar',
+    category: 'Escuelas y Formación · Caso real: Academia La Clave',
     title: 'Software de Gestión de Academias de Baile',
     description:
-      'Deja atrás libretas y hojas de Excel. Controla altas de alumnos, cuotas mensuales, grupos por estilo y nivel, asistencia desde el móvil y cuadrantes de profesores sin errores.',
+      'Desarrollado junto a Academia de Baile La Clave de Marbella: deja atrás libretas y hojas de Excel. Controla altas de alumnos, cuotas mensuales, grupos por estilo y nivel, asistencia desde el móvil y cuadrantes de profesores.',
     features: [
       'Fichas de alumnos, grupos, niveles y listas de espera',
       'Control de cuotas mensuales, bonos y avisos de impago',
       'Calendario visual de aulas, horarios y profesores',
       'Pase de asistencia rápido desde tablet o teléfono',
     ],
-    metricValue: '98%',
-    metricLabel: 'Control puntual de cuotas y asistencia',
+    metricValue: 'La Clave',
+    metricLabel: 'Caso real en producción · Marbella',
+    caseHref: '/proyectos/academia-la-clave-marbella',
     ctaLabel: 'Solicitar demo para academia',
     href: '/contacto?servicio=software&asunto=Software+de+Gestión+de+Academia+de+Baile',
   },
@@ -120,9 +122,12 @@ const schemas = [
 
                 <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-white/[0.08] pt-6">
                   <div>
-                    <p class="font-mono-tabular text-2xl font-semibold text-emerald-400">
-                      {sector.metricValue}
-                    </p>
+                    <a
+                      href={sector.caseHref}
+                      class="font-mono-tabular text-2xl font-semibold text-emerald-400 hover:underline"
+                    >
+                      {sector.metricValue} ↗
+                    </a>
                     <p class="text-xs text-slate-400">{sector.metricLabel}</p>
                   </div>
                   <GlowButton href={sector.href} variant="software" size="md">

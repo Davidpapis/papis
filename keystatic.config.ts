@@ -521,6 +521,15 @@ export default config({
           label: 'Destacar este proyecto en la portada',
           defaultValue: true,
         }),
+        socialImpact: fields.checkbox({
+          label: 'Proyecto de compromiso social / subvencionado',
+          description: 'Muestra un distintivo especial de compromiso social en la tarjeta y ficha',
+          defaultValue: false,
+        }),
+        externalUrl: fields.text({
+          label: 'Enlace web en vivo (opcional)',
+          description: 'URL pública verificable del proyecto (ej: https://aaarm.vercel.app)',
+        }),
         order: fields.integer({
           label: 'Orden de aparición',
           description: 'Número menor aparece primero (1, 2, 3...)',

@@ -44,21 +44,21 @@
     "description": "Sin intermediarios ni soluciones genéricas. Elige el área que necesitas y descubre cómo trabajamos con presupuestos cerrados y trato directo en Marbella y toda España."
   },
   "aboutBlock": {
-    "kicker": "Trato directo en Marbella · Remoto para toda España",
+    "kicker": "20 años en Marbella · RTV Marbella · Compromiso social",
     "heading": "Hablas directamente con quien diseña, programa o viene a tu casa",
-    "body": "En papis.app no hay comerciales que prometen una cosa y técnicos que entregan otra. Combinamos ingeniería web de alto rendimiento (Astro, SEO local y GEO para IA), desarrollo de software a medida para pymes y soporte informático presencial en Marbella, San Pedro Alcántara, Nueva Andalucía, Puerto Banús y Estepona.",
+    "body": "Llevo 20 años dando servicio técnico informático en Marbella y la Costa del Sol —desde Cabopino hasta Estepona— y he colaborado en programas de Radio Televisión Marbella (RTV Marbella). En papis.app no hay comerciales que prometen una cosa y técnicos que entregan otra: combinamos diseño web con SEO y GEO, software a medida real (como Bobisapp o Academia La Clave), soporte técnico a domicilio y compromiso social con Marbella, como la web prácticamente subvencionada para la Asociación de Autismo Ángel Rivière (AAAR Marbella).",
     "highlights": [
       {
-        "value": "< 0.8s",
-        "label": "Velocidad objetivo en webs a medida"
+        "value": "20 años",
+        "label": "Servicio técnico de Cabopino a Estepona"
       },
       {
-        "value": "< 24h",
-        "label": "Visita técnica a domicilio en Marbella"
+        "value": "RTV Marbella",
+        "label": "Colaboraciones en Radio Televisión Marbella"
       },
       {
-        "value": "0€",
-        "label": "Licencias por usuario en tu software"
+        "value": "AAAR Marbella",
+        "label": "Web prácticamente subvencionada por compromiso social"
       }
     ]
   }

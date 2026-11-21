@@ -116,13 +116,25 @@ const schemas = [
                           <span class="truncate text-[11px] font-mono-tabular text-slate-400">
                             {project.data.urlPreview}
                           </span>
-                          <a
-                            href={`/proyectos/${project.id}`}
-                            class="text-slate-400 hover:text-white transition-colors shrink-0 text-xs"
-                            aria-label={`Ver ficha de ${project.data.title}`}
-                          >
-                            ↗
-                          </a>
+                          {project.data.externalUrl ? (
+                            <a
+                              href={project.data.externalUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="text-blue-300 hover:text-white transition-colors shrink-0 text-xs font-medium"
+                              aria-label={`Abrir web en vivo de ${project.data.title}`}
+                            >
+                              En vivo ↗
+                            </a>
+                          ) : (
+                            <a
+                              href={`/proyectos/${project.id}`}
+                              class="text-slate-400 hover:text-white transition-colors shrink-0 text-xs"
+                              aria-label={`Ver ficha de ${project.data.title}`}
+                            >
+                              ↗
+                            </a>
+                          )}
                         </div>
 
                         <a
@@ -150,6 +162,11 @@ const schemas = [
                             <span>{project.data.client}</span>
                             <span aria-hidden="true">·</span>
                             <span>{project.data.location}</span>
+                            {project.data.socialImpact && (
+                              <span class="inline-flex items-center gap-1 rounded-full border border-sky-400/30 bg-sky-400/10 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300">
+                                ♥ Compromiso Social · Subvencionada
+                              </span>
+                            )}
                           </div>
 
                           <h2 class="mt-3 font-display text-xl sm:text-2xl font-semibold tracking-tight text-white">
@@ -167,7 +184,7 @@ const schemas = [
                           {project.data.metrics.map((metric, idx) => (
                             <div class={idx > 0 ? 'border-l border-white/[0.08] pl-3' : ''}>
                               <p
-                                class="font-mono-tabular text-lg sm:text-xl font-semibold"
+                                class="font-mono-tabular text-base sm:text-lg font-semibold"
                                 style={`color: ${idx === 0 ? p.accent : '#F8FAFC'};`}
                               >
                                 {metric.value}
@@ -180,12 +197,24 @@ const schemas = [
                         </div>
 
                         <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
-                          <a
-                            href={`/proyectos/${project.id}`}
-                            class="text-sm font-medium text-slate-300 hover:text-white underline underline-offset-4 decoration-white/25 hover:decoration-white"
-                          >
-                            Ver caso completo
-                          </a>
+                          <div class="flex flex-wrap items-center gap-4">
+                            <a
+                              href={`/proyectos/${project.id}`}
+                              class="text-sm font-medium text-slate-300 hover:text-white underline underline-offset-4 decoration-white/25 hover:decoration-white"
+                            >
+                              Ver caso completo
+                            </a>
+                            {project.data.externalUrl && (
+                              <a
+                                href={project.data.externalUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-sm font-semibold text-blue-300 hover:text-white"
+                              >
+                                Visitar web ↗
+                              </a>
+                            )}
+                          </div>
 
                           <GlowButton
                             href={`/contacto?servicio=${project.data.pillar}&asunto=${encodeURIComponent(`Proyecto similar a: ${project.data.title}`)}`}
