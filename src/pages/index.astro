@@ -13,6 +13,7 @@ import { PROJECT_IMAGES } from '../lib/images';
 import {
   buildFaqSchema,
   buildLocalBusinessSchema,
+  buildPersonSchema,
   buildWebSiteSchema,
   buildWhatsAppUrl,
 } from '../lib/seo';
@@ -66,6 +67,7 @@ const PILLAR_CARDS: {
 
 const schemas = [
   buildLocalBusinessSchema(),
+  buildPersonSchema(),
   buildWebSiteSchema(),
   ...(generalFaqs.length > 0 ? [buildFaqSchema(generalFaqs)] : []),
 ];

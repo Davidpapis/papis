@@ -15,7 +15,7 @@ const {
   title,
   description,
   canonicalPath = Astro.url.pathname,
-  ogImage = '/assets/optimized/hero-web.webp',
+  ogImage = '/og-image.jpg',
   ogType = 'website',
   noindex = false,
   schemas = [],
@@ -51,6 +51,9 @@ const jsonLdPayload =
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={title} />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />

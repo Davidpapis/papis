@@ -10,6 +10,36 @@ export interface FaqItem {
   answer: string;
 }
 
+export function buildPersonSchema() {
+  const socialLinks = (siteSettings.socialLinks ?? []) as Array<{
+    network: string;
+    url: string;
+  }>;
+  const sameAs = socialLinks
+    .map((item) => item.url)
+    .filter((url) => Boolean(url && url.startsWith('http')));
+
+  return {
+    '@type': 'Person',
+    '@id': `${siteSettings.domain}/#founder`,
+    name: siteSettings.legalOwner,
+    jobTitle: 'Fundador, Desarrollador Web, Software a Medida y Técnico Informático',
+    url: siteSettings.domain,
+    email: siteSettings.email,
+    telephone: siteSettings.phoneDisplay,
+    worksFor: {
+      '@id': `${siteSettings.domain}/#organization`,
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Marbella',
+      addressRegion: 'Málaga',
+      addressCountry: 'ES',
+    },
+    ...(sameAs.length > 0 ? { sameAs } : {}),
+  };
+}
+
 export function buildLocalBusinessSchema() {
   const socialLinks = (siteSettings.socialLinks ?? []) as Array<{
     network: string;
@@ -27,6 +57,9 @@ export function buildLocalBusinessSchema() {
     email: siteSettings.email,
     telephone: siteSettings.phoneDisplay,
     description: siteSettings.defaultSeoDescription,
+    founder: {
+      '@id': `${siteSettings.domain}/#founder`,
+    },
     priceRange: '€€',
     address: {
       '@type': 'PostalAddress',

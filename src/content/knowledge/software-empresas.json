@@ -1,7 +1,7 @@
 {
-  "title": "Pilar 2: Software a Medida para Empresas",
+  "title": "Pilar 2: Software a Medida ERP/CRM (Precios y Tecnología)",
   "category": "Software Empresas",
-  "content": "- ERP, CRM y plataformas privadas en la nube SIN licencias mensuales por usuario.\n- Solución lista para adaptar 1: Gestión Inmobiliaria (propiedades, alquileres, fianzas, cobros, liquidaciones, CRM).\n- Solución lista para adaptar 2: Academias de Baile (alumnos, niveles, cuotas, bonos, asistencia desde móvil, profesores).\n- Desarrollo desde cero para cualquier sector: clínicas, constructoras, logística, hostelería, despachos o comercio.\n- Plazo primera versión operativa: 4 a 8 semanas.",
+  "content": "- Aplicaciones web ERP/CRM 100% a medida y en propiedad, sin licencias mensuales por usuario.\n- Precio orientativo: desde 6.000€ en adelante según departamentos, complejidad e integración de IA.\n- Soluciones listas para adaptar: Gestión Inmobiliaria y Academias de Baile, además de cualquier sector desde cero.\n- Tecnología y copias: código versionado en GitHub, despliegue en Vercel y base de datos en Supabase con copias programadas.\n- Integraciones: WhatsApp, correo, facturación, Excel y web corporativa conectada (web adicional desde 3.000€ según SEO e idiomas).\n- Entrega: formación, vídeos, guía integrada y 1 mes de fase beta con mejoras rápidas (~24h). Posibilidad de empezar por versión básica (MVP) e ir añadiendo y pagando módulos poco a poco.",
   "enabled": true,
   "order": 3
 }

@@ -1,0 +1,6 @@
+{
+  "question": "¿El software y los datos de mi empresa son 100 % míos y qué copias de seguridad tienen?",
+  "pillar": "software",
+  "answer": "Sí, tanto la aplicación como los datos son de tu propiedad y nos encargamos de todo el ciclo de copias de seguridad. El código se versiona en GitHub (guardando el historial completo de cada versión del proyecto), se despliega en Vercel tras cada prueba verificada y la base de datos se aloja en Supabase con copias de seguridad programadas para que tu operativa en Marbella o en remoto esté siempre protegida.",
+  "order": 5
+}
