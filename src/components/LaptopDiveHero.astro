@@ -1,60 +1,68 @@
 ---
 /**
- * Hero "Laptop Dive" — Scroll-Driven Frame Sequence sobre <canvas> (técnica Apple).
- * - 60 frames WebP (798 KB total) extraídos de trans.mp4.
- * - Scroll 100% nativo (position: sticky dentro de pista 260vh): cero secuestro de scroll,
- *   funciona perfecto en Mac Trackpad, Magic Mouse, Windows, iPhone y Android.
- * - Pantalla de proyectos calculada matemáticamente sobre (drawX, drawY, drawW, drawH)
- *   del canvas en cada resize: imposible que se salga del bisel del portátil.
+ * Hero "Laptop Dive" — Scroll-Driven Frame Sequence sobre <canvas> (60 frames WebP).
+ * - Scroll 100% nativo (position: sticky sobre pista 175vh).
+ * - Pantalla completa de borde a borde con esquinas redondeadas del MacBook Pro,
+ *   imagen difuminada de ambiente y presentación tipográfica animada del servicio dentro.
+ * - Chevrons futuristas (<<< / >>>) posicionados simétricamente a ambos lados exactos
+ *   de la pantalla del portátil, iluminándose en cascada de dentro hacia fuera con el color del servicio activo.
  */
 interface DiveCase {
   id: string;
+  tag: string;
   ticketTitle: string;
   rows: [string, string, string];
-  descKey: string;
-  descText: string;
+  title: string;
+  subtitle: string;
   image: string;
   href: string;
   ctaLabel: string;
   accent: string;
+  accentGlow: string;
 }
 
 const CASES: DiveCase[] = [
   {
     id: 'web',
+    tag: '01 / 03 · DISEÑO WEB & SEO/GEO',
     ticketTitle: 'WEB & SEO/GEO',
     rows: ['ASTRO + KEYSTATIC', 'AAAR · SERINAMAR', '10–15 DÍAS'],
-    descKey: 'Webs reales en Marbella',
-    descText:
-      'Páginas a medida en HTML estático (< 0,8s), SEO local y GEO para IA: AAAR Marbella (compromiso social), Grupo Serinamar o Cerrajería Carlos Neira.',
+    title: 'Webs a medida que posicionan en Google e IA',
+    subtitle:
+      'HTML estático ultrarrápido (< 0,8s), panel editable y SEO local + GEO en Marbella. Casos reales: AAAR Marbella (compromiso social), Grupo Serinamar o Cerrajería Carlos Neira.',
     image: '/hero-dive/case-web.webp',
     href: '/paginas-web',
     ctaLabel: 'Explorar Diseño Web',
     accent: '#3B82F6',
+    accentGlow: 'rgba(59, 130, 246, 0.55)',
   },
   {
     id: 'software',
+    tag: '02 / 03 · SOFTWARE A MEDIDA',
     ticketTitle: 'SOFTWARE ERP',
     rows: ['BOBISAPP · LA CLAVE', 'SIN CUOTAS / USUARIO', 'DESDE 6.000 €'],
-    descKey: 'Apps reales en producción',
-    descText:
-      'ERP, CRM y plataformas privadas en la nube como Bobisapp o Academia La Clave, 100% en propiedad y con 1 mes de beta con mejoras en 24h.',
+    title: 'ERP y CRM privados 100% en propiedad',
+    subtitle:
+      'Plataformas reales en producción como Bobisapp o Academia La Clave. Sin cuotas mensuales por usuario y con 1 mes de fase beta con mejoras en 24h.',
     image: '/hero-dive/case-software.webp',
     href: '/software-empresas',
-    ctaLabel: 'Explorar Software',
+    ctaLabel: 'Explorar Software Empresas',
     accent: '#10B981',
+    accentGlow: 'rgba(16, 185, 129, 0.55)',
   },
   {
     id: 'tecnico',
+    tag: '03 / 03 · SERVICIO TÉCNICO',
     ticketTitle: 'TÉCNICO EN CASA',
     rows: ['20 AÑOS · RTV MARBELLA', 'CABOPINO A ESTEPONA', 'DESDE 45 €/H'],
-    descKey: '20 años de experiencia',
-    descText:
-      'Dos décadas dando soporte técnico a domicilio desde Cabopino hasta Estepona y colaborando en Radio Televisión Marbella. También remoto mundial vía RustDesk.',
+    title: '20 años de soporte técnico en Marbella',
+    subtitle:
+      'Asistencia a domicilio desde Cabopino hasta Estepona y colaboraciones en Radio Televisión Marbella. Apple, Windows, clases particulares y remoto mundial vía RustDesk.',
     image: '/assets/optimized/servicio-tecnico-marbella.webp',
     href: '/servicio-tecnico',
     ctaLabel: 'Explorar Servicio Técnico',
     accent: '#F97316',
+    accentGlow: 'rgba(249, 115, 22, 0.55)',
   },
 ];
 ---
@@ -72,14 +80,18 @@ const CASES: DiveCase[] = [
   </h1>
 
   <!-- Escenario Sticky 100dvh controlado 1:1 por el scroll nativo -->
-  <div data-hd-stage class="hd-stage">
+  <div
+    data-hd-stage
+    class="hd-stage"
+    style={`--case-accent: ${CASES[0].accent}; --case-glow: ${CASES[0].accentGlow};`}
+  >
     <!-- Canvas HD de secuencia de 60 frames (00..59) -->
     <canvas data-hd-canvas class="hd-canvas" aria-hidden="true"></canvas>
 
-    <!-- Sutil viñeta superior/inferior para legibilidad de botones -->
+    <!-- Sutil viñeta superior/inferior -->
     <div aria-hidden="true" class="hd-vignette"></div>
 
-    <!-- Capa 2: Wordmark gigante PAPIS.APP (detrás del recorte cut.webp en frame 0) -->
+    <!-- Capa 2: Wordmark gigante PAPIS.APP (detrás de cut.webp) -->
     <svg
       data-hd-wordmark
       class="hd-wordmark"
@@ -105,7 +117,7 @@ const CASES: DiveCase[] = [
       </text>
     </svg>
 
-    <!-- Capa 3: Recorte transparente de David Papis (posicionamiento exacto por JS sobre el canvas) -->
+    <!-- Capa 3: Recorte transparente de David Papis (pixel-aligned con frame 0) -->
     <img
       data-hd-cut
       src="/hero-dive/cut.webp"
@@ -167,34 +179,97 @@ const CASES: DiveCase[] = [
       </div>
     </div>
 
-    <!-- Capa 6: Pantalla del MacBook calibrada AL PÍXEL por JS sobre el último frame del canvas -->
+    <!-- Capa 6: Pantalla completa del MacBook (esquinas redondeadas + foto difuminada + textos animados dentro) -->
     <div data-hd-screen class="hd-screen">
+      <!-- Imágenes de ambiente a sangre completa difuminadas -->
       {
         CASES.map((item, idx) => (
           <div
             data-hd-media={idx}
-            class="hd-screen-slide"
+            class="hd-screen-bg"
             style={`opacity: ${idx === 0 ? 1 : 0};`}
           >
             <img
               src={item.image}
-              alt={item.ticketTitle}
+              alt=""
+              aria-hidden="true"
               loading={idx === 0 ? 'eager' : 'lazy'}
               decoding="async"
-              class="h-full w-full object-contain bg-[#06090f]"
+              class="hd-screen-img"
             />
           </div>
         ))
       }
+
+      <!-- Velo cinematográfico con reflejo del color del servicio activo -->
+      <div aria-hidden="true" class="hd-screen-scrim"></div>
+
+      <!-- Contenido editorial del servicio DENTRO de la pantalla del portátil -->
+      <div class="hd-screen-content" aria-live="polite">
+        <div data-hd-stagger="0" class="hd-service-pill">
+          <span class="hd-service-dot" aria-hidden="true"></span>
+          <span data-hd-tag>{CASES[0].tag}</span>
+        </div>
+
+        <h2 data-hd-title data-hd-stagger="1" class="hd-service-title">
+          {CASES[0].title}
+        </h2>
+
+        <p data-hd-subtitle data-hd-stagger="2" class="hd-service-subtitle">
+          {CASES[0].subtitle}
+        </p>
+
+        <div data-hd-stagger="3" class="hd-service-actions">
+          <a data-hd-cta-link href={CASES[0].href} class="hd-service-cta">
+            <span data-hd-cta-label>{CASES[0].ctaLabel}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <div class="hd-dots" role="tablist" aria-label="Elegir servicio">
+            {
+              CASES.map((c, idx) => (
+                <button
+                  type="button"
+                  data-hd-dot={idx}
+                  aria-label={`Ver ${c.ticketTitle}`}
+                  aria-selected={idx === 0 ? 'true' : 'false'}
+                  class={`hd-dot-btn ${idx === 0 ? 'is-active' : ''}`}
+                />
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
       <div aria-hidden="true" class="hd-screen-sheen"></div>
       <div data-hd-flash aria-hidden="true" class="hd-screen-flash"></div>
-      <button
-        type="button"
-        data-hd-screen-hit
-        class="hd-screen-hit"
-        aria-label="Pasar al siguiente caso en la pantalla"
-      ></button>
     </div>
+
+    <!-- Chevrons futuristas luminosos posicionados simétricamente a izquierda y derecha del MacBook -->
+    <button
+      type="button"
+      data-hd-prev
+      class="hd-chev hd-chev-left"
+      aria-label="Servicio anterior"
+    >
+      <svg viewBox="0 0 64 56" fill="none" aria-hidden="true">
+        <path class="chev-3" d="M24 8L8 28L24 48" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path class="chev-2" d="M40 8L24 28L40 48" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path class="chev-1" d="M56 8L40 28L56 48" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      data-hd-next
+      class="hd-chev hd-chev-right"
+      aria-label="Siguiente servicio"
+    >
+      <svg viewBox="0 0 64 56" fill="none" aria-hidden="true">
+        <path class="chev-1" d="M8 8L24 28L8 48" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path class="chev-2" d="M24 8L40 28L24 48" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path class="chev-3" d="M40 8L56 28L40 48" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
 
     <!-- Capa UI fijada al viewport sticky -->
     <div class="hd-ui">
@@ -234,46 +309,13 @@ const CASES: DiveCase[] = [
         </div>
       </article>
 
-      <!-- Tarjeta editorial izquierda a media altura con animación escalonada -->
-      <div data-hd-desc class="hd-desc" aria-live="polite">
-        <div class="hd-desc-badge" data-hd-stagger="0">
-          <span data-hd-desc-dot class="hd-desc-dot" style={`background: ${CASES[0].accent};`}></span>
-          <span data-hd-desc-num class="hd-desc-num">01 / 03</span>
-        </div>
-        <h3 data-hd-desc-key data-hd-stagger="1" class="hd-desc-title">{CASES[0].descKey}</h3>
-        <p data-hd-desc-text data-hd-stagger="2" class="hd-desc-text">{CASES[0].descText}</p>
-        <a data-hd-desc-link data-hd-stagger="3" href={CASES[0].href} class="hd-desc-link">
-          <span data-hd-desc-cta>{CASES[0].ctaLabel}</span>
-          <span aria-hidden="true">→</span>
-        </a>
-      </div>
-
-      <!-- Botones circulares Anterior / Siguiente a los lados del portátil (sin tocar WhatsApp) -->
-      <button type="button" data-hd-prev class="hd-nav-case hd-prev" aria-label="Caso anterior">
-        <span class="hd-circle">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M19 12H5M11 6l-6 6 6 6" />
-          </svg>
-        </span>
-        <span class="hd-nav-label">Anterior</span>
-      </button>
-
-      <button type="button" data-hd-next class="hd-nav-case hd-next" aria-label="Siguiente caso">
-        <span class="hd-circle">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-        </span>
-        <span class="hd-nav-label">Siguiente</span>
-      </button>
-
       <!-- Indicador inferior de scroll -->
       <div data-hd-hint class="hd-hint">
         <button type="button" data-hd-hint-btn class="hd-hint-btn">
           <span class="hd-drip-line" aria-hidden="true">
             <span class="hd-drip-bead"></span>
           </span>
-          <span>desliza despacio para entrar en el portátil</span>
+          <span>desliza para entrar en el portátil</span>
         </button>
       </div>
     </div>
@@ -465,16 +507,19 @@ const CASES: DiveCase[] = [
     color: #0f172a;
   }
 
-  /* Pantalla del portátil posicionada matemáticamente sobre el último frame del canvas */
+  /* ============================================================================
+     PANTALLA COMPLETA DEL MACBOOK (esquinas redondeadas + blur ambiente + texto)
+     ============================================================================ */
   .hd-screen {
     position: absolute;
-    z-index: 10;
-    border-radius: 4px;
-    background: #000000;
+    z-index: 12;
+    border-radius: 13px 13px 4px 4px;
+    background: #06090f;
     overflow: hidden;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 280ms var(--ease-out);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    transition: opacity 320ms var(--ease-out);
   }
 
   .hd-stage.is-case .hd-screen {
@@ -482,20 +527,146 @@ const CASES: DiveCase[] = [
     pointer-events: auto;
   }
 
-  .hd-screen-slide {
+  .hd-screen-bg {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    transition: opacity 380ms var(--ease-out), transform 420ms var(--ease-out);
+    transition: opacity 520ms var(--ease-out);
+  }
+
+  .hd-screen-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    transform: scale(1.08);
+    filter: blur(7px) brightness(0.42) saturate(1.18);
+  }
+
+  .hd-screen-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      radial-gradient(85% 80% at 50% 0%, color-mix(in srgb, var(--case-accent) 26%, transparent) 0%, transparent 65%),
+      linear-gradient(180deg, rgba(6, 11, 20, 0.35) 0%, rgba(6, 11, 20, 0.72) 100%);
+    transition: background 420ms var(--ease-out);
+  }
+
+  .hd-screen-content {
+    position: relative;
+    z-index: 4;
+    height: 100%;
+    width: 100%;
+    padding: clamp(16px, 3.2vw, 38px) clamp(18px, 3.6vw, 44px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hd-service-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 13px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid color-mix(in srgb, var(--case-accent) 55%, rgba(255, 255, 255, 0.2));
+    backdrop-filter: blur(8px);
+    font-family: var(--font-mono);
+    font-size: clamp(9px, 0.95vw, 11.5px);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #f8fafc;
+  }
+
+  .hd-service-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--case-accent);
+    box-shadow: 0 0 12px var(--case-accent);
+  }
+
+  .hd-service-title {
+    margin-top: clamp(10px, 1.8vw, 18px);
+    max-width: 19ch;
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2.75vw, 2.55rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    text-wrap: balance;
+    text-shadow: 0 6px 26px rgba(0, 0, 0, 0.45);
+  }
+
+  .hd-service-subtitle {
+    margin-top: clamp(8px, 1.2vw, 14px);
+    max-width: 46ch;
+    font-size: clamp(0.72rem, 1.05vw, 0.98rem);
+    line-height: 1.5;
+    color: rgba(226, 232, 240, 0.92);
+  }
+
+  .hd-service-actions {
+    margin-top: clamp(12px, 2vw, 22px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hd-service-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: clamp(7px, 0.9vw, 11px) clamp(14px, 1.8vw, 22px);
+    border-radius: 999px;
+    background: var(--case-accent);
+    color: #ffffff;
+    font-size: clamp(0.74rem, 1vw, 0.92rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    box-shadow: 0 10px 28px -4px var(--case-glow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: transform 200ms var(--ease-out), filter 200ms var(--ease-out);
+  }
+
+  .hd-service-cta:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+  }
+
+  .hd-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hd-dot-btn {
+    width: 22px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    transition: width 260ms var(--ease-out), background-color 260ms var(--ease-out);
+  }
+
+  .hd-dot-btn.is-active {
+    width: 38px;
+    background: var(--case-accent);
+    box-shadow: 0 0 12px var(--case-glow);
   }
 
   .hd-screen-sheen {
     position: absolute;
     inset: 0;
-    background: linear-gradient(115deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 40%);
+    background: linear-gradient(118deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 38%);
     pointer-events: none;
-    z-index: 2;
+    z-index: 5;
   }
 
   .hd-screen-flash {
@@ -504,16 +675,74 @@ const CASES: DiveCase[] = [
     background: #ffffff;
     opacity: 0;
     pointer-events: none;
-    z-index: 3;
+    z-index: 6;
   }
 
-  .hd-screen-hit {
+  /* ============================================================================
+     CHEVRONS FUTURISTAS LUMINOSOS A AMBOS LADOS DEL PORTÁTIL (<<< / >>>)
+     ============================================================================ */
+  .hd-chev {
     position: absolute;
-    inset: 0;
-    z-index: 4;
-    background: transparent;
-    border: 0;
+    z-index: 22;
+    width: clamp(54px, 5.2vw, 76px);
+    height: clamp(54px, 5.2vw, 76px);
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--case-accent);
     cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 360ms var(--ease-out), transform 220ms var(--ease-out), color 300ms var(--ease-out);
+  }
+
+  .hd-stage.is-case .hd-chev {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .hd-chev svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .hd-chev:hover {
+    transform: translateY(-50%) scale(1.12);
+  }
+
+  .hd-chev:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  .hd-chev path {
+    opacity: 0.22;
+    filter: drop-shadow(0 0 6px var(--case-glow));
+    animation: hd-chev-pulse 1.5s ease-in-out infinite;
+  }
+
+  /* Onda luminosa de DENTRO hacia FUERA en ambos lados */
+  .hd-chev .chev-1 {
+    animation-delay: 0s;
+  }
+  .hd-chev .chev-2 {
+    animation-delay: 0.22s;
+  }
+  .hd-chev .chev-3 {
+    animation-delay: 0.44s;
+  }
+
+  @keyframes hd-chev-pulse {
+    0%,
+    100% {
+      opacity: 0.22;
+      filter: drop-shadow(0 0 4px transparent);
+    }
+    45% {
+      opacity: 1;
+      filter: drop-shadow(0 0 14px var(--case-glow)) drop-shadow(0 0 24px var(--case-glow));
+    }
   }
 
   /* UI sobre el escenario */
@@ -557,7 +786,7 @@ const CASES: DiveCase[] = [
     white-space: nowrap;
     cursor: pointer;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
-    transition: transform 200ms var(--ease-out), background-color 200ms var(--ease-out);
+    transition: transform 200ms var(--ease-out);
   }
 
   .hd-tag:hover {
@@ -601,11 +830,11 @@ const CASES: DiveCase[] = [
     position: absolute;
     top: clamp(74px, 10vh, 108px);
     right: clamp(16px, 3vw, 44px);
-    width: clamp(210px, 20vw, 270px);
+    width: clamp(190px, 17vw, 240px);
     background: #ffffff;
     color: var(--ink);
     border-radius: 4px;
-    padding: 16px 24px 14px;
+    padding: 14px 22px 12px;
     box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42);
     opacity: 0;
     transform: translateY(-18px) rotate(1.5deg);
@@ -621,8 +850,8 @@ const CASES: DiveCase[] = [
 
   .hd-hole {
     position: absolute;
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-radius: 999px;
     background: #0a1b2b;
   }
@@ -633,7 +862,7 @@ const CASES: DiveCase[] = [
 
   .hd-ticket h2 {
     font-family: "Anton", sans-serif;
-    font-size: clamp(1.55rem, 2.3vw, 2.1rem);
+    font-size: clamp(1.45rem, 2vw, 1.9rem);
     line-height: 1;
     letter-spacing: 0.01em;
     text-align: center;
@@ -646,164 +875,12 @@ const CASES: DiveCase[] = [
   }
 
   .hd-ticket-rows div {
-    font-size: 10.5px;
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-align: center;
-    padding: 4px 0;
+    padding: 3.5px 0;
     border-bottom: 1px solid rgba(13, 15, 14, 0.1);
-  }
-
-  /* Tarjeta editorial a media altura izquierda (tipografía display + glassmorphism + stagger) */
-  .hd-desc {
-    position: absolute;
-    left: clamp(18px, 3vw, 44px);
-    top: 44%;
-    transform: translateY(-50%) translateX(-16px);
-    width: clamp(230px, 22vw, 300px);
-    padding: 20px 22px;
-    border-radius: 16px;
-    background: rgba(9, 20, 34, 0.72);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(16px);
-    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 420ms var(--ease-out), transform 520ms var(--ease-out);
-  }
-
-  .hd-stage.is-case .hd-desc {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-    pointer-events: auto;
-  }
-
-  .hd-desc-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .hd-desc-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 999px;
-    box-shadow: 0 0 10px currentColor;
-  }
-
-  .hd-desc-num {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: rgba(241, 245, 249, 0.85);
-  }
-
-  .hd-desc-title {
-    margin-top: 12px;
-    font-family: var(--font-display);
-    font-size: clamp(1.3rem, 1.9vw, 1.7rem);
-    font-weight: 700;
-    line-height: 1.12;
-    letter-spacing: -0.025em;
-    color: #ffffff;
-  }
-
-  .hd-desc-text {
-    margin-top: 10px;
-    font-size: 13.5px;
-    line-height: 1.52;
-    color: rgba(203, 213, 225, 0.92);
-  }
-
-  .hd-desc-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 16px;
-    padding: 9px 15px;
-    border-radius: 10px;
-    background: #ffffff;
-    color: #07131e;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    transition: transform 200ms var(--ease-out), background-color 200ms var(--ease-out);
-  }
-
-  .hd-desc-link:hover {
-    transform: translateY(-2px);
-    background: var(--mint);
-  }
-
-  /* Botones Anterior / Siguiente a los lados del portátil (lejos de WhatsApp abajo) */
-  .hd-nav-case {
-    position: absolute;
-    top: 76%;
-    transform: translateY(-50%);
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 6px 14px 6px 6px;
-    border-radius: 999px;
-    background: rgba(9, 20, 34, 0.72);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(12px);
-    color: #ffffff;
-    cursor: pointer;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 360ms var(--ease-out), transform 220ms var(--ease-out), background-color 200ms var(--ease-out);
-  }
-
-  .hd-stage.is-case .hd-nav-case {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .hd-prev {
-    left: clamp(18px, 3vw, 44px);
-  }
-
-  .hd-next {
-    right: clamp(18px, 3vw, 44px);
-    top: 52%;
-    flex-direction: row-reverse;
-    padding: 6px 6px 6px 14px;
-  }
-
-  .hd-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 999px;
-    background: #ffffff;
-    color: #07131e;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-    transition: transform 200ms var(--ease-out), background-color 200ms var(--ease-out);
-  }
-
-  .hd-nav-case:hover .hd-circle {
-    transform: scale(1.06);
-    background: var(--mint);
-  }
-
-  .hd-circle svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .hd-nav-label {
-    font-size: 12.5px;
-    font-weight: 600;
-    line-height: 1;
-    white-space: nowrap;
   }
 
   /* Indicador inferior de scroll */
@@ -904,7 +981,7 @@ const CASES: DiveCase[] = [
     .hd-hint {
       bottom: 94px;
       width: calc(100% - 32px);
-      max-width: 320px;
+      max-width: 310px;
       text-align: center;
       padding: 8px 14px;
       border-radius: 999px;
@@ -922,13 +999,12 @@ const CASES: DiveCase[] = [
       letter-spacing: 0.1em;
     }
 
-    /* Modo casos en móvil: ticket arriba, portátil al centro, descripción + flechas debajo */
     .hd-ticket {
       left: 50%;
       right: auto;
-      top: 78px;
-      width: min(88vw, 330px);
-      padding: 10px 20px 8px;
+      top: 80px;
+      width: min(86vw, 310px);
+      padding: 10px 18px 8px;
       transform: translateX(-50%) translateY(-12px);
     }
 
@@ -937,80 +1013,72 @@ const CASES: DiveCase[] = [
     }
 
     .hd-ticket h2 {
-      font-size: 1.45rem;
+      font-size: 1.35rem;
     }
 
     .hd-ticket-rows div {
-      font-size: 9.5px;
+      font-size: 9px;
       padding: 2px 0;
     }
 
-    .hd-desc {
-      left: 50%;
-      top: auto;
-      bottom: 148px;
-      width: min(92vw, 350px);
-      padding: 12px 14px;
-      text-align: center;
-      transform: translateX(-50%) translateY(12px);
+    .hd-screen {
+      border-radius: 8px 8px 3px 3px;
     }
 
-    .hd-stage.is-case .hd-desc {
-      transform: translateX(-50%) translateY(0);
+    .hd-screen-content {
+      padding: 10px 12px;
     }
 
-    .hd-desc-title {
+    .hd-service-pill {
+      padding: 3px 8px;
+      font-size: 8px;
+    }
+
+    .hd-service-title {
       margin-top: 6px;
-      font-size: 1.1rem;
+      font-size: 0.98rem;
     }
 
-    .hd-desc-text {
+    .hd-service-subtitle {
       margin-top: 4px;
-      font-size: 11.5px;
-      line-height: 1.35;
+      font-size: 0.66rem;
+      line-height: 1.3;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .hd-desc-link {
+    .hd-service-actions {
       margin-top: 8px;
-      padding: 6px 12px;
-      font-size: 11.5px;
-    }
-
-    .hd-nav-case {
-      top: auto;
-      bottom: 94px;
-      transform: none;
       gap: 6px;
-      padding: 4px 10px 4px 4px;
     }
 
-    .hd-next {
-      top: auto;
-      padding: 4px 4px 4px 10px;
+    .hd-service-cta {
+      padding: 5px 11px;
+      font-size: 0.68rem;
     }
 
-    .hd-circle {
-      width: 32px;
-      height: 32px;
+    .hd-dot-btn {
+      width: 14px;
+      height: 3px;
     }
 
-    .hd-nav-label {
-      font-size: 11px;
-      white-space: nowrap;
+    .hd-dot-btn.is-active {
+      width: 24px;
     }
 
-    .hd-nav-label br {
-      display: none;
+    .hd-chev {
+      width: 42px;
+      height: 42px;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hd-drip-bead {
+    .hd-drip-bead,
+    .hd-chev path {
       animation: none;
+      opacity: 0.85;
     }
   }
 </style>
@@ -1029,17 +1097,16 @@ const CASES: DiveCase[] = [
     const hintEl = track.querySelector<HTMLElement>('[data-hd-hint]');
     const screenEl = track.querySelector<HTMLElement>('[data-hd-screen]');
     const flashEl = track.querySelector<HTMLElement>('[data-hd-flash]');
-    const screenHitEl = track.querySelector<HTMLButtonElement>('[data-hd-screen-hit]');
 
+    const tagEl = track.querySelector<HTMLElement>('[data-hd-tag]');
+    const titleEl = track.querySelector<HTMLElement>('[data-hd-title]');
+    const subtitleEl = track.querySelector<HTMLElement>('[data-hd-subtitle]');
+    const ctaLinkEl = track.querySelector<HTMLAnchorElement>('[data-hd-cta-link]');
+    const ctaLabelEl = track.querySelector<HTMLElement>('[data-hd-cta-label]');
     const ticketTitleEl = track.querySelector<HTMLElement>('[data-hd-ticket-title]');
     const ticketRowsEl = track.querySelector<HTMLElement>('[data-hd-ticket-rows]');
-    const descKeyEl = track.querySelector<HTMLElement>('[data-hd-desc-key]');
-    const descTextEl = track.querySelector<HTMLElement>('[data-hd-desc-text]');
-    const descLinkEl = track.querySelector<HTMLAnchorElement>('[data-hd-desc-link]');
-    const descCtaEl = track.querySelector<HTMLElement>('[data-hd-desc-cta]');
-    const descNumEl = track.querySelector<HTMLElement>('[data-hd-desc-num]');
-    const descDotEl = track.querySelector<HTMLElement>('[data-hd-desc-dot]');
     const staggerEls = Array.from(track.querySelectorAll<HTMLElement>('[data-hd-stagger]'));
+    const dotBtns = Array.from(track.querySelectorAll<HTMLButtonElement>('[data-hd-dot]'));
 
     const prevBtn = track.querySelector<HTMLButtonElement>('[data-hd-prev]');
     const nextBtn = track.querySelector<HTMLButtonElement>('[data-hd-next]');
@@ -1048,23 +1115,22 @@ const CASES: DiveCase[] = [
     const diveBtn = track.querySelector<HTMLButtonElement>('[data-hd-dive]');
     const hintBtn = track.querySelector<HTMLButtonElement>('[data-hd-hint-btn]');
 
-    const slides = Array.from(track.querySelectorAll<HTMLElement>('[data-hd-media]'));
+    const bgSlides = Array.from(track.querySelectorAll<HTMLElement>('[data-hd-media]'));
     const cases = JSON.parse(track.dataset.cases || '[]');
     const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Constantes exactas de los 60 frames (1280x720) medidas en píxeles de f-59.webp
+    // 60 frames WebP (1280x720) — pantalla interior calibrada a ras del bisel del MacBook
     const TOTAL_FRAMES = 60;
     const FRAME_W = 1280;
     const FRAME_H = 720;
     const FRAME_RATIO = FRAME_W / FRAME_H;
     const SCREEN_RECT = {
-      left: 0.2895,
-      top: 0.189,
-      width: 0.421,
-      height: 0.478,
+      left: 0.2845,
+      top: 0.181,
+      width: 0.431,
+      height: 0.493,
     };
 
-    // Precarga progresiva de los 60 frames WebP (f-00 y f-59 primero para respuesta instantánea)
     const frames: (HTMLImageElement | null)[] = new Array(TOTAL_FRAMES).fill(null);
     const loaded: boolean[] = new Array(TOTAL_FRAMES).fill(false);
 
@@ -1081,7 +1147,6 @@ const CASES: DiveCase[] = [
       };
     };
 
-    // Prioridad: primero frame 0 y último frame 59, luego todos los intermedios
     loadFrame(0);
     loadFrame(TOTAL_FRAMES - 1);
     for (let i = 1; i < TOTAL_FRAMES - 1; i++) {
@@ -1097,12 +1162,10 @@ const CASES: DiveCase[] = [
     let needsDraw = true;
     let isCaseActive = false;
 
-    // Calcula el rectángulo exacto (drawX, drawY, drawW, drawH) en que se dibuja cada frame
     const getDrawRect = (p: number) => {
       const isMobile = cw <= 820;
       const viewRatio = cw / ch;
 
-      // Rectángulo "cover" (llena toda la pantalla)
       let coverW: number, coverH: number, coverX: number, coverY: number;
       if (viewRatio > FRAME_RATIO) {
         coverW = cw;
@@ -1120,12 +1183,11 @@ const CASES: DiveCase[] = [
         return { x: coverX, y: coverY, w: coverW, h: coverH };
       }
 
-      // En móvil vertical: empezamos en cover (tu retrato grande) y al acercarnos al portátil
-      // interpolamos suavemente hasta un encuadre donde el MacBook entero cabe dentro de la pantalla
-      const mobileFitW = cw * 1.62;
+      // En móvil: interpolación suave hasta centrar el MacBook completo dejando hueco lateral para los chevrons
+      const mobileFitW = cw * 1.66;
       const mobileFitH = mobileFitW / FRAME_RATIO;
       const mobileFitX = (cw - mobileFitW) / 2;
-      const mobileFitY = ch * 0.44 - mobileFitH * 0.46;
+      const mobileFitY = ch * 0.52 - mobileFitH * 0.45;
 
       const t = Math.min(1, Math.max(0, p / 0.64));
       const ease = t * t * (3 - 2 * t);
@@ -1156,10 +1218,27 @@ const CASES: DiveCase[] = [
       return null;
     };
 
+    const animateTextStagger = () => {
+      if (rm) return;
+      staggerEls.forEach((el, i) => {
+        el.animate(
+          [
+            { opacity: 0, transform: 'translateY(16px)', filter: 'blur(8px)' },
+            { opacity: 1, transform: 'translateY(0)', filter: 'blur(0px)' },
+          ],
+          {
+            duration: 520,
+            delay: i * 75,
+            easing: 'cubic-bezier(0.23, 1, 0.32, 1)',
+            fill: 'both',
+          }
+        );
+      });
+    };
+
     const renderScene = (p: number) => {
       if (!ctx || !stage) return;
 
-      // 0..0.64 controla los 60 frames (menos scroll para aterrizar); 0.64..1.00 mantiene el portátil listo
       const animP = Math.min(1, Math.max(0, p / 0.64));
       const frameIdx = rm
         ? p > 0.35
@@ -1169,7 +1248,6 @@ const CASES: DiveCase[] = [
 
       const rect = getDrawRect(p);
 
-      // Dibujar frame en canvas
       const img = getNearestLoadedFrame(frameIdx);
       ctx.save();
       ctx.scale(dpr, dpr);
@@ -1181,7 +1259,6 @@ const CASES: DiveCase[] = [
       }
       ctx.restore();
 
-      // Sincronizar cut.webp AL PÍXEL con frame 0 para que PAPIS.APP pase por detrás de tu cabeza
       const heroFade = Math.max(0, 1 - p / 0.14);
       if (cutEl) {
         cutEl.style.left = `${rect.x}px`;
@@ -1207,15 +1284,35 @@ const CASES: DiveCase[] = [
         hintEl.style.pointerEvents = p < 0.08 ? 'auto' : 'none';
       }
 
-      // Posicionar la pantalla de proyectos AL PÍXEL dentro del bisel del portátil
+      // Pantalla del MacBook + Chevrons simétricos exactos a ambos lados de la pantalla
+      const sx = rect.x + rect.w * SCREEN_RECT.left;
+      const sy = rect.y + rect.h * SCREEN_RECT.top;
+      const sw = rect.w * SCREEN_RECT.width;
+      const sh = rect.h * SCREEN_RECT.height;
+
       if (screenEl) {
-        screenEl.style.left = `${rect.x + rect.w * SCREEN_RECT.left}px`;
-        screenEl.style.top = `${rect.y + rect.h * SCREEN_RECT.top}px`;
-        screenEl.style.width = `${rect.w * SCREEN_RECT.width}px`;
-        screenEl.style.height = `${rect.h * SCREEN_RECT.height}px`;
+        screenEl.style.left = `${sx}px`;
+        screenEl.style.top = `${sy}px`;
+        screenEl.style.width = `${sw}px`;
+        screenEl.style.height = `${sh}px`;
       }
 
-      // Activar modo casos exactamente cuando el portátil ha aterrizado (p >= 0.62)
+      const midY = sy + sh / 2;
+      const isMobile = cw <= 820;
+      const chevSize = isMobile ? 42 : Math.min(76, Math.max(54, cw * 0.052));
+      const sideGap = isMobile ? 6 : Math.min(44, Math.max(18, cw * 0.025));
+
+      if (prevBtn) {
+        const leftPos = Math.max(8, sx - chevSize - sideGap);
+        prevBtn.style.left = `${leftPos}px`;
+        prevBtn.style.top = `${midY}px`;
+      }
+      if (nextBtn) {
+        const rightPos = Math.min(cw - chevSize - 8, sx + sw + sideGap);
+        nextBtn.style.left = `${rightPos}px`;
+        nextBtn.style.top = `${midY}px`;
+      }
+
       const shouldBeCase = p >= 0.62;
       if (shouldBeCase !== isCaseActive) {
         isCaseActive = shouldBeCase;
@@ -1230,7 +1327,6 @@ const CASES: DiveCase[] = [
       return Math.min(1, Math.max(0, -rect.top / maxScroll));
     };
 
-    // Bucle de render suavizado 60fps (solo dibuja cuando cambia el progreso o llega un frame)
     const tick = () => {
       const targetP = getScrollProgress();
       const diff = targetP - smoothP;
@@ -1249,49 +1345,39 @@ const CASES: DiveCase[] = [
       requestAnimationFrame(tick);
     };
 
-    const animateTextStagger = () => {
-      if (rm) return;
-      staggerEls.forEach((el, i) => {
-        el.animate(
-          [
-            { opacity: 0, transform: 'translateY(14px)', filter: 'blur(6px)' },
-            { opacity: 1, transform: 'translateY(0)', filter: 'blur(0px)' },
-          ],
-          {
-            duration: 460,
-            delay: i * 65,
-            easing: 'cubic-bezier(0.23, 1, 0.32, 1)',
-            fill: 'both',
-          }
-        );
-      });
-    };
-
     const fillCase = (idx: number, animate = true) => {
       const item = cases[idx];
-      if (!item) return;
+      if (!item || !stage) return;
       currentIdx = idx;
+
+      stage.style.setProperty('--case-accent', item.accent);
+      stage.style.setProperty('--case-glow', item.accentGlow);
+
+      if (tagEl) tagEl.textContent = item.tag;
+      if (titleEl) titleEl.textContent = item.title;
+      if (subtitleEl) subtitleEl.textContent = item.subtitle;
+      if (ctaLinkEl) ctaLinkEl.href = item.href;
+      if (ctaLabelEl) ctaLabelEl.textContent = item.ctaLabel;
       if (ticketTitleEl) ticketTitleEl.textContent = item.ticketTitle;
       if (ticketRowsEl) {
         ticketRowsEl.innerHTML = item.rows.map((r: string) => `<div>${r}</div>`).join('');
       }
-      if (descKeyEl) descKeyEl.textContent = item.descKey;
-      if (descTextEl) descTextEl.textContent = item.descText;
-      if (descLinkEl) descLinkEl.href = item.href;
-      if (descCtaEl) descCtaEl.textContent = item.ctaLabel;
-      if (descNumEl) descNumEl.textContent = `0${idx + 1} / 0${cases.length}`;
-      if (descDotEl) descDotEl.style.background = item.accent;
 
-      slides.forEach((s, i) => {
+      bgSlides.forEach((s, i) => {
         s.style.opacity = i === idx ? '1' : '0';
-        s.style.transform = i === idx ? 'scale(1)' : 'scale(1.02)';
+      });
+
+      dotBtns.forEach((b, i) => {
+        const active = i === idx;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-selected', String(active));
       });
 
       if (animate) animateTextStagger();
 
-      if (!rm && flashEl) {
-        flashEl.animate([{ opacity: 0 }, { opacity: 0.32 }, { opacity: 0 }], {
-          duration: 320,
+      if (!rm && flashEl && animate) {
+        flashEl.animate([{ opacity: 0 }, { opacity: 0.25 }, { opacity: 0 }], {
+          duration: 300,
           easing: 'ease-out',
         });
       }
@@ -1299,7 +1385,7 @@ const CASES: DiveCase[] = [
 
     const scrollToCase = () => {
       const maxScroll = Math.max(0, track.offsetHeight - window.innerHeight);
-      window.scrollTo({ top: Math.round(maxScroll * 0.85), behavior: rm ? 'auto' : 'smooth' });
+      window.scrollTo({ top: Math.round(maxScroll * 0.84), behavior: rm ? 'auto' : 'smooth' });
     };
 
     const scrollToHero = () => {
@@ -1312,15 +1398,14 @@ const CASES: DiveCase[] = [
     nextBtn?.addEventListener('click', () => {
       fillCase((currentIdx + 1) % cases.length);
     });
-    screenHitEl?.addEventListener('click', () => {
-      fillCase((currentIdx + 1) % cases.length);
+    dotBtns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => fillCase(idx));
     });
     diveBtn?.addEventListener('click', scrollToCase);
     hintBtn?.addEventListener('click', scrollToCase);
     studioBtn?.addEventListener('click', scrollToHero);
     centerLogoBtn?.addEventListener('click', scrollToHero);
 
-    // Péndulo sutil al pasar el ratón por el lanyard en desktop
     badgeHitEl?.addEventListener('pointerenter', () => {
       if (rm || !badgeEl || smoothP > 0.05) return;
       badgeEl.animate(
