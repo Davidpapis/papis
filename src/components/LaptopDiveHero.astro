@@ -1617,26 +1617,43 @@ const CASES: DiveCase[] = [
     });
     prevBtn?.addEventListener('click', handlePrev);
 
-    // Captura inteligente de rueda solo cuando el Hero está arriba en el viewport
+    // Captura REAL de rueda / Mac Trackpad / Magic Mouse:
+    // SIEMPRE llamamos a e.preventDefault() desde deltaY=1 cuando estamos en el Hero o casos intermedios,
+    // para que los micro-eventos del trackpad de Mac nunca escapen hacia abajo.
+    let wheelAcc = 0;
+    let lastWheelTs = 0;
     window.addEventListener(
       'wheel',
       (e) => {
-        if (window.scrollY > 30) return;
+        if (window.scrollY > 40 && !busy) return;
         const now = Date.now();
-        if (Math.abs(e.deltaY) < 18) return;
+        if (now - lastWheelTs > 220) wheelAcc = 0;
+        lastWheelTs = now;
 
-        if (e.deltaY > 0) {
-          if (mode === 'hero' || currentIdx < cases.length - 1) {
-            e.preventDefault();
-            if (now < wheelLockUntil) return;
-            wheelLockUntil = now + 720;
+        const goingDown = e.deltaY > 0;
+        const goingUp = e.deltaY < 0;
+
+        if (goingDown && (mode === 'hero' || currentIdx < cases.length - 1 || busy)) {
+          e.preventDefault();
+          if (busy || now < wheelLockUntil) return;
+          wheelAcc += e.deltaY;
+          if (wheelAcc >= 24) {
+            wheelAcc = 0;
+            wheelLockUntil = now + 950;
             handleNext();
           }
-        } else if (e.deltaY < 0 && mode === 'case') {
+          return;
+        }
+
+        if (goingUp && (mode === 'case' || busy)) {
           e.preventDefault();
-          if (now < wheelLockUntil) return;
-          wheelLockUntil = now + 720;
-          handlePrev();
+          if (busy || now < wheelLockUntil) return;
+          wheelAcc += e.deltaY;
+          if (wheelAcc <= -24) {
+            wheelAcc = 0;
+            wheelLockUntil = now + 950;
+            handlePrev();
+          }
         }
       },
       { passive: false }
@@ -1644,7 +1661,7 @@ const CASES: DiveCase[] = [
 
     // Teclado
     window.addEventListener('keydown', (e) => {
-      if (window.scrollY > 30) return;
+      if (window.scrollY > 40 && !busy) return;
       if (['ArrowDown', 'PageDown', 'ArrowRight'].includes(e.key)) {
         if (mode === 'hero' || currentIdx < cases.length - 1) {
           e.preventDefault();
@@ -1656,25 +1673,55 @@ const CASES: DiveCase[] = [
       }
     });
 
-    // En móvil: NO secuestramos el scroll vertical de la web; permitimos swipe horizontal en modo casos
-    let touchX = 0;
+    // Touch en móvil (iOS / Android): captura desde el primer píxel cuando el Hero está arriba
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchTriggered = false;
     stage.addEventListener(
       'touchstart',
       (e) => {
-        touchX = e.touches[0]?.clientX ?? 0;
+        touchStartX = e.touches[0]?.clientX ?? 0;
+        touchStartY = e.touches[0]?.clientY ?? 0;
+        touchTriggered = false;
       },
       { passive: true }
     );
     stage.addEventListener(
-      'touchend',
+      'touchmove',
       (e) => {
-        if (mode !== 'case') return;
-        const dx = touchX - (e.changedTouches[0]?.clientX ?? touchX);
-        if (Math.abs(dx) < 44) return;
-        if (dx > 0) handleNext();
-        else handlePrev();
+        if (window.scrollY > 25 && !busy) return;
+        const target = e.target as HTMLElement | null;
+        if (target?.closest('a[href="#pilares"]')) return;
+
+        const currX = e.touches[0]?.clientX ?? touchStartX;
+        const currY = e.touches[0]?.clientY ?? touchStartY;
+        const dx = touchStartX - currX;
+        const dy = touchStartY - currY;
+
+        if (Math.abs(dy) >= Math.abs(dx)) {
+          if (dy > 4 && (mode === 'hero' || currentIdx < cases.length - 1 || busy)) {
+            e.preventDefault();
+            if (!touchTriggered && !busy && dy > 26) {
+              touchTriggered = true;
+              handleNext();
+            }
+          } else if (dy < -4 && (mode === 'case' || busy)) {
+            e.preventDefault();
+            if (!touchTriggered && !busy && dy < -26) {
+              touchTriggered = true;
+              handlePrev();
+            }
+          }
+        } else if (mode === 'case' && Math.abs(dx) > 12) {
+          e.preventDefault();
+          if (!touchTriggered && !busy && Math.abs(dx) > 36) {
+            touchTriggered = true;
+            if (dx > 0) handleNext();
+            else handlePrev();
+          }
+        }
       },
-      { passive: true }
+      { passive: false }
     );
 
     // Disparar entrada con failsafe
