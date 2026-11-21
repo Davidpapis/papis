@@ -163,7 +163,7 @@ const CASES: DiveCase[] = [
 
           <div class="hd-badge-photo">
             <img
-              src="/hero-dive/papis-portrait.jpg"
+              src="/hero-dive/papis-badge-face.webp"
               alt="David Papis"
               width="92"
               height="112"
@@ -182,11 +182,13 @@ const CASES: DiveCase[] = [
       </div>
     </div>
 
-    <!-- Capa 6: Vídeo de transición Kling/Veo (se activa automáticamente si existe /hero-dive/trans.mp4) -->
+    <!-- Capa 6: Vídeo de transición Google Flow (streaming directo para iOS/Android y Desktop) -->
     <video
       data-hd-trans
+      src="/hero-dive/trans.mp4"
       muted
       playsinline
+      webkit-playsinline="true"
       preload="auto"
       class="hd-trans"
       aria-hidden="true"
@@ -602,9 +604,9 @@ const CASES: DiveCase[] = [
 
   @media (max-width: 767px) {
     .hd-case-frame {
-      width: 138vw;
+      width: 152vw;
       height: auto;
-      top: 44%;
+      top: 58%;
     }
   }
 
@@ -1048,67 +1050,65 @@ const CASES: DiveCase[] = [
       display: none;
     }
 
+    /* En móvil: barra superior en 2 filas compactas centradas sin desbordar */
+    .hd-nav {
+      top: 10px;
+      inset-inline: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .hd-nav-left,
+    .hd-nav-right {
+      display: contents;
+    }
+
+    .hd-tag {
+      height: 29px;
+      padding: 0 10px;
+      font-size: 12px;
+    }
+
+    .hd-center-logo {
+      display: none;
+    }
+
     /* Modo Hero en móvil: cada capa en su zona sin pisarse */
     .hd-wordmark {
-      top: 88px;
+      top: 86px;
       left: 3vw;
       width: 94vw;
-      height: 74px;
+      height: 64px;
     }
 
     .hd-script {
-      top: 156px;
+      top: 148px;
       left: 16px;
-      font-size: 1.85rem;
+      font-size: 1.7rem;
     }
 
+    /* En móvil vertical ocultamos el lanyard para evitar cortes laterales sobre la cara */
     .hd-badge {
-      width: 118px;
-      top: 172px;
-      right: 12px;
+      display: none;
     }
 
-    .hd-lanyard-strap {
-      height: 44px;
-      object-fit: cover;
-      object-position: bottom center;
-      margin-bottom: -6px;
-    }
-
-    .hd-badge-sleeve {
-      padding: 5px;
-      border-radius: 10px;
-    }
-
-    .hd-badge-card {
-      padding: 8px 7px;
-    }
-
-    .hd-badge-card h4 {
-      font-size: 0.85rem;
-    }
-
-    .hd-badge-photo {
-      width: 44px;
-      height: 52px;
-      margin: 5px auto;
-    }
-
-    .hd-badge-row {
-      font-size: 6.5px;
-      padding: 2.5px 0 1.5px;
-    }
-
-    /* Hint elevado por encima de la barra flotante de WhatsApp + Avatar */
+    /* Hint elevado por encima de la barra flotante de WhatsApp + Avatar con fondo legible */
     .hd-hint {
-      bottom: 104px;
-      width: 90vw;
+      bottom: 98px;
+      width: auto;
+      max-width: 92vw;
       text-align: center;
+      padding: 10px 16px;
+      border-radius: 14px;
+      background: rgba(7, 19, 30, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(10px);
     }
 
     .hd-hint-btn {
       font-size: 10px;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
     }
 
     /* Modo Casos (proyectos) en móvil: zonas limpias sin solaparse ni tocar el avatar flotante */
@@ -1302,22 +1302,29 @@ const CASES: DiveCase[] = [
       }
     };
 
-    (async () => {
-      if (transEl && (await probeAsset('/hero-dive/trans.mp4'))) {
-        try {
-          const blob = await (await fetch('/hero-dive/trans.mp4')).blob();
-          transEl.src = URL.createObjectURL(blob);
-          transEl.addEventListener(
-            'loadeddata',
-            () => {
-              transReady = true;
-            },
-            { once: true }
-          );
-        } catch {
-          // Fallback suave sin vídeo
-        }
+    // Preparación inmediata de trans.mp4 (streaming nativo, compatible con iOS Safari y Android)
+    if (transEl) {
+      if (transEl.readyState >= 2) {
+        transReady = true;
+      } else {
+        transEl.addEventListener(
+          'loadeddata',
+          () => {
+            transReady = true;
+          },
+          { once: true }
+        );
+        transEl.addEventListener(
+          'canplay',
+          () => {
+            transReady = true;
+          },
+          { once: true }
+        );
       }
+    }
+
+    (async () => {
       for (let i = 0; i < cases.length; i++) {
         const v = caseVideos[i];
         if (v && (await probeAsset(cases[i].video))) {
@@ -1462,24 +1469,35 @@ const CASES: DiveCase[] = [
         );
       }
 
-      if (!rm && transReady && transEl && transEl.duration) {
-        const effectiveEnd = Math.min(transEl.duration, 5.15);
+      if (!rm && transEl && (transReady || transEl.readyState >= 1)) {
+        const effectiveEnd = Math.min(transEl.duration || 5.15, 5.15);
         transEl.currentTime = 0;
         transEl.style.opacity = '1';
-        await transEl.play().catch(() => {});
-        await new Promise<void>((resolve) => {
-          const tick = () => {
-            const p = transEl.currentTime / effectiveEnd;
-            transEl.playbackRate = Math.max(1.5, 2.2 + 2.2 * Math.sin(Math.PI * Math.min(p * 1.05, 1)));
-            if (transEl.ended || transEl.currentTime >= effectiveEnd) {
-              transEl.pause();
-              resolve();
-            } else {
-              requestAnimationFrame(tick);
-            }
-          };
-          requestAnimationFrame(tick);
-        });
+        // Llamada síncrona a .play() para que iOS Safari la acepte dentro del gesto táctil
+        const playPromise = transEl.play();
+        let started = true;
+        if (playPromise) {
+          await playPromise.catch(() => {
+            started = false;
+          });
+        }
+        if (started) {
+          await new Promise<void>((resolve) => {
+            const safety = setTimeout(resolve, 2600);
+            const tick = () => {
+              const p = transEl.currentTime / effectiveEnd;
+              transEl.playbackRate = Math.max(1.5, 2.2 + 2.2 * Math.sin(Math.PI * Math.min(p * 1.05, 1)));
+              if (transEl.ended || transEl.currentTime >= effectiveEnd) {
+                clearTimeout(safety);
+                transEl.pause();
+                resolve();
+              } else {
+                requestAnimationFrame(tick);
+              }
+            };
+            requestAnimationFrame(tick);
+          });
+        }
         mode = 'case';
         currentIdx = 0;
         stage.classList.add('is-case');
@@ -1625,24 +1643,40 @@ const CASES: DiveCase[] = [
       }
     });
 
-    // Touch swipe en móvil
+    // Touch swipe en móvil: captura real con touchmove passive:false para frenar el scroll nativo
     let touchY = 0;
+    let touchHandled = false;
     stage.addEventListener(
       'touchstart',
       (e) => {
+        if (window.scrollY > 20) return;
         touchY = e.touches[0]?.clientY ?? 0;
+        touchHandled = false;
       },
       { passive: true }
     );
     stage.addEventListener(
-      'touchend',
+      'touchmove',
       (e) => {
-        const dy = touchY - (e.changedTouches[0]?.clientY ?? touchY);
-        if (Math.abs(dy) < 42) return;
-        if (dy > 0 && (mode === 'hero' || currentIdx < cases.length - 1)) handleNext();
-        if (dy < 0 && mode === 'case') handlePrev();
+        if (window.scrollY > 20) return;
+        const currY = e.touches[0]?.clientY ?? touchY;
+        const dy = touchY - currY;
+        // Swipe hacia arriba en modo hero o casos intermedios -> interceptar y lanzar Laptop Dive
+        if (dy > 10 && (mode === 'hero' || currentIdx < cases.length - 1)) {
+          e.preventDefault();
+          if (!touchHandled && dy > 24) {
+            touchHandled = true;
+            handleNext();
+          }
+        } else if (dy < -10 && mode === 'case') {
+          e.preventDefault();
+          if (!touchHandled && dy < -24) {
+            touchHandled = true;
+            handlePrev();
+          }
+        }
       },
-      { passive: true }
+      { passive: false }
     );
 
     // Disparar entrada con failsafe
