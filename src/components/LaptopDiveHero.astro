@@ -240,11 +240,13 @@ const CASES: DiveCase[] = [
 
   <!-- Capa UI fijada al viewport (Etiquetas Nav, Logo centro, Ticket, Descripción, Prev/Next, Hint) -->
   <div class="hd-ui">
-    <!-- Barra superior estilo sticker tags -->
+    <!-- Barra superior estilo sticker tags con los 3 servicios separados -->
     <nav aria-label="Navegación principal del estudio" class="hd-nav">
       <div class="hd-nav-left">
         <button type="button" data-hd-studio class="hd-tag hd-pre">mi estudio</button>
-        <button type="button" data-hd-dive class="hd-tag hd-pre">proyectos</button>
+        <a href="/paginas-web" class="hd-tag hd-tag-web hd-pre">web</a>
+        <a href="/software-empresas" class="hd-tag hd-tag-software hd-pre">software</a>
+        <a href="/servicio-tecnico" class="hd-tag hd-tag-tecnico hd-pre">técnico</a>
       </div>
 
       <button
@@ -257,8 +259,8 @@ const CASES: DiveCase[] = [
       </button>
 
       <div class="hd-nav-right">
-        <a href="#pilares" class="hd-tag hd-pre">servicios</a>
-        <a href="/contacto" class="hd-tag hd-tag-accent hd-pre">pedir presupuesto</a>
+        <button type="button" data-hd-dive class="hd-tag hd-pre">proyectos</button>
+        <a href="/contacto" class="hd-tag hd-tag-accent hd-pre">presupuesto</a>
       </div>
     </nav>
 
@@ -719,6 +721,16 @@ const CASES: DiveCase[] = [
     background: #cfeee0;
   }
 
+  .hd-tag-web {
+    border-bottom: 3px solid #3b82f6;
+  }
+  .hd-tag-software {
+    border-bottom: 3px solid #10b981;
+  }
+  .hd-tag-tecnico {
+    border-bottom: 3px solid #f97316;
+  }
+
   @media (hover: hover) and (pointer: fine) {
     .hd-tag:hover {
       transform: translateY(-2px) rotate(-1.5deg);
@@ -1006,12 +1018,20 @@ const CASES: DiveCase[] = [
   @media (max-width: 820px) {
     .hd-nav {
       flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
       top: 10px;
     }
+    .hd-nav-left,
+    .hd-nav-right {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+    }
     .hd-tag {
-      height: 31px;
-      padding: 0 11px;
-      font-size: 12.5px;
+      height: 30px;
+      padding: 0 10px;
+      font-size: 12px;
     }
     .hd-center-logo {
       display: none;
