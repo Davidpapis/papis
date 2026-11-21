@@ -22,11 +22,11 @@ const CASES: DiveCase[] = [
   {
     id: 'web',
     ticketTitle: 'WEB & SEO/GEO',
-    rows: ['ASTRO + KEYSTATIC', 'SEO LOCAL + IA', '10–15 DÍAS'],
-    descKey: '// web ultrarrápida',
+    rows: ['ASTRO + KEYSTATIC', 'AAAR · SERINAMAR', '10–15 DÍAS'],
+    descKey: '// webs reales en marbella',
     descText:
-      '— páginas a medida en HTML estático (< 0,8s), analítica real sin cookies y posicionamiento en Google, ChatGPT y Gemini.',
-    image: '/assets/optimized/portfolio-luxury-web.webp',
+      '— páginas a medida en HTML estático (< 0,8s), SEO local y GEO para IA, como AAAR Marbella (compromiso social), Grupo Serinamar o Cerrajería Carlos Neira.',
+    image: '/hero-dive/case-web.webp',
     video: '/hero-dive/case-1.mp4',
     href: '/paginas-web',
     ctaLabel: 'Ver Diseño Web',
@@ -35,11 +35,11 @@ const CASES: DiveCase[] = [
   {
     id: 'software',
     ticketTitle: 'SOFTWARE ERP',
-    rows: ['100% A MEDIDA', 'SIN CUOTAS / USUARIO', 'DESDE 6.000 €'],
-    descKey: '// software empresas',
+    rows: ['BOBISAPP · LA CLAVE', 'SIN CUOTAS / USUARIO', 'DESDE 6.000 €'],
+    descKey: '// apps reales en producción',
     descText:
-      '— ERP, CRM y plataformas privadas en la nube para inmobiliarias, academias o cualquier sector, con 1 mes de beta y mejoras en 24h.',
-    image: '/assets/optimized/portfolio-erp-inmobiliaria.webp',
+      '— ERP, CRM y plataformas privadas en la nube como Bobisapp o Academia La Clave, en propiedad y con 1 mes de beta con mejoras en 24h.',
+    image: '/hero-dive/case-software.webp',
     video: '/hero-dive/case-2.mp4',
     href: '/software-empresas',
     ctaLabel: 'Ver Software Empresas',
@@ -48,10 +48,10 @@ const CASES: DiveCase[] = [
   {
     id: 'tecnico',
     ticketTitle: 'TÉCNICO EN CASA',
-    rows: ['MARBELLA 45 €/H', 'APPLE & WINDOWS', 'REMOTO MUNDIAL'],
-    descKey: '// soporte y clases',
+    rows: ['20 AÑOS · RTV MARBELLA', 'CABOPINO A ESTEPONA', 'DESDE 45 €/H'],
+    descKey: '// 20 años de experiencia',
     descText:
-      '— vamos a tu domicilio en menos de 24h en Marbella, San Pedro y Estepona, o te ayudamos al instante por RustDesk desde cualquier país.',
+      '— 20 años dando soporte técnico a domicilio desde Cabopino hasta Estepona y colaborando en Radio Televisión Marbella. También remoto mundial vía RustDesk.',
     image: '/assets/optimized/servicio-tecnico-marbella.webp',
     video: '/hero-dive/case-3.mp4',
     href: '/servicio-tecnico',
@@ -78,13 +78,13 @@ const CASES: DiveCase[] = [
 
   <!-- Escena principal por capas -->
   <div class="hd-scene" data-hd-scene>
-    <!-- Capa 1: Fondo fotográfico de estudio (usa /hero-dive/plate.webp si existe, o fallback hero-web.webp) -->
+    <!-- Capa 1: Fondo fotográfico real de estudio de David Papis -->
     <img
       data-hd-plate
-      src="/assets/optimized/hero-web.webp"
-      alt="Estudio tecnológico papis.app en Marbella"
-      width="1920"
-      height="1071"
+      src="/hero-dive/plate.webp"
+      alt="David Papis en su estudio de papis.app sujetando un portátil en Marbella"
+      width="1376"
+      height="768"
       loading="eager"
       fetchpriority="high"
       decoding="async"
@@ -92,7 +92,7 @@ const CASES: DiveCase[] = [
     />
     <div aria-hidden="true" class="hd-plate-vignette"></div>
 
-    <!-- Capa 2: Wordmark gigante PAPIS.APP (detrás del recorte cut.png cuando se añada) -->
+    <!-- Capa 2: Wordmark gigante PAPIS.APP (detrás del recorte cut.png) -->
     <svg
       data-hd-wordmark
       class="hd-wordmark hd-pre"
@@ -118,12 +118,17 @@ const CASES: DiveCase[] = [
       </text>
     </svg>
 
-    <!-- Capa 3: Recorte PNG transparente (solo visible si el usuario sube /hero-dive/cut.png) -->
+    <!-- Capa 3: Recorte WebP transparente de David Papis (pixel-aligned con plate.webp) -->
     <img
       data-hd-cut
+      src="/hero-dive/cut.webp"
       alt=""
+      width="1376"
+      height="768"
+      loading="eager"
+      decoding="async"
       aria-hidden="true"
-      class="hd-cut hidden"
+      class="hd-cut"
     />
 
     <!-- Capa 4: Firma manuscrita Caveat Brush -->
@@ -187,52 +192,54 @@ const CASES: DiveCase[] = [
       aria-hidden="true"
     ></video>
 
-    <!-- Capa 7: Escena de portátil centrado (case-plate.webp si existe, o marco de portátil realista) -->
+    <!-- Capa 7: Escena de portátil real centrado (case-plate.webp con pantalla calibrada al píxel) -->
     <div data-hd-case-wrap class="hd-case-wrap">
-      <img data-hd-caseplate alt="" aria-hidden="true" class="hd-caseplate hidden" />
-
-      <!-- Marco de portátil elegante por defecto (se oculta automáticamente si existe case-plate.webp) -->
-      <div data-hd-laptop-shell class="hd-laptop-shell">
-        <div class="hd-laptop-lid">
-          <div class="hd-laptop-camera" aria-hidden="true"></div>
-          <div data-hd-screen class="hd-screen">
-            {
-              CASES.map((item, idx) => (
-                <div
-                  data-hd-media={idx}
-                  class="hd-screen-slide"
-                  style={`opacity: ${idx === 0 ? 1 : 0};`}
-                >
-                  <img
-                    src={item.image}
-                    alt={item.ticketTitle}
-                    loading={idx === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                    class="h-full w-full object-cover"
-                  />
-                  <video
-                    data-hd-case-video={idx}
-                    muted
-                    loop
-                    playsinline
-                    preload="none"
-                    class="hd-case-video hidden"
-                  />
-                </div>
-              ))
-            }
-            <div aria-hidden="true" class="hd-screen-sheen"></div>
-            <div data-hd-flash aria-hidden="true" class="hd-screen-flash"></div>
-            <button
-              type="button"
-              data-hd-screen-hit
-              class="hd-screen-hit"
-              aria-label="Pasar al siguiente caso en la pantalla"
-            ></button>
-          </div>
-        </div>
-        <div class="hd-laptop-base" aria-hidden="true">
-          <div class="hd-laptop-notch"></div>
+      <div class="hd-case-frame">
+        <img
+          data-hd-caseplate
+          src="/hero-dive/case-plate.webp"
+          alt=""
+          width="1376"
+          height="768"
+          loading="eager"
+          decoding="async"
+          aria-hidden="true"
+          class="hd-caseplate"
+        />
+        <div data-hd-screen class="hd-screen hd-screen-mapped">
+          {
+            CASES.map((item, idx) => (
+              <div
+                data-hd-media={idx}
+                class="hd-screen-slide"
+                style={`opacity: ${idx === 0 ? 1 : 0};`}
+              >
+                <img
+                  src={item.image}
+                  alt={item.ticketTitle}
+                  loading={idx === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  class="h-full w-full object-cover object-top"
+                />
+                <video
+                  data-hd-case-video={idx}
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  class="hd-case-video hidden"
+                />
+              </div>
+            ))
+          }
+          <div aria-hidden="true" class="hd-screen-sheen"></div>
+          <div data-hd-flash aria-hidden="true" class="hd-screen-flash"></div>
+          <button
+            type="button"
+            data-hd-screen-hit
+            class="hd-screen-hit"
+            aria-label="Pasar al siguiente caso en la pantalla"
+          ></button>
         </div>
       </div>
     </div>
@@ -354,7 +361,7 @@ const CASES: DiveCase[] = [
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 62% center;
+    object-position: center center;
     transform-origin: center center;
     transition:
       transform 850ms var(--ease-in-out),
@@ -363,17 +370,15 @@ const CASES: DiveCase[] = [
   }
 
   .hd-stage.is-case .hd-plate {
-    transform: scale(1.16);
-    opacity: 0.12;
-    filter: blur(10px);
+    transform: scale(1.04);
+    opacity: 0;
   }
 
   .hd-plate-vignette {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, rgba(11, 47, 32, 0.72) 0%, rgba(11, 47, 32, 0.25) 42%, rgba(5, 5, 7, 0.88) 100%),
-      radial-gradient(60% 60% at 50% 45%, transparent 30%, rgba(5, 5, 7, 0.6) 100%);
+      linear-gradient(180deg, rgba(7, 19, 30, 0.32) 0%, rgba(7, 19, 30, 0.04) 45%, rgba(5, 8, 14, 0.55) 100%);
     pointer-events: none;
     z-index: 2;
   }
@@ -402,8 +407,14 @@ const CASES: DiveCase[] = [
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
     z-index: 4;
     pointer-events: none;
+    transition: opacity 420ms var(--ease-out);
+  }
+
+  .hd-stage.is-case .hd-cut {
+    opacity: 0;
   }
 
   .hd-script {
@@ -532,27 +543,32 @@ const CASES: DiveCase[] = [
     pointer-events: none;
   }
 
-  /* Contenedor de Portátil (Modo Casos) */
+  /* Contenedor de Portátil Real (Modo Casos — calibrado 1376x768) */
   .hd-case-wrap {
     position: absolute;
     inset: 0;
     z-index: 9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 76px 16px 64px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #07131e 0%, #0e2234 100%);
     opacity: 0;
-    transform: scale(0.92) translateY(24px);
     pointer-events: none;
-    transition:
-      opacity 550ms var(--ease-out),
-      transform 650ms var(--ease-out);
+    transition: opacity 420ms var(--ease-out);
   }
 
   .hd-stage.is-case .hd-case-wrap {
     opacity: 1;
-    transform: scale(1) translateY(0);
     pointer-events: auto;
+  }
+
+  /* Frame 1376x768 idéntico a object-fit:cover de trans.mp4 para encaje al píxel */
+  .hd-case-frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: max(100%, calc(100dvh * 1376 / 768));
+    height: max(100%, calc(100vw * 768 / 1376));
+    aspect-ratio: 1376 / 768;
   }
 
   .hd-caseplate {
@@ -560,40 +576,8 @@ const CASES: DiveCase[] = [
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: fill;
     pointer-events: none;
-  }
-
-  .hd-laptop-shell {
-    width: min(860px, 64vw);
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .hd-laptop-lid {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 10.4;
-    border-radius: 18px 18px 6px 6px;
-    padding: 14px 14px 16px;
-    background: linear-gradient(180deg, #272b33 0%, #12151a 100%);
-    border: 2px solid rgba(255, 255, 255, 0.16);
-    box-shadow:
-      0 32px 80px -12px rgba(0, 0, 0, 0.85),
-      inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  }
-
-  .hd-laptop-camera {
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 5px;
-    height: 5px;
-    border-radius: 999px;
-    background: #334155;
   }
 
   .hd-screen {
@@ -603,6 +587,25 @@ const CASES: DiveCase[] = [
     border-radius: 4px;
     background: #000000;
     overflow: hidden;
+  }
+
+  /* Coordenadas medidas directamente en píxeles de case-plate.webp (390..985, 137..568 de 1376x768) */
+  .hd-screen-mapped {
+    position: absolute;
+    left: 28.34%;
+    top: 17.84%;
+    width: 43.24%;
+    height: 56.12%;
+    border-radius: 6px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  @media (max-width: 767px) {
+    .hd-case-frame {
+      width: 138vw;
+      height: auto;
+      top: 44%;
+    }
   }
 
   .hd-screen-slide {
@@ -1256,10 +1259,6 @@ const CASES: DiveCase[] = [
     const cases = JSON.parse(stage.dataset.cases || '[]');
     const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const plateEl = stage.querySelector<HTMLImageElement>('[data-hd-plate]');
-    const cutEl = stage.querySelector<HTMLImageElement>('[data-hd-cut]');
-    const casePlateEl = stage.querySelector<HTMLImageElement>('[data-hd-caseplate]');
-    const laptopShellEl = stage.querySelector<HTMLElement>('[data-hd-laptop-shell]');
     const transEl = stage.querySelector<HTMLVideoElement>('[data-hd-trans]');
     const wordmarkEl = stage.querySelector<HTMLElement>('[data-hd-wordmark]');
     const scriptEl = stage.querySelector<HTMLElement>('[data-hd-script]');
@@ -1304,18 +1303,6 @@ const CASES: DiveCase[] = [
     };
 
     (async () => {
-      if (plateEl && (await probeAsset('/hero-dive/plate.webp'))) {
-        plateEl.src = '/hero-dive/plate.webp';
-      }
-      if (cutEl && (await probeAsset('/hero-dive/cut.png'))) {
-        cutEl.src = '/hero-dive/cut.png';
-        cutEl.classList.remove('hidden');
-      }
-      if (casePlateEl && (await probeAsset('/hero-dive/case-plate.webp'))) {
-        casePlateEl.src = '/hero-dive/case-plate.webp';
-        casePlateEl.classList.remove('hidden');
-        laptopShellEl?.classList.add('has-caseplate');
-      }
       if (transEl && (await probeAsset('/hero-dive/trans.mp4'))) {
         try {
           const blob = await (await fetch('/hero-dive/trans.mp4')).blob();
@@ -1476,16 +1463,16 @@ const CASES: DiveCase[] = [
       }
 
       if (!rm && transReady && transEl && transEl.duration) {
+        const effectiveEnd = Math.min(transEl.duration, 5.15);
         transEl.currentTime = 0;
         transEl.style.opacity = '1';
         await transEl.play().catch(() => {});
         await new Promise<void>((resolve) => {
           const tick = () => {
-            const p = transEl.currentTime / (transEl.duration || 5);
-            transEl.playbackRate = Math.max(1.2, 1.8 + 2.4 * Math.sin(Math.PI * Math.min(p * 1.08, 1)));
-            if (transEl.ended || p >= 0.992) {
+            const p = transEl.currentTime / effectiveEnd;
+            transEl.playbackRate = Math.max(1.5, 2.2 + 2.2 * Math.sin(Math.PI * Math.min(p * 1.05, 1)));
+            if (transEl.ended || transEl.currentTime >= effectiveEnd) {
               transEl.pause();
-              transEl.style.opacity = '0';
               resolve();
             } else {
               requestAnimationFrame(tick);
@@ -1493,6 +1480,15 @@ const CASES: DiveCase[] = [
           };
           requestAnimationFrame(tick);
         });
+        mode = 'case';
+        currentIdx = 0;
+        stage.classList.add('is-case');
+        fillCase(0);
+        setTimeout(() => {
+          transEl.style.opacity = '0';
+          busy = false;
+        }, 320);
+        return;
       } else {
         await new Promise((r) => setTimeout(r, rm ? 0 : 280));
       }
