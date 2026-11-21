@@ -6,7 +6,7 @@ year: '2026'
 pillar: web
 deviceType: browser
 urlPreview: cerrajeria24h.vercel.app
-imageKey: portfolio-luxury-web
+imageKey: project-cerrajeria24h
 imageAlt: Web de Cerrajería Carlos Neira 24 horas en Marbella y San Pedro creada en Astro
 summary: >-
   Web ultrarrápida en Astro enfocada a SEO local urgente para maestros

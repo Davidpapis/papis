@@ -6,7 +6,7 @@ year: '2026'
 pillar: web
 deviceType: browser
 urlPreview: gruposerinamar.vercel.app
-imageKey: portfolio-luxury-web
+imageKey: project-gruposerinamar
 imageAlt: Web corporativa de Grupo Serinamar en Marbella desarrollada en Astro por papis.app
 summary: >-
   Web corporativa a medida en Astro para grupo inmobiliario con más de 25 años

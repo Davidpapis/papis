@@ -11,10 +11,10 @@
 
 ## Compromiso social y casos reales verificables
 - **Asociación de Autismo Ángel Rivière (AAAR Marbella)** (https://aaarm.vercel.app): Web oficial para esta asociación sin ánimo de lucro declarada de Utilidad Pública que apoya a niños con autismo y sus familias en Marbella desde 2008. Realizada prácticamente subvencionada como compromiso social con Marbella.
-- **Grupo Serinamar** (https://gruposerinamar.vercel.app): Web corporativa para empresa de construcción, reformas integrales, mantenimiento de comunidades, carpintería metálica y jardinería en Marbella y Costa del Sol.
+- **Grupo Serinamar** (https://gruposerinamar.vercel.app): Web corporativa en Astro para grupo inmobiliario en Marbella y Puerto Banús (desde el año 2000): alquiler vacacional con Guesty, compraventa de propiedades, mantenimiento con Just Banús y asesoría fiscal Iberiansun.
 - **Cerrajería Carlos Neira 24h** (https://cerrajeria24h.vercel.app): Web orientada a urgencias 24 horas en Marbella, San Pedro y Puerto Banús (apertura sin rotura, bombines antibumping y cajas fuertes).
-- **Just Banús** (https://justbanus-sepia.vercel.app): Web para empresa boutique de gestión integral de propiedades (Property Management) en Puerto Banús y Marbella.
-- **66 Nunataks — Julián Gracia** (https://66nunataks.vercel.app): Web de proyecto solidario de esquí de travesía y aventura en los Alpes escandinavos.
+- **Just Banús** (https://justbanus-sepia.vercel.app): Web para empresa de gestión integral de propiedades (Property Management, limpieza, lavandería, mantenimiento y reformas) en Puerto Banús y Marbella.
+- **66 Nunataks — Julián Gracia Palacín** (https://66nunataks.vercel.app): Web editorial de lanzamiento para la novela de ciencia ficción y distopía sobre IA (Trilogía QUILAK, Editorial Mascarón de Proa), con descarga/lectura gratuita del primer capítulo.
 - **Bobisapp** (https://bobisapp.vercel.app): Aplicación web ERP/CRM a medida en TypeScript para gestión inmobiliaria en Marbella.
 - **Academia de Baile La Clave de Marbella** (https://laclave-seven.vercel.app): Aplicación web a medida para gestión de alumnos, clases, horarios y cuotas en Marbella.
 

@@ -6,7 +6,7 @@ year: '2026'
 pillar: web
 deviceType: browser
 urlPreview: 66nunataks.vercel.app
-imageKey: portfolio-luxury-web
+imageKey: project-66nunataks
 imageAlt: Web oficial de la novela 66 Nunataks de Julián Gracia Palacín creada por papis.app
 summary: >-
   Web editorial inmersiva para el lanzamiento del primer volumen de la novela de

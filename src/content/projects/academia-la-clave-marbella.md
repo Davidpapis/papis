@@ -6,7 +6,7 @@ year: '2026'
 pillar: software
 deviceType: dashboard
 urlPreview: laclave-seven.vercel.app
-imageKey: portfolio-academia-baile
+imageKey: project-laclave
 imageAlt: Software web a medida para la Academia de Baile La Clave de Marbella
 summary: >-
   Aplicación web a medida en TypeScript creada para la Academia de Baile La

@@ -18,6 +18,13 @@ const projects = defineCollection({
     deviceType: z.enum(['browser', 'dashboard', 'home']),
     urlPreview: z.string().min(3).max(80),
     imageKey: z.enum([
+      'project-aaarm',
+      'project-gruposerinamar',
+      'project-cerrajeria24h',
+      'project-justbanus',
+      'project-66nunataks',
+      'project-bobisapp',
+      'project-laclave',
       'portfolio-luxury-web',
       'portfolio-erp-inmobiliaria',
       'portfolio-academia-baile',

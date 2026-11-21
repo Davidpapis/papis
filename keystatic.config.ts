@@ -461,12 +461,19 @@ export default config({
         imageKey: fields.select({
           label: 'Imagen principal optimizada',
           options: [
-            { label: 'Portal Inmobiliario de Lujo', value: 'portfolio-luxury-web' },
-            { label: 'ERP Gestión Inmobiliaria', value: 'portfolio-erp-inmobiliaria' },
-            { label: 'Software Academia de Baile', value: 'portfolio-academia-baile' },
+            { label: 'Captura Real: AAAR Marbella', value: 'project-aaarm' },
+            { label: 'Captura Real: Grupo Serinamar', value: 'project-gruposerinamar' },
+            { label: 'Captura Real: Cerrajería Carlos Neira 24h', value: 'project-cerrajeria24h' },
+            { label: 'Captura Real: Just Banús', value: 'project-justbanus' },
+            { label: 'Captura Real: 66 Nunataks', value: 'project-66nunataks' },
+            { label: 'Captura Real: Bobisapp (ERP Inmobiliario)', value: 'project-bobisapp' },
+            { label: 'Captura Real: Academia La Clave (Studio-27)', value: 'project-laclave' },
             { label: 'Servicio Técnico en Marbella', value: 'servicio-tecnico-marbella' },
+            { label: 'Genérica: Portal Inmobiliario', value: 'portfolio-luxury-web' },
+            { label: 'Genérica: ERP Inmobiliario', value: 'portfolio-erp-inmobiliaria' },
+            { label: 'Genérica: Academia de Baile', value: 'portfolio-academia-baile' },
           ],
-          defaultValue: 'portfolio-luxury-web',
+          defaultValue: 'project-aaarm',
         }),
         imageAlt: fields.text({
           label: 'Texto alternativo de la imagen (SEO y accesibilidad)',

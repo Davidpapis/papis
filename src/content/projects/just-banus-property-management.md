@@ -6,7 +6,7 @@ year: '2026'
 pillar: web
 deviceType: browser
 urlPreview: justbanus-sepia.vercel.app
-imageKey: portfolio-luxury-web
+imageKey: project-justbanus
 imageAlt: Web internacional de Just Banús Property Management en Marbella y Puerto Banús
 summary: >-
   Página web orientada a propietarios internacionales en Marbella y Puerto

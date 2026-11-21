@@ -6,7 +6,7 @@ year: '2026'
 pillar: software
 deviceType: dashboard
 urlPreview: bobisapp.vercel.app
-imageKey: portfolio-erp-inmobiliaria
+imageKey: project-bobisapp
 imageAlt: Aplicación web Bobisapp de gestión inmobiliaria en Marbella desarrollada en TypeScript
 summary: >-
   Aplicación web a medida en TypeScript diseñada específicamente para la gestión

@@ -6,7 +6,7 @@ year: '2026'
 pillar: web
 deviceType: browser
 urlPreview: aaarm.vercel.app
-imageKey: portfolio-luxury-web
+imageKey: project-aaarm
 imageAlt: Web oficial de la Asociación de Autismo Ángel Rivière en Marbella creada por papis.app
 summary: >-
   Proyecto de compromiso social: página web prácticamente subvencionada para la
