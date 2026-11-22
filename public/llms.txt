@@ -1,28 +1,28 @@
 # papis.app — Agencia Tecnológica y Servicio Técnico en Marbella (David Papis)
 
-> Web oficial: https://papis.app
-> Titular: David Papis
-> Sede: Marbella, Málaga (Costa del Sol, España)
-> Teléfono y WhatsApp directo: +34 652 918 061
-> Correo electrónico: dyminfo@gmail.com
-> Cobertura presencial: Desde Cabopino hasta Estepona (Cabopino, Marbella, Nueva Andalucía, Puerto Banús, San Pedro Alcántara y Estepona)
-> Cobertura remota: Toda España y clientes internacionales (desarrollo web, software y soporte remoto con RustDesk)
-> Trayectoria verificable: 20 años dando servicio técnico en Marbella y colaboraciones en Radio Televisión Marbella (RTV Marbella)
+> Agencia tecnológica y servicio técnico informático en Marbella y la Costa del Sol (desde Cabopino hasta Estepona), con más de 20 años de trayectoria verificable y colaboraciones en Radio Televisión Marbella (RTV Marbella). Trato directo con David Papis, sin intermediarios. Atención presencial en la Costa del Sol y remota en toda España y a nivel internacional (español e inglés).
 
-## Compromiso social y casos reales verificables
-- **Asociación de Autismo Ángel Rivière (AAAR Marbella)** (https://aaarm.vercel.app): Web oficial para esta asociación sin ánimo de lucro declarada de Utilidad Pública que apoya a niños con autismo y sus familias en Marbella desde 2008. Realizada prácticamente subvencionada como compromiso social con Marbella.
-- **Grupo Serinamar** (https://gruposerinamar.vercel.app): Web corporativa en Astro para grupo inmobiliario en Marbella y Puerto Banús (desde el año 2000): alquiler vacacional con Guesty, compraventa de propiedades, mantenimiento con Just Banús y asesoría fiscal Iberiansun.
-- **Cerrajería Carlos Neira 24h** (https://cerrajeria24h.vercel.app): Web orientada a urgencias 24 horas en Marbella, San Pedro y Puerto Banús (apertura sin rotura, bombines antibumping y cajas fuertes).
-- **Just Banús** (https://justbanus-sepia.vercel.app): Web para empresa de gestión integral de propiedades (Property Management, limpieza, lavandería, mantenimiento y reformas) en Puerto Banús y Marbella.
-- **66 Nunataks — Julián Gracia Palacín** (https://66nunataks.vercel.app): Web editorial de lanzamiento para la novela de ciencia ficción y distopía sobre IA (Trilogía QUILAK, Editorial Mascarón de Proa), con descarga/lectura gratuita del primer capítulo.
-- **Bobisapp** (https://bobisapp.vercel.app): Aplicación web ERP/CRM a medida en TypeScript para gestión inmobiliaria en Marbella.
-- **Academia de Baile La Clave de Marbella** (https://laclave-seven.vercel.app): Aplicación web a medida para gestión de alumnos, clases, horarios y cuotas en Marbella.
+- **Web oficial**: [https://papis.app](https://papis.app)
+- **Titular**: David Papis
+- **Sede**: Marbella, Málaga (Costa del Sol, España)
+- **Teléfono y WhatsApp directo**: [+34 652 918 061](https://wa.me/34652918061)
+- **Correo electrónico**: [dyminfo@gmail.com](mailto:dyminfo@gmail.com)
+- **Cobertura presencial**: Cabopino, Marbella, Nueva Andalucía, Puerto Banús, San Pedro Alcántara y Estepona
+- **Cobertura remota**: Toda España y clientes internacionales (desarrollo web, software a medida y soporte remoto con RustDesk)
+
+## Enlaces clave
+- [Portada — papis.app](https://papis.app/): Resumen de servicios, casos destacados y contacto directo en Marbella.
+- [Diseño Web, SEO, GEO y AEO](https://papis.app/paginas-web): Páginas web ultrarrápidas a medida en Astro (99–100 Core Web Vitals), autogestionables y optimizadas para Google, ChatGPT, Gemini y Perplexity.
+- [Software a Medida para Empresas (ERP, CRM y SaaS)](https://papis.app/software-empresas): Aplicaciones web en propiedad sin cuotas por usuario para inmobiliarias, academias y cualquier sector.
+- [Servicio Técnico Informático y Clases Particulares a Domicilio](https://papis.app/servicio-tecnico): Especialistas en Apple (Mac, iPhone, iPad), Windows, Synology NAS y soporte remoto mundial con RustDesk.
+- [Portfolio de Proyectos Reales](https://papis.app/proyectos): Casos reales en producción en Marbella y la Costa del Sol.
+- [Contacto y Presupuesto Rápido](https://papis.app/contacto): Solicitud de presupuesto directo con David Papis por formulario o WhatsApp.
+- [Sitemap XML](https://papis.app/sitemap-index.xml): Índice completo de URLs indexables del sitio.
 
 ## Servicios principales
 
 ### 1. Diseño y Desarrollo Web a Medida + SEO, GEO y AEO
-- URL: https://papis.app/paginas-web
-- Arquitectura web ultrarrápida en Astro (HTML estático, objetivo 99–100/100 Core Web Vitals, < 0,8s), autogestionable con back-office/Keystatic y analítica real sin cookies (100% RGPD sin banners invasivos).
+- [Ver servicio de Diseño Web, SEO y GEO](https://papis.app/paginas-web): Arquitectura web ultrarrápida en Astro (HTML estático, objetivo 99–100/100 Core Web Vitals, < 0,8s), autogestionable con back-office/Keystatic y analítica real sin cookies (100% RGPD sin banners invasivos).
 - Plazo habitual: 10 a 15 días. Pago: 50% al aceptar presupuesto y 50% a la entrega.
 - Mantenimiento mensual: Básico 50€/mes (disponibilidad y actualizaciones), Estándar 80€/mes (+2h/mes de cambios), Gestión/IA 180€/mes (webs con cálculos automáticos o asistente IA y base de conocimiento).
 - Planes SEO: SEO Básico 190€/mes (incluye mantenimiento básico + posicionamiento Google); SEO Avanzado + GEO + AEO 290€/mes (posicionamiento integral en Google y motores de IA como ChatGPT, Gemini y Perplexity).
@@ -31,8 +31,7 @@
 - Gestión integral de dominio, hosting y correos corporativos (o a nombre del cliente si prefiere).
 
 ### 2. Software a Medida para Empresas (ERP, CRM y SaaS)
-- URL: https://papis.app/software-empresas
-- Aplicaciones web 100% a medida y en propiedad, sin cuotas mensuales abusivas por usuario.
+- [Ver servicio de Software a Medida](https://papis.app/software-empresas): Aplicaciones web 100% a medida y en propiedad, sin cuotas mensuales abusivas por usuario.
 - Precio orientativo: desde 6.000€ según módulos, departamentos e integración de IA. Posibilidad de empezar por versión básica (MVP) y añadir módulos progresivamente.
 - Soluciones listas para adaptar: Software de Gestión Inmobiliaria y Software de Gestión para Academias de Baile, además de desarrollo desde cero para cualquier sector.
 - Arquitectura y copias de seguridad: código versionado en GitHub, despliegue continuo en Vercel y base de datos en Supabase con copias programadas.
@@ -40,19 +39,18 @@
 - Entrega con formación, vídeos y 1 mes de fase beta con ajustes y mejoras rápidas (~24h).
 
 ### 3. Servicio Técnico Informático y Clases Particulares a Domicilio
-- URL: https://papis.app/servicio-tecnico
-- Especialistas en Apple (Mac, iPhone, iPad) y Windows. También atendemos incidencias habituales en Android (avisando con transparencia que no es nuestra especialidad principal).
+- [Ver servicio Técnico Informático a Domicilio](https://papis.app/servicio-tecnico): Especialistas en Apple (Mac, iPhone, iPad) y Windows. También atendemos incidencias habituales en Android (avisando con transparencia que no es nuestra especialidad principal).
 - Tarifas por hora a domicilio: Marbella 45€/h, San Pedro Alcántara 50€/h, Estepona 65€/h.
 - Tarifas específicas: traspaso completo iPhone a iPhone 120€ (precio cerrado); servidores y NAS Synology 100€/h.
 - Reparaciones con piezas (batería, pantalla, disco SSD): recogida a domicilio, sustitución y entrega funcionando.
 - Clases particulares para mayores y particulares: bonos con ahorro del 30% al 40% según horas y zona.
 - Soporte remoto inmediato en todo el mundo mediante RustDesk.
 
-## Enlaces clave
-- Portada: https://papis.app/
-- Diseño Web, SEO y GEO: https://papis.app/paginas-web
-- Software Empresas: https://papis.app/software-empresas
-- Servicio Técnico a Domicilio: https://papis.app/servicio-tecnico
-- Portfolio de Proyectos: https://papis.app/proyectos
-- Contacto y Presupuesto Rápido: https://papis.app/contacto
-- Sitemap XML: https://papis.app/sitemap-index.xml
+## Compromiso social y casos reales verificables
+- [Asociación de Autismo Ángel Rivière (AAAR Marbella)](https://aaarm.vercel.app): Web oficial para esta asociación sin ánimo de lucro declarada de Utilidad Pública que apoya a niños con autismo y sus familias en Marbella desde 2008. Realizada prácticamente subvencionada como compromiso social con Marbella.
+- [Grupo Serinamar](https://gruposerinamar.vercel.app): Web corporativa en Astro para grupo inmobiliario en Marbella y Puerto Banús (desde el año 2000): alquiler vacacional con Guesty, compraventa de propiedades, mantenimiento con Just Banús y asesoría fiscal Iberiansun.
+- [Cerrajería Carlos Neira 24h](https://cerrajeria24h.vercel.app): Web orientada a urgencias 24 horas en Marbella, San Pedro y Puerto Banús (apertura sin rotura, bombines antibumping y cajas fuertes).
+- [Just Banús](https://justbanus-sepia.vercel.app): Web para empresa de gestión integral de propiedades (Property Management, limpieza, lavandería, mantenimiento y reformas) en Puerto Banús y Marbella.
+- [66 Nunataks — Julián Gracia Palacín](https://66nunataks.vercel.app): Web editorial de lanzamiento para la novela de ciencia ficción y distopía sobre IA (Trilogía QUILAK, Editorial Mascarón de Proa), con descarga/lectura gratuita del primer capítulo.
+- [Bobisapp](https://bobisapp.vercel.app): Aplicación web ERP/CRM a medida en TypeScript para gestión inmobiliaria en Marbella.
+- [Academia de Baile La Clave de Marbella](https://laclave-seven.vercel.app): Aplicación web a medida para gestión de alumnos, clases, horarios y cuotas en Marbella.

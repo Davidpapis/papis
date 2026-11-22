@@ -270,14 +270,14 @@ const CASES: DiveCase[] = isEn
             <span data-hd-cta-label>{CASES[0].ctaLabel}</span>
             <span aria-hidden="true">→</span>
           </a>
-          <div class="hd-dots" role="tablist" aria-label="Elegir servicio">
+          <div class="hd-dots" role="group" aria-label="Elegir servicio">
             {
               CASES.map((c, idx) => (
                 <button
                   type="button"
                   data-hd-dot={idx}
                   aria-label={`Ver ${c.ticketTitle}`}
-                  aria-selected={idx === 0 ? 'true' : 'false'}
+                  aria-current={idx === 0 ? 'true' : 'false'}
                   class={`hd-dot-btn ${idx === 0 ? 'is-active' : ''}`}
                 />
               ))
@@ -1815,7 +1815,7 @@ const CASES: DiveCase[] = isEn
       dotBtns.forEach((b, i) => {
         const active = i === idx;
         b.classList.toggle('is-active', active);
-        b.setAttribute('aria-selected', String(active));
+        b.setAttribute('aria-current', String(active));
       });
 
       if (animate) {
