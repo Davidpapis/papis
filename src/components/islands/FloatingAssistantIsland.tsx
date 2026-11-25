@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, type ReactNode, useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   Download,
@@ -62,6 +62,58 @@ const INITIAL_WELCOME_EN: ChatMessage = {
   role: 'model',
   text: "Hi! How are you? I'm David Tech, David Papis' AI assistant. I'm here to answer all your questions. To get started, what's your name and how can I help you today?",
 };
+
+function renderMessageText(text: string) {
+  const tokenRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s<)]+)/g;
+  const nodes: ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let keyIdx = 0;
+
+  while ((match = tokenRegex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(text.slice(lastIndex, match.index));
+    }
+    const label = match[1];
+    const rawUrl = match[2] ?? match[3];
+    const cleanUrl = rawUrl.replace(/[.,;!?]+$/, '');
+    const trailing = rawUrl.slice(cleanUrl.length);
+    const isWhatsApp = cleanUrl.includes('wa.me') || cleanUrl.includes('whatsapp.com');
+
+    nodes.push(
+      isWhatsApp ? (
+        <a
+          key={`link-${keyIdx++}`}
+          href={cleanUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex items-center gap-1.5 rounded-xl border border-emerald-400/45 bg-emerald-500/15 px-3 py-1.5 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/25 hover:text-emerald-200 transition-colors no-underline"
+        >
+          <MessageCircle className="h-3.5 w-3.5 shrink-0 text-emerald-400" aria-hidden="true" />
+          <span>{label || 'Abrir WhatsApp con David'}</span>
+        </a>
+      ) : (
+        <a
+          key={`link-${keyIdx++}`}
+          href={cleanUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline decoration-blue-400/60 underline-offset-2 text-blue-300 hover:text-blue-200 transition-colors break-all"
+        >
+          {label || cleanUrl}
+        </a>
+      )
+    );
+    if (trailing) nodes.push(trailing);
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex));
+  }
+
+  return nodes.map((part, idx) => <Fragment key={idx}>{part}</Fragment>);
+}
 
 export default function FloatingAssistantIsland({
   activeTheme,
@@ -518,7 +570,9 @@ export default function FloatingAssistantIsland({
                           : undefined
                       }
                     >
-                      {msg.text || (
+                      {msg.text ? (
+                        renderMessageText(msg.text)
+                      ) : (
                         <span
                           className="inline-flex items-center gap-2 text-xs text-slate-300"
                           aria-label="Escribiendo respuesta"
